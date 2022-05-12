@@ -1,4 +1,5 @@
 import user from '../../assets/user.png';
+import bell from '../../assets/bell.svg';
 import './TopBar.css';
 
 export default function TopBar(){
@@ -15,7 +16,9 @@ export default function TopBar(){
                     <p>Ramon Ridwan</p>
                 </div>
                 
-                <button>C</button>
+                <button>
+                    <img src={bell} alt='' />
+                </button>
                 
             </div>
         </div>

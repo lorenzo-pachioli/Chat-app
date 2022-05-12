@@ -46,4 +46,10 @@
 .user button{
     height: 4vh;
     width: 4vh;
+    border-style: none;
+    background-color: white;
+}
+
+.user button img{
+    height: 90%;
 }

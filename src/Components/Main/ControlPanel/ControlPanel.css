@@ -1,6 +1,74 @@
 .control-panel{
     height: 100%;
     width: 20%;
+    display: flex;
     flex-direction: column;
-    border: 1px solid yellow;
+    justify-content: space-evenly;
+    border-right: 1px solid gray;
 }
+
+.sub-control-panel{
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 5%;
+}
+ 
+.chat{
+    width: 70%;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 0 20px 20px 0;
+    background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    color: white;
+}
+.chat div:first-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5%;
+}
+.chat div:first-child img{
+    height: 40%;
+}
+
+
+.chat .num {
+    
+    padding: 0 2%;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.num p{
+    font-size: 10px;
+    font-weight: 700;
+    background: linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logout{
+    width: 60%;
+    height: 35px;
+    border-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    background-color: white;
+}
+
+.logout img{
+    height:40%;
+}
+
