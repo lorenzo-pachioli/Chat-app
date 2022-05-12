@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    border-right: 1px solid gray;
+    border-right: 2px solid #F0F0F0;
 }
 
 .sub-control-panel{
@@ -17,7 +17,7 @@
     padding-top: 5%;
 }
  
-.chat{
+.chat-message{
     width: 70%;
     height: 35px;
     display: flex;
@@ -28,19 +28,19 @@
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
     color: white;
 }
-.chat div:first-child{
+.chat-message div:first-child{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     gap: 5%;
 }
-.chat div:first-child img{
+.chat-message div:first-child img{
     height: 40%;
 }
 
 
-.chat .num {
+.chat-message .num {
     
     padding: 0 2%;
     background-color: white;

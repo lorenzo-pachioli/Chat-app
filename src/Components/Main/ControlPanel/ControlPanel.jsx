@@ -7,7 +7,7 @@ export default function ControlPanel(){
     return(
         <div className='control-panel'>
             <div className='sub-control-panel'>
-                <div className='chat'>
+                <div className='chat-message'>
                     <div>
                         <img src={chat} alt='' />
                         <p>Chat</p>
