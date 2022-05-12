@@ -1,0 +1,6 @@
+.chat{
+    height: 100%;
+    width: 75%;
+    flex-direction: column;
+    border: 1px solid lightcoral;
+}

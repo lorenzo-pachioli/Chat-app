@@ -1,0 +1,8 @@
+.main{
+    width: 100vw;
+    height: 90vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid gray;
+}
