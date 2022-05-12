@@ -6,8 +6,11 @@ export default function SubMain(){
 
     return(
         <div className='sub-main'>
-            <UserList />
-            <Chat />
+            <div className='sub-main-container'>
+                <UserList />
+                <Chat />
+            </div>
+            
             
         </div>
     )
