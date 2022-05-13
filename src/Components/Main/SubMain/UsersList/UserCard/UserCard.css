@@ -26,11 +26,11 @@
     border-radius: 50%;
     background-color: #858585;
 }
-.profile-img .dot{
+.dot{
     height: 10px;
     width: 10px;
     border-radius: 50%;
-    background-color: green;
+    
 }
  
 .name{

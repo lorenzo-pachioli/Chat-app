@@ -1,5 +1,6 @@
 import user from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
+import searchIcon from '../../assets/search-icon.svg';
 import './TopBar.css';
 
 export default function TopBar(){
@@ -7,7 +8,11 @@ export default function TopBar(){
     return(
         <div className='top-bar'>
             <div className='user-search'>
-                <input type='text' placeholder='User search' />
+                <div className='sub-user-search'>
+                    <img src={searchIcon} alt='' />
+                    <input type='text' placeholder='User search' />
+                </div>
+                
             </div>
             <div className='user'>
                 
@@ -18,6 +23,8 @@ export default function TopBar(){
                 
                 <button>
                     <img src={bell} alt='' />
+                    <span className='dot'>24</span>
+                    
                 </button>
                 
             </div>
