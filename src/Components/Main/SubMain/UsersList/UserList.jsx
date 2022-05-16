@@ -1,24 +1,56 @@
-import user from  '../../../../assets/user.png';
+import React, {useContext} from 'react';
+import { AppContext } from '../../../../Context/AppContext';
+import userPhoto from  '../../../../assets/user.png';
 import UserCard from './UserCard/UserCard';
-import { chats } from './chatsOpens';
 import './UserList.css';
 
 export default function UserList(){
 
+    const {user, chats, userList, newChat, setNewChat} = useContext(AppContext);
+    
+
+    const findUserId = (userIds)=>{
+        
+        const UId = userIds.find((id)=>{
+            const regEx1 = id.replace('{', '')
+            const regEx2 = regEx1.replace('}', '')
+            return regEx2 !== user._id
+        })
+        return UId;
+    }
+
     return(
         <div className='user-list'>
-            <div className='sub-user-list'>
-                <UserCard name={'Ramon Ridwan'} status={'online'} img={user} messages={0} />
+            <div className='sub-user-list' >
+                {user ? (
+                    <UserCard id={user._id} status={'online'} img={userPhoto}  />
+                ):(
+                    <p>Loading...</p>
+                )}
+                
             </div>
             <div className='open-chats'>
-                {chats.map((user)=> {
-                    return(
-                        <UserCard name={user.name} status={user.status} img={user.img} messages={user.messages} />
-                    )
-                })}
+                {newChat ? (
+                    userList.length > 0 ? (
+                        userList.map((u)=> {
+                          return u._id === user._id ? (false):( <UserCard key={u._id} id={u._id} userMessages={[]}  />)
+                        })
+                    ):('')
+                    
+                ):(
+                    chats.length > 0 ? (
+                        chats.map((u)=> {
+                            
+                            return(
+                                <UserCard key={u._id} id={findUserId(u.userIds)} chatId={u._id} status={u.status} img={u.img} userMessages={u.messages} />
+                            )
+                        })
+                    ):('')
+                )
+                }
             </div>
             <div className='new-chat' >
-                <button>New chat</button>
+                <button onClick={()=> setNewChat(true)}>New chat</button>
             </div>
             
         </div>
