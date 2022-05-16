@@ -53,7 +53,7 @@ export default function SignIn() {
           </div>
         </div>
           <button type='submit' className='submit' onClick={handleLogIn}>Sign in</button>
-          {redirect ? (<Navigate to='/chatapp' replace={true} />):('')}
+          {redirect ? (<Navigate to='/login' replace={true} />):('')}
         </div>
   );
 }
