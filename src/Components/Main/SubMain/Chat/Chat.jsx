@@ -1,21 +1,60 @@
-import Message from './Message/Message';
-import  moment  from 'moment';
+import React, {useContext, useState} from 'react';
+import { AppContext } from '../../../../Context/AppContext';
+import Read from './Read/Read';
+import UnRead from './Read/UnRead';
 import './Chat.css';
+import axios from 'axios';
 
 export default function Chat(){
-    const date = moment().startOf('hour').fromNow();
+    const {token, messages, setMessages} = useContext(AppContext);
+    const [sendMsj, setSendMsj] = useState('')
+
+    const dateFrom =(date)=>{
+        console.log('ordenando array')
+        return new Date(date).getTime()}
+
+    const handleSend = async ()=> {
+        let temMessage =  messages.userMessages;
+        if(messages.chatId){
+            console.log('mensajes', sendMsj)
+            await axios.post(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/message`,{
+                "messageText": `${sendMsj}`
+            },{
+                headers:{
+                    'Authorization' : `Bearer ${token.auth}`
+                }
+            })
+            .then(response =>temMessage.push(response.data.post))
+            .catch(error => console.log('error:', error))
+            console.log('mensajes1', temMessage)
+            await temMessage.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
+            setMessages({
+                ...messages, 
+                userMessages: temMessage
+            })
+            console.log('mensajes2', messages)
+        }
+        setSendMsj('')
+    }
+
+
+    
 
     return(
         <div className='chat'>
-            <div className='conversation'>
-                <Message date= {date} content={'some text'} />
+            <div className='conversationContainer'>
+                <UnRead />
+                <Read />
             </div>
+            
             <div className='input-message'>
                 <div>
                     <textarea  
+                    value={sendMsj}
+                    onChange={(e)=>setSendMsj(e.target.value)}
                     maxLength="200"
                     placeholder='Start typing here' />
-                    <button>SEND</button>
+                    <button onClick={handleSend}>SEND</button>
 
                 </div>
             </div>
