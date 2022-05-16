@@ -1,10 +1,9 @@
-import user from '../../assets/user.png';
+import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import searchIcon from '../../assets/search-icon.svg';
 import './TopBar.css';
 
-export default function TopBar(){
-
+export default function TopBar({user}){
     return(
         <div className='top-bar'>
             <div className='user-search'>
@@ -17,8 +16,8 @@ export default function TopBar(){
             <div className='user'>
                 
                 <div>
-                    <img src={user} alt='' />
-                    <p>Ramon Ridwan</p>
+                    <img src={userPhoto} alt='' />
+                    <p>{user ? (`${user.firstName + ' ' + user.lastName}`):('no user')}</p>
                 </div>
                 
                 <button>
