@@ -43,6 +43,10 @@
     align-items: flex-start;
     color:#858585;
 }
+.sub-userCard img{
+    height: 20px;
+    
+}
 
 .name p:first-child{
     font-weight: 700;

@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
+import trashCan from '../../../../../assets/trash-can.svg';
 import axios from 'axios';
 import './UserCard.css';
 
@@ -60,15 +61,20 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
         
     }
 
+    const handleDelete = ()=>{
+        console.log('borrar')
+    }
+
     return(
         <div className='userCard' onClick={handleMessages}>
             <div className='sub-userCard'>
                 <div className='profile-img' ><span className='dot' style={{backgroundColor:`${status === 'online'?('#8CEE5D'):('#DEDEDE')}`}} /></div>
                 <div className='name'>
                     {userList ? (userList.length > 0 ? (name()):('Loading...')):('Loading...')}
+                    
                     <p>{status}</p>
+                    
                 </div>
-
             </div>
            
             <p className='msj-number' style={{background:`${userMessages > 0?(background):('white')}`}} >

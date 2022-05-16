@@ -18,7 +18,7 @@ export default function UserList(){
         })
         return UId;
     }
-
+    
     return(
         <div className='user-list'>
             <div className='sub-user-list' >

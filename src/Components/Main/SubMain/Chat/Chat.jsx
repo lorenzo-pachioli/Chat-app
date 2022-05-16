@@ -32,7 +32,7 @@ export default function Chat(){
                 ...messages, 
                 userMessages: temMessage
             })
-            console.log('mensajes2', messages)
+            
         }
         setSendMsj('')
     }

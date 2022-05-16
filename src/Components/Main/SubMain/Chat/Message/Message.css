@@ -5,6 +5,10 @@
     align-items: flex-start;
     padding: 10px 20px 0 20px;
 }
+.Message img{
+    height: 10px;
+    margin-right: 5px;
+}
 
 .Message p:first-child{
 
