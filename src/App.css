@@ -8,3 +8,13 @@
   flex-direction: column;
   justify-content: flex-start;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #858585 #ffffff;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+

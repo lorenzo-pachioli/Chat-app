@@ -1,10 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import { Route, Routes } from "react-router-dom";
 import ChatApp from './Pages/ChatApp/ChatApp';
 import Login from './Pages/Login/Login';
 import LoginBtn from './Components/Login/Log in/LoginBtn';
 import Options from './Components/Login/options/Options';
 import SignIn from './Components/Login/Sign in/SignIn';
+import Complaints from './Components/Main/Complaints/Complaints';
+import Delete from './Components/Main/Delete/Delete';
+import SubMain from './Components/Main/SubMain/Submain/SubMain';
+import { AppContext } from './Context/AppContext';
 import axios from "axios";
 
 import './App.css';
@@ -12,27 +16,93 @@ import './App.css';
 
 function App() {
 
+  const {user, setUser, token, setToken, setUserList, setRedirect} = useContext(AppContext);
   
+//first set user from the page log in
 
-  /* useEffect(() => {
+  useEffect(() => {
+
      async function getUser(){
-
       try{
-        const docRef = await axios.delete(`https://novateva-codetest.herokuapp.com/users/9ecb2f89d9ea45b5bf620c49e3c086fc`)
-        .then(response => console.log(response.data.users))
+        const docRef = await axios.get(`https://novateva-codetest.herokuapp.com/users`)
+        .then(response =>  response.data.users)
         .catch((e)=>console.error(e))
-        return docRef;
+        console.log(token.auth)
+        if(docRef.length > 0){
+          const U = docRef.filter((u)=> u.email === token.email)
+          setUser(U[0]);
+          setUserList(docRef)
+          setRedirect(true)
+        }
       }catch(e){
         console.error(`Error: ${e}`)
       }
     }
-    getUser();
-  }, []); */
+    if(token.auth){
+      getUser();
+    }
+    
+    
+  }, [token, setUser, setUserList, setRedirect]);
+
+  //On page re load set user
+
+  useEffect(() => {
+    const tempUsr = sessionStorage.getItem('user');
+    async function onReload(){
+      
+      await axios.get(`https://novateva-codetest.herokuapp.com/users/${tempUsr}`)
+        .then(response => setUser(response.data.user))
+        .catch((e)=>console.error(e))
+    }
+    if(tempUsr && token.auth === undefined ){
+      
+      if(tempUsr.length > 0 ){
+        onReload()
+      }
+    }
+  }, [setUser, token]);
+
+  //on reload set user token
+
+  /* useEffect(() => {
+    const tempToken = sessionStorage.getItem('token');
+
+    if(tempToken && user){
+      
+      if(tempToken.length > 0 && user.email){
+        setToken({auth:tempToken, email:user.email})
+      }
+    }
+    
+  }, [setToken, user]); */
+
+  //save user id on sessionStorage for the previous useEffect
+
+  /* useEffect(() => {
+    if(user._id){
+      sessionStorage.setItem('user', `${user._id}`);
+      sessionStorage.setItem('token', `${token.auth}`);
+    }
+    
+  }, [user, token]); */
+
+  
+
+  
 
   return (
     <div className="App">
       <Routes>
-        <Route exact path="/chatapp" element={<ChatApp />} />
+        <Route>
+          <Route path="chatapp" element={<ChatApp />} >
+            <Route path="complaints" element={<Complaints />} />
+            <Route path="delete" element={<Delete />} />
+            <Route path="" element={<SubMain/>} />
+          </Route>
+
+        </Route>
+        
         <Route>
           <Route exact path="/" element={<Login />}>
           

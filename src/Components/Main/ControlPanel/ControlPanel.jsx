@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../Context/AppContext';
-import { Navigate} from "react-router-dom";
+import { Link, Navigate} from "react-router-dom";
 import logout from '../../../assets/logout.svg';
+import trasCan from '../../../assets/trash-can-white.svg';
 import chat from '../../../assets/chat-bubble.svg';
 import './ControlPanel.css';
 
@@ -16,7 +17,7 @@ export default function ControlPanel(){
     return(
         <div className='control-panel'>
             <div className='sub-control-panel'>
-                <div className='chat-message'>
+                <Link to='/chatapp' className='chat-message'>
                     <div>
                         <img src={chat} alt='' />
                         <p>Chat</p>
@@ -25,14 +26,21 @@ export default function ControlPanel(){
                     <div className='num'>
                         <p>19</p>
                     </div>
-                </div>
-                <div className='chat-message'>
+                </Link>
+                <Link to='/chatapp/complaints' className='chat-message'>
                     <div>
                         <img src={chat} alt='' />
                         <p>Complaints</p>
                     </div>
                     
-                </div>
+                </Link>
+                <Link to='/chatapp/delete' className='chat-message'>
+                    <div>
+                        <img src={trasCan} fill='white' alt='' />
+                        <p>Delete chat</p>
+                    </div>
+                    
+                </Link>
             </div>
             <button className='logout' onClick={handleLogOut}>
                 <img src={logout} alt='' />
