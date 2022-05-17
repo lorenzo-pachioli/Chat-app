@@ -1,15 +1,13 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
-import trashCan from '../../../../../assets/trash-can.svg';
 import axios from 'axios';
 import './UserCard.css';
 
 export default function UserCard( {id, status, img, userMessages, chatId, firstName, lastName}){
 
-    const {user, token, setMessages, setChats, userList, newChat, setNewChat, chats, messages, unReadNum} = useContext(AppContext);
+    const {user, token, setMessages, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
 
-    const dateFrom =(date)=>{
-        return new Date(date).getTime()
+    const dateFrom =(date)=>{ new Date(date).getTime()
     }
 
     const background = 'linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%)';
@@ -34,7 +32,6 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
                         'Authorization' : `Bearer ${token.auth}`
                     }
                 })
-                .then(response => console.log(response))
                 .catch(error=> console.error(error))
 
             await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
@@ -52,7 +49,6 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
                         'Authorization' : `Bearer ${token.auth}`
                     }
                 })
-                .then(response => console.log('read', response))
                 .catch(error=> console.error(error))
 
                 await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
@@ -68,7 +64,10 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
         if(id !== user._id){
             if(unReadNum.length > 0){
                 const unread = unReadNum.find((chat)=> chat.chatId === chatId );
-                return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+                if(unread.unRead > 0){
+                    return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+                }
+                
             }
         }
     }

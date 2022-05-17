@@ -8,27 +8,43 @@ import './LoginBtn.css';
 
 export default function LoginBtn() {
 
-  const {token, setToken, redirect, loading, setLoading, setRedirect, setLogOut} = useContext(AppContext);
-
+  const {token, setToken,redirect, setRedirect,  loading, setLoading,  setLogOut} = useContext(AppContext);
   
+
   const [error, setError] = useState(false);
   const [form, setForm] = useState({
     email:'',
     password: ''
   })
+
+
   useEffect(() => {
     setRedirect(false)
     setLogOut(false)
   }, [setRedirect, setLogOut]);
 
-  const handleLogIn = ()=>{
+
+  const handleLogIn = async ()=>{
     setLoading(true);
-    axios.post('https://novateva-codetest.herokuapp.com/login', {
+    let tempToken = {};
+    await axios.post('https://novateva-codetest.herokuapp.com/login', {
       'email' : `${form.email}`,
       'password' : `${form.password}`
     })
-    .then(response => response.status === 200 ? (setToken({...token,email:form.email, auth:response.data.authorization})):(setError(true)))
-    .catch(error => setError(true))
+    .then(response => response.status === 200 ? (tempToken = {...token,email:form.email, auth:response.data.authorization}):(setError(true)))
+    .then(data=>console.log(data))
+    .catch(e => setError(true))
+    
+    if(tempToken.auth && tempToken.email){
+      setToken(tempToken)
+      sessionStorage.setItem('token', `${tempToken.auth}`);
+      sessionStorage.setItem('email', `${tempToken.email}`);
+    }
+    if(token.auth){
+      setRedirect(true)
+      console.log('1', redirect)
+    }
+    
   }
 
   return (

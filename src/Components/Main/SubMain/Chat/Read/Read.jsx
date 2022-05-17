@@ -17,14 +17,13 @@ export default function Read(){
             }
           }
         )
-        console.log('read', read)
        return (
         <div className='conversation'>
             {
                 read.length > 0? (
                     read.map((msj)=>{
                         return(
-                            <Message key={msj._id} user={user} id={msj._id} date={msj.createdAt} content={msj.message.messageText} postedBy={msj.postedByUser} readBy={msj.readByRecipients} />
+                            <Message key={msj._id} user={user} id={msj._id} date={msj.createdAt} content={msj.message.messageText} postedBy={msj.postedByUser} />
                         )
                     })
                 ):('')

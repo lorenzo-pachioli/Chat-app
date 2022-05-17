@@ -27,12 +27,12 @@ function App() {
         const docRef = await axios.get(`https://novateva-codetest.herokuapp.com/users`)
         .then(response =>  response.data.users)
         .catch((e)=>console.error(e))
-        console.log(token.auth)
         if(docRef.length > 0){
           const U = docRef.filter((u)=> u.email === token.email)
           setUser(U[0]);
-          setUserList(docRef)
-          setRedirect(true)
+          sessionStorage.setItem('user', `${U[0]._id}`);
+          setUserList(docRef);
+          setRedirect(true);
         }
       }catch(e){
         console.error(`Error: ${e}`)
@@ -62,30 +62,24 @@ function App() {
       }
     }
   }, [setUser, token]);
+  
 
   //on reload set user token
 
-  /* useEffect(() => {
+  useEffect(() => {
     const tempToken = sessionStorage.getItem('token');
+    const tempEmail = sessionStorage.getItem('email');
 
-    if(tempToken && user){
+    if(tempToken && tempEmail){
       
-      if(tempToken.length > 0 && user.email){
-        setToken({auth:tempToken, email:user.email})
+      if(tempToken.length > 0 && tempEmail.length > 0){
+        setToken({auth:tempToken, email:tempEmail})
       }
     }
     
-  }, [setToken, user]); */
+  }, [setToken]);
 
-  //save user id on sessionStorage for the previous useEffect
 
-  /* useEffect(() => {
-    if(user._id){
-      sessionStorage.setItem('user', `${user._id}`);
-      sessionStorage.setItem('token', `${token.auth}`);
-    }
-    
-  }, [user, token]); */
 
   //All un read messages amount
 
@@ -102,8 +96,6 @@ function App() {
       )
       return {chatId:chat._id, unRead: unreadMsj.length}
     })
-  console.log('chatapp', chats)
-  console.log('unread', unRead)
   setUnReadNum(unRead)
 
   },[chats, user, setUnReadNum ]);

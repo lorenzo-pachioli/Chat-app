@@ -42,7 +42,7 @@
 
 .user{
     height: 100%;
-    width: 300px;
+    width: 250px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -51,13 +51,13 @@
 }
 .user div{
     height: 100%;
-    width: 250px;
+    width: 200px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     gap:10px;
-    
+    border: 1px solid black;
 }
 
 .user img{
@@ -65,22 +65,25 @@
 }
 
 .user button{
-    height: 4vh;
-    width: 4vh;
+    height: 25px;
+    width: 30px;
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
     border-style: none;
     background-color: white;
+    border: 1px solid black;
 }
 .user button img{
     height: 25px;
-    position: absolute;
 }
 
 .user .dot{
     height:15px;
     width: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 8px;
     color: white;
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);

@@ -5,7 +5,7 @@ import './Message.css';
 import  moment  from 'moment';
 import axios from 'axios';
 
-export default function Message( {user, id, date, content, postedBy, readBy}){
+export default function Message( {user, id, date, content, postedBy}){
 
     const {userList,token, messages, setMessages, setChats} = useContext(AppContext);
 
@@ -23,22 +23,25 @@ export default function Message( {user, id, date, content, postedBy, readBy}){
         
     } 
     const handleDelete = async ()=>{
+
         await axios.delete(`https://novateva-codetest.herokuapp.com/delete/message/${id}`,{
             headers:{'Authorization': `Bearer ${token.auth}`}
         })
-        .then(response => console.log(response))
         .catch(error=> console.error(error))
+
         const delMsj = messages.userMessages.filter((msj)=> msj._id !== id)
+
         setMessages({
             ...messages, 
             userMessages: delMsj
         })
-        console.log('mensajes del', messages)
+
         await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
         .then(response => setChats(response.data.conversation))
         .catch(error => console.error(error))
     }
 
+    
     return(
         <div className='Message' style={postedBy === user._id ? ({alignItems: 'flex-end'}):({alignItems: 'flex-start'})}>
             

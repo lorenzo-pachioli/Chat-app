@@ -8,10 +8,22 @@ import './ControlPanel.css';
 
 export default function ControlPanel(){
 
-    const {user, logOut, setLogOut, chats, unReadNum} = useContext(AppContext);
+    const {logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setMessages, setLoading, setUnReadNum} = useContext(AppContext);
 
     const handleLogOut = ()=>{
         setLogOut(true)
+        setUser({})
+        setUserList({})
+        setToken({})
+        setRedirect(false)
+        setChats([])
+        setMessages([])
+        setLoading(false)
+        setUnReadNum([])
+        
+        setTimeout(() => {
+            setLogOut(false)
+        }, 1000);
     }
     const UnRead = ()=>{
         if(unReadNum.length > 0){

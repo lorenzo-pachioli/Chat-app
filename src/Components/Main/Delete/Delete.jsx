@@ -31,11 +31,12 @@ export default function Delete(){
 
     const handleDelete = ()=>{
         if(deleteChat.length > 0 && token.auth){
+            
             axios.delete(`https://novateva-codetest.herokuapp.com/delete/room/${deleteChat}`,{
                 headers:{'Authorization' : `Bearer ${token.auth}`}
             })
-            .then(response => console.log(response))
             .catch(error => console.error(error))
+
             setChats(chats.filter((chat)=> chat._id !== deleteChat))
             setDelete('')
         }

@@ -9,14 +9,11 @@ export default function Chat(){
     const {token, messages, setMessages} = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
 
-    const dateFrom =(date)=>{
-        console.log('ordenando array')
-        return new Date(date).getTime()}
+    const dateFrom =(date)=>{ new Date(date).getTime()}
 
     const handleSend = async ()=> {
         let temMessage =  messages.userMessages;
         if(messages.chatId){
-            console.log('mensajes', sendMsj)
             await axios.post(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/message`,{
                 "messageText": `${sendMsj}`
             },{
@@ -26,8 +23,9 @@ export default function Chat(){
             })
             .then(response =>temMessage.push(response.data.post))
             .catch(error => console.log('error:', error))
-            console.log('mensajes1', temMessage)
+
             await temMessage.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
+            
             setMessages({
                 ...messages, 
                 userMessages: temMessage

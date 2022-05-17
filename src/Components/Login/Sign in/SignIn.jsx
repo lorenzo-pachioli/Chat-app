@@ -7,7 +7,7 @@ import '../Log in/LoginBtn.css';
 
 export default function SignIn() {
 
-  const [redirect, setRedirect] = useState(false);
+  const [redirectLogIn, setRedirectLogIn] = useState(false);
   const [form, setForm] = useState({
     name:'',
     lastName:'',
@@ -15,15 +15,23 @@ export default function SignIn() {
     password: ''
   })
 
-  const handleLogIn = ()=>{
-    axios.post('https://novateva-codetest.herokuapp.com/users', {
+  const handleSignIn = async ()=>{
+    /* let tempToken = {}; */
+
+    await axios.post('https://novateva-codetest.herokuapp.com/users', {
       'email' : `${form.email}`,
       'password' : `${form.password}`,
       "firstName": `${form.name}`,
       "lastName": `${form.lastName}`,
       "type": "consumer" ,
     })
-    .then(response => response.status === 200 ? (setRedirect(true)):(''))
+    .then(response => response.status === 200 ? (console.log(response)):(''))
+    .catch(error=> console.error(error))
+
+    setRedirectLogIn(true)
+    setTimeout(() => {
+      setRedirectLogIn(false)
+    });
   }
 
   return (
@@ -52,8 +60,8 @@ export default function SignIn() {
             <input type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:`${e.target.value}`})} />
           </div>
         </div>
-          <button type='submit' className='submit' onClick={handleLogIn}>Sign in</button>
-          {redirect ? (<Navigate to='/login' replace={true} />):('')}
+          <button type='submit' className='submit' onClick={handleSignIn}>Sign in</button>
+          {redirectLogIn ? (<Navigate to='/login' replace={true} />):('')}
         </div>
   );
 }

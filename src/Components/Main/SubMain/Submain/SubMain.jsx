@@ -16,7 +16,10 @@ export default function SubMain(){
             .then(response => setChats(response.data.conversation))
             .catch(error => console.error(error))
         }
-        getConversations()
+        if(token.auth){
+            getConversations()
+        }
+        
     }, [token, setChats]);
 
     

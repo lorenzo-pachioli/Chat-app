@@ -1,9 +1,25 @@
+import React, {useContext} from 'react';
+import { AppContext } from '../../Context/AppContext';
 import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import searchIcon from '../../assets/search-icon.svg';
 import './TopBar.css';
 
-export default function TopBar({user}){
+export default function TopBar(){
+
+    const {user, unReadNum} = useContext(AppContext);
+
+    const UnRead = ()=>{
+        if(unReadNum.length > 0){
+            const unread = unReadNum.filter((chat)=> chat.unRead > 0 );
+            if(unread.length > 0){
+                return<span className='dot'>{ unread.length}</span>
+            }
+            
+        }
+        
+    }
+
     return(
         <div className='top-bar'>
             <div className='user-search'>
@@ -22,8 +38,7 @@ export default function TopBar({user}){
                 
                 <button>
                     <img src={bell} alt='' />
-                    <span className='dot'>24</span>
-                    
+                    <UnRead />
                 </button>
                 
             </div>

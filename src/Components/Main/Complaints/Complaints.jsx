@@ -21,6 +21,7 @@ export default function Complaints(){
         
     }, [setComplaintList,token]);
 
+
     const handleComplaints = ()=>{
         if(token.auth && complaint.length > 0){
             axios.post('https://novateva-codetest.herokuapp.com/complaints',{
@@ -31,6 +32,7 @@ export default function Complaints(){
         })
         .then(response=> complaintList.push(response.data.user))
         .catch(error=>console.error(error))
+
         setComplaint('')
         }
     }
@@ -56,7 +58,7 @@ export default function Complaints(){
                                     )
                                 })
                             ):(
-                                <h1>No comlpaints made yet</h1>
+                                <h3>No comlpaints made yet</h3>
                             )
                         }
                    </div> 

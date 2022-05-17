@@ -16,7 +16,6 @@ export default function UnRead(){
                 }else{return false}
                 }
             )
-            console.log('unread', unRead)
             return (
                 <div className='conversation' style={unRead.length > 0? ({display: 'flex'}):({display:'none'})}>
                     
@@ -24,7 +23,7 @@ export default function UnRead(){
                     unRead.length > 0 ? (
                         unRead.map((msj)=>{
                             return(
-                                <Message key={msj._id} user={user} id={msj._id} date={msj.createdAt} content={msj.message.messageText} postedBy={msj.postedByUser} readBy={msj.readByRecipients} />
+                                <Message key={msj._id} user={user} id={msj._id} date={msj.createdAt} content={msj.message.messageText} postedBy={msj.postedByUser} />
                             )
                         })
                     ):('')
