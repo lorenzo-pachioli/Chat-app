@@ -1,15 +1,14 @@
 .comlpaints-container{
     width: 100%;
-    height: 100%;
+    height: 50%;
     box-sizing: border-box;
     display: flex;
     flex-direction:column;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 30px;
+    border-bottom: 2px solid #F0F0F0;
 }
 .comlpaints-container h1{
-    margin-top: 30px;
     color: #858585;
     font-weight: 700;
 }
@@ -23,7 +22,7 @@
     border-style: none;
     box-sizing: border-box;
     width: 70%;
-    height: 15%;
+    height: 150px;
     padding: 2%;
     background-color: #FFF9FE;
     border-radius: 20px;
@@ -34,42 +33,56 @@
     outline: none;
 }
 
-.complaints-chats{
+.complaints{
     width: 100%;
     height: 190px;
     display: flex;
     flex-direction:row;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
-    padding: 10px;
     gap: 30px;
     overflow-x: scroll;
-    border-top: 2px solid #F0F0F0;
-    border-bottom: 2px solid #F0F0F0;
 }
 
-.chat-card{
+.complaint-card{
     height: 150px;
     width: 120px;
     display: flex;
     flex-direction:column;
-    justify-content: space-evenly;
+    justify-content:flex-start;
     align-items: center;
+    gap:10px;
     background-color: #FFF9FE;
     border-radius: 20px;
     border: 2px solid #F0F0F0;
 }
+.complaint-card .date{
+    font-weight: 400;
+    font-size: 15px;
+    color: #858585;
+}
 
-.chat-card h3{
+.complaint-card h3{
     color: #858585;
     font-weight: 700;
 }
 
+.complaint-card .description{
+    width: 90%;
+    height: 50%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
 .comlpaints-container button{
     border-style: none;
-    width: 50%;
-    height: 35px;
+    width: 20%;
+    height: 25px;
     border-radius: 20px;
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
     color: white;

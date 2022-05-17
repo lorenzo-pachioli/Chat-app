@@ -64,6 +64,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
+}
+
+.msj-number p{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 10px;
     font-weight: 700;
     border-radius: 50%;

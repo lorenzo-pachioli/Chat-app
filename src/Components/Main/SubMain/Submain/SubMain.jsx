@@ -12,7 +12,7 @@ export default function SubMain(){
     useEffect(() => {
         
         async function getConversations(){
-            axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
+            await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
             .then(response => setChats(response.data.conversation))
             .catch(error => console.error(error))
         }

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import { Link, Navigate} from "react-router-dom";
 import logout from '../../../assets/logout.svg';
@@ -8,10 +8,24 @@ import './ControlPanel.css';
 
 export default function ControlPanel(){
 
-    const {logOut, setLogOut} = useContext(AppContext);
+    const {user, logOut, setLogOut, chats, unReadNum} = useContext(AppContext);
 
     const handleLogOut = ()=>{
         setLogOut(true)
+    }
+    const UnRead = ()=>{
+        if(unReadNum.length > 0){
+            const unread = unReadNum.filter((chat)=> chat.unRead > 0 );
+            if(unread.length > 0){
+                return (
+                    <div>
+                        <p className='sub-num'>{ unread.length}</p>
+                    </div>
+                )
+            }
+            
+        }
+        
     }
 
     return(
@@ -24,7 +38,7 @@ export default function ControlPanel(){
                     </div>
                     
                     <div className='num'>
-                        <p>19</p>
+                        <UnRead />
                     </div>
                 </Link>
                 <Link to='/chatapp/complaints' className='chat-message'>

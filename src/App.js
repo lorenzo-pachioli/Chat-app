@@ -16,7 +16,7 @@ import './App.css';
 
 function App() {
 
-  const {user, setUser, token, setToken, setUserList, setRedirect} = useContext(AppContext);
+  const {user, chats, setUser, token, setToken, setUserList, setRedirect, setUnReadNum} = useContext(AppContext);
   
 //first set user from the page log in
 
@@ -86,6 +86,27 @@ function App() {
     }
     
   }, [user, token]); */
+
+  //All un read messages amount
+
+  useEffect(() => {
+
+    const unRead = chats.map((chat)=>{
+      const unreadMsj = chat.messages.filter((msj)=>{
+        if(msj.readByRecipients.length <= 1){
+            if(msj.readByRecipients.some((u)=> u.readByUserId !== user._id)){
+                return true;
+            }else{return false}
+        }else{return false}
+        }
+      )
+      return {chatId:chat._id, unRead: unreadMsj.length}
+    })
+  console.log('chatapp', chats)
+  console.log('unread', unRead)
+  setUnReadNum(unRead)
+
+  },[chats, user, setUnReadNum ]);
 
   
 

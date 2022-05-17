@@ -1,7 +1,83 @@
-.main{
-    width: 100vw;
-    height: 90vh;
+.delete-container{
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     display: flex;
-    flex-direction: row;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+}
+.delete-container h1{
+    margin-top: 30px;
+    color: #858585;
+    font-weight: 700;
+}
+
+.delete-container p{
+    color: #858585;
+    font-weight: 700;
+}
+
+.delete-container textarea{
+    border-style: none;
+    box-sizing: border-box;
+    width: 70%;
+    height: 15%;
+    padding: 2%;
+    background-color: #FFF9FE;
+    border-radius: 20px;
+    border: 2px solid #F0F0F0;
+    color: #858585;
+    font-weight: 700;
+    resize: none;
+    outline: none;
+}
+
+.delete-chats{
+    width: 100%;
+    height: 190px;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 30px;
+    overflow-x: scroll;
+    border-top: 2px solid #F0F0F0;
+    border-bottom: 2px solid #F0F0F0;
+}
+
+.chat-card{
+    height: 150px;
+    width: 120px;
+    display: flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #FFF9FE;
+    border-radius: 20px;
+    border: 2px solid #F0F0F0;
+}
+.chat-card:hover{
+    filter:brightness(80%);
+}
+
+.chat-card h3{
+    color: #858585;
+    font-weight: 700;
+}
+
+.delete-container button{
+    border-style: none;
+    width: 50%;
+    height: 35px;
+    border-radius: 20px;
+    background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    color: white;
+    font-weight: 600;
+}
+.delete-container button:hover{
+    width: 51%;
 }

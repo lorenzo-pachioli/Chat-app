@@ -12,6 +12,7 @@ export default function AppProvider({ children }) {
     const[loading, setLoading] = useState(false);
     const[logOut, setLogOut] = useState(false);
     const [newChat, setNewChat] = useState(false)
+    const[unReadNum, setUnReadNum] = useState([])
 
     return (
         <AppContext.Provider
@@ -33,7 +34,9 @@ export default function AppProvider({ children }) {
               logOut, 
               setLogOut, 
               newChat, 
-              setNewChat
+              setNewChat, 
+              unReadNum, 
+              setUnReadNum
           }}
         >
           {children}

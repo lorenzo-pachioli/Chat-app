@@ -6,7 +6,7 @@ import './UserCard.css';
 
 export default function UserCard( {id, status, img, userMessages, chatId, firstName, lastName}){
 
-    const {user, token, setMessages, setChats, userList, newChat, setNewChat, chats, messages} = useContext(AppContext);
+    const {user, token, setMessages, setChats, userList, newChat, setNewChat, chats, messages, unReadNum} = useContext(AppContext);
 
     const dateFrom =(date)=>{
         return new Date(date).getTime()
@@ -54,16 +54,25 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
                 })
                 .then(response => console.log('read', response))
                 .catch(error=> console.error(error))
+
+                await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
+                .then(response => setChats(response.data.conversation))
+                .catch(error => console.error(error))
                 
             }
         }
         
         
     }
-
-    const handleDelete = ()=>{
-        console.log('borrar')
+    const UnRead = ()=>{
+        if(id !== user._id){
+            if(unReadNum.length > 0){
+                const unread = unReadNum.find((chat)=> chat.chatId === chatId );
+                return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+            }
+        }
     }
+    
 
     return(
         <div className='userCard' onClick={handleMessages}>
@@ -77,9 +86,9 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
                 </div>
             </div>
            
-            <p className='msj-number' style={{background:`${userMessages > 0?(background):('white')}`}} >
-                {id === user._id ? (''):(userMessages.length)}
-            </p>
+            <div className='msj-number'  >
+                <UnRead />
+            </div>
             
             
         </div>

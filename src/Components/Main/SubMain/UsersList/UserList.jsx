@@ -50,7 +50,7 @@ export default function UserList(){
                 }
             </div>
             <div className='new-chat' >
-                <button onClick={()=> setNewChat(true)}>New chat</button>
+                <button onClick={()=> setNewChat(!newChat)}>{newChat ? ('Back'):('New chat')}</button>
             </div>
             
         </div>
