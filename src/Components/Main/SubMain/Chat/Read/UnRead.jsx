@@ -29,7 +29,7 @@ export default function UnRead(){
                     ):('')
                     }
                     <div className='unread'>
-                        <p>Unread</p>
+                        <p>UNREAD</p>
                         <hr />
                     </div>
                 </div>

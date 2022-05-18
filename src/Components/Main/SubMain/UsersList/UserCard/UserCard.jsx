@@ -1,14 +1,15 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import axios from 'axios';
+import userPhoto from '../../../../../assets/user.png'
 import './UserCard.css';
 
-export default function UserCard( {id, status, img, userMessages, chatId, firstName, lastName}){
+export default function UserCard( {id, status, img, userMessages, chatId, photo}){
 
-    const {user, token, setMessages, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
+    const {user, token,messages, setMessages, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
 
-    const dateFrom =(date)=>{ new Date(date).getTime()
-    }
+    const dateFrom =(date)=>new Date(date).getTime()
+    
 
     const background = 'linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%)';
     const name =()=>{
@@ -64,9 +65,12 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
         if(id !== user._id){
             if(unReadNum.length > 0){
                 const unread = unReadNum.find((chat)=> chat.chatId === chatId );
-                if(unread.unRead > 0){
-                    return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+                if(unread){
+                    if(unread.unRead > 0){
+                        return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+                    }
                 }
+                
                 
             }
         }
@@ -76,11 +80,18 @@ export default function UserCard( {id, status, img, userMessages, chatId, firstN
     return(
         <div className='userCard' onClick={handleMessages}>
             <div className='sub-userCard'>
-                <div className='profile-img' ><span className='dot' style={{backgroundColor:`${status === 'online'?('#8CEE5D'):('#DEDEDE')}`}} /></div>
+                <div className='profile-img' >
+                    {
+                        photo ? (
+                            <img src={photo} className='img' alt='' />
+                        ):(
+                            <img src={userPhoto} className='img' alt='' />
+                        )
+                    }
+                    
+                </div>
                 <div className='name'>
                     {userList ? (userList.length > 0 ? (name()):('Loading...')):('Loading...')}
-                    
-                    <p>{status}</p>
                     
                 </div>
             </div>

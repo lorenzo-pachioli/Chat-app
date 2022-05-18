@@ -20,7 +20,9 @@ export default function ControlPanel(){
         setMessages([])
         setLoading(false)
         setUnReadNum([])
-        
+        sessionStorage.setItem('user', ``);
+        sessionStorage.setItem('token', ``);
+        sessionStorage.setItem('email', ``);
         setTimeout(() => {
             setLogOut(false)
         }, 1000);

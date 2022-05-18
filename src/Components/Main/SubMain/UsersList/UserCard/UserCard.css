@@ -24,11 +24,13 @@
 .profile-img{
     height: 30px;
     width: 30px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
     border-radius: 50%;
     background-color: #858585;
+}
+.profile-img .img{
+    height: 100%;
+    width: 100%;
+    
 }
 .dot{
     height: 10px;
@@ -38,7 +40,7 @@
 }
  
 .name{
-    width: 70%;
+    width: 80%;
     height: 50%;
     display: flex;
     flex-direction: column;

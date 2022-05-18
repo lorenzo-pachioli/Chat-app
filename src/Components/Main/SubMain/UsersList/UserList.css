@@ -36,7 +36,7 @@
     align-items: center;
 }
 
-.user-list button{
+.new-chat button{
     border-style: none;
     width: 50%;
     height: 35px;
@@ -44,4 +44,8 @@
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
     color: white;
     font-weight: 600;
+}
+
+.new-chat button:hover{
+    width: 52%;
 }

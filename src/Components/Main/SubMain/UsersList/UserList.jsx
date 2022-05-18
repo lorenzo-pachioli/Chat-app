@@ -33,7 +33,7 @@ export default function UserList(){
                 {newChat ? (
                     userList.length > 0 ? (
                         userList.map((u)=> {
-                          return u._id === user._id ? (false):( <UserCard key={u._id} id={u._id} userMessages={[]}  />)
+                          return u._id === user._id ? (false):( <UserCard key={u._id} id={u._id} userMessages={[]} photo={u.img} />)
                         })
                     ):('')
                     
@@ -42,7 +42,7 @@ export default function UserList(){
                         chats.map((u)=> {
                             
                             return(
-                                <UserCard key={u._id} id={findUserId(u.userIds)} chatId={u._id} status={u.status} img={u.img} userMessages={u.messages} />
+                                <UserCard key={u._id} id={findUserId(u.userIds)} chatId={u._id} status={u.status} img={u.img} userMessages={u.messages} photo={u.img} />
                             )
                         })
                     ):('')

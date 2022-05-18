@@ -16,7 +16,7 @@ export default function SignIn() {
   })
 
   const handleSignIn = async ()=>{
-    /* let tempToken = {}; */
+    
 
     await axios.post('https://novateva-codetest.herokuapp.com/users', {
       'email' : `${form.email}`,
@@ -25,10 +25,9 @@ export default function SignIn() {
       "lastName": `${form.lastName}`,
       "type": "consumer" ,
     })
-    .then(response => response.status === 200 ? (console.log(response)):(''))
+    .then(response => response.status === 200 ? (setRedirectLogIn(true)):(''))
     .catch(error=> console.error(error))
 
-    setRedirectLogIn(true)
     setTimeout(() => {
       setRedirectLogIn(false)
     });

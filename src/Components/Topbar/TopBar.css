@@ -37,7 +37,9 @@
 }
 
 .user-search input{
+    width: 80%;
     border-style: none;
+    outline: none;
 }
 
 .user{
@@ -57,7 +59,8 @@
     justify-content: flex-start;
     align-items: center;
     gap:10px;
-    border: 1px solid black;
+    color: #858585;
+    font-weight: 700;
 }
 
 .user img{
@@ -72,7 +75,6 @@
     align-items: flex-start;
     border-style: none;
     background-color: white;
-    border: 1px solid black;
 }
 .user button img{
     height: 25px;

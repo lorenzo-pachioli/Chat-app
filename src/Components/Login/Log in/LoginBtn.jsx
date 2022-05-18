@@ -32,7 +32,6 @@ export default function LoginBtn() {
       'password' : `${form.password}`
     })
     .then(response => response.status === 200 ? (tempToken = {...token,email:form.email, auth:response.data.authorization}):(setError(true)))
-    .then(data=>console.log(data))
     .catch(e => setError(true))
     
     if(tempToken.auth && tempToken.email){
@@ -42,7 +41,6 @@ export default function LoginBtn() {
     }
     if(token.auth){
       setRedirect(true)
-      console.log('1', redirect)
     }
     
   }

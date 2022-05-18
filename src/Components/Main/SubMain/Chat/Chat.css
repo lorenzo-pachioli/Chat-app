@@ -1,6 +1,10 @@
-.chat{
+.chat-container{
     height: 100%;
     width: 75%;
+}
+.chat{
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -29,12 +33,15 @@
     margin-top: 10px;
 }
 .unread p{
-    width: 10%;
+    width: fit-content ;
+    padding: 0 5px;
     background: linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
 }
 .unread hr{
     width: 90%;
@@ -65,10 +72,11 @@
 }
 
 .input-message textarea{
-    width: 80%;
+    width: 70%;
     height: 100%;
     padding-left: 12px;
     border-style: none;
+    border-radius: 20px;
     line-height: 25px;
     resize: none;
     outline: none;
@@ -84,4 +92,32 @@
     color: white;
     font-weight: 700;
     letter-spacing: 0.1rem;
+}
+.input-message .report{
+    height:40px;
+    width: 70px;
+    top:12.5%;
+    right: 0px;
+    margin-right: 20px;
+    border-radius: 10px;
+    position: absolute;
+}
+.input-message .report:hover{
+    
+    width: 75px;
+}
+.input-message button:hover{
+    width:17%;
+}
+
+.no-chat{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #858585;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+    filter:brightness(130%);
 }
