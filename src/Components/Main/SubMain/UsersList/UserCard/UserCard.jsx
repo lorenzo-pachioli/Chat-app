@@ -1,6 +1,7 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import axios from 'axios';
+import io from 'socket.io-client';
 import userPhoto from '../../../../../assets/user.png'
 import './UserCard.css';
 
@@ -41,6 +42,9 @@ export default function UserCard( {id, img, chatId, photo}){
             .then(response => setChats(response.data.conversation))
         }else{
             if(id !== user._id){
+                let socket = (chatRoomId)=>{
+                    return io(`ws://novateva-codetest.herokuapp.com/?roomId=${chatRoomId}`)
+                }
                 await userMessages.messages.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
                 
                 setMessages({
@@ -53,6 +57,7 @@ export default function UserCard( {id, img, chatId, photo}){
                     }
                 })
                 .catch(error=> console.error(error))
+                socket(chatId).emit('new message', 'new message')
                 
             }
         }

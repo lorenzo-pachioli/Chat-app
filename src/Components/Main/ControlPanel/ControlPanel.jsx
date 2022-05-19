@@ -12,6 +12,9 @@ export default function ControlPanel(){
     const {logOut, messages, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setMessages, setLoading, setUnReadNum} = useContext(AppContext);
 
     const handleLogOut = ()=>{
+        let socket = (chatRoomId)=>{
+            return io.disconnect(`ws://novateva-codetest.herokuapp.com/?roomId=${chatRoomId}`)
+        }
         setLogOut(true)
         setUser({})
         setUserList({})
@@ -21,9 +24,7 @@ export default function ControlPanel(){
         setMessages([])
         setLoading(false)
         setUnReadNum([])
-        if(messages.chatId){
-            io.disconect(`ws://novateva-codetest.herokuapp.com/?roomId=${messages.chatId}`);
-        }
+        socket(messages.chatId);
         sessionStorage.setItem('user', ``);
         sessionStorage.setItem('token', ``);
         sessionStorage.setItem('email', ``);

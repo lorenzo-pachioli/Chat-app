@@ -57,7 +57,7 @@ export default function Delete(){
                         {chats.length > 0 ? (
                             chats.map((chat)=>{
                                 return(
-                                    <div className='chat-card' key={chat._id} onClick={()=>setDelete(chat._id)} style={deleteChat ? (deleteChat === chat._id ? ({filter:'brightness(80%)'}):({filter:'brightness(100%)'})):({filter:'brightness(100%)'})}>
+                                    <div className='chat-card' key={chat._id} onClick={()=>setDelete(chat._id)} style={deleteChat ? (deleteChat === chat._id ? ({filter:'brightness(80%)'}):({filter:'brightness(100%)'})):({})}>
                                         <img src={userPhoto} alt='' />
                                         <h3>{findUserName(chat.userIds)}</h3>
                                     </div>

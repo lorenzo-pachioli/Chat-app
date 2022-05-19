@@ -1,14 +1,15 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import Message from '../Message/Message';
+import axios from 'axios';
 import '../Chat.css';
 
 export default function Read(){
-    const {user, chats, messages} = useContext(AppContext);
+    const {user,token, chats, messages} = useContext(AppContext);
     const dateFrom =(date)=>new Date(date).getTime()
     let read = [];
 
-    if(chats){
+    if(chats && token.auth){
         const chat = chats.find((chat)=> chat._id === messages.chatId);
         
         if(chat._id){
@@ -23,6 +24,14 @@ export default function Read(){
                 }
               }
             )
+            
+            axios.put(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/mark-read`,{},{
+                headers:{
+                    'Authorization' : `Bearer ${token.auth}`
+                }
+            })
+            .catch(error=> console.error(error))
+            
         }
         
        return (

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import { AppContext } from '../../../../Context/AppContext';
 import Chat from '../Chat/Chat';
 import UserList from '../UsersList/UserList';
@@ -10,13 +10,13 @@ import './Submain.css';
 export default function SubMain(){
 
     const { token, setChats, messages } = useContext(AppContext);
-
+    
+    
+    
 
     useEffect(() => {
-        
-        let socket = '';
-        if(messages.chatId){
-            socket = io(`ws://novateva-codetest.herokuapp.com/?roomId=${messages.chatId}`)
+        let socket = (chatRoomId)=>{
+            return io(`ws://novateva-codetest.herokuapp.com/?roomId=${chatRoomId}`)
         }
         
         const getConversations = async () =>{
@@ -28,21 +28,26 @@ export default function SubMain(){
 
 
         if(token.auth){
-            getConversations()
+           
+            setInterval(() => {
+                getConversations() 
+            }, 2000);
         }
 
-        if(socket.length > 0){
-            socket.once('new message', (data)=> {
+        if(messages.chatId){
+            socket(messages.chatId).once('new message', ()=> {
                 if(token.auth){
                     getConversations();
                 }
             });
-    
-            socket.on("connect_error", (err) => {
+        
+            socket(messages.chatId).on("connect_error", (err) => {
                 console.log(`connect_error due to ${err}`);
             });
+        }    
+        
 
-        }
+        
         
         
     }, [token, setChats,messages]);

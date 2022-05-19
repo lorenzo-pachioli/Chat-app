@@ -10,6 +10,7 @@ import axios from 'axios';
 export default function Chat(){
     const {token, messages,  setMessages, setUrl} = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
+    const [loadingComplaint, setLoadingCompl] = useState(false)
     const [redirectComplaint, setRedirectCompl] = useState(false)
     
     
@@ -25,6 +26,7 @@ export default function Chat(){
         let temMessage =  messages.userMessages;
         
         if(messages.chatId){
+            
             await axios.post(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/message`,{
                 "messageText": `${sendMsj}`
             },{
@@ -48,6 +50,7 @@ export default function Chat(){
     }
 
     const handleComplaints = async ()=>{
+        setLoadingCompl(true)
         
         const element = document.getElementById('conversationContainer')
         const canvas = await html2canvas(element);
@@ -56,6 +59,7 @@ export default function Chat(){
         if(image){
             setRedirectCompl(true)
             setTimeout(() => {
+                setLoadingCompl(false)
                 setRedirectCompl(false)
             }, 500);
         }
@@ -74,7 +78,7 @@ export default function Chat(){
                             <Read />
                         </div>
                     <div className='input-message'>
-                        <button onClick={handleComplaints} className='report'>Report chat</button>
+                        <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
                         <div>
                             <textarea  
                             value={sendMsj}
