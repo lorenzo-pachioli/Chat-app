@@ -1,6 +1,7 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import { Link, Navigate} from "react-router-dom";
+import io from 'socket.io-client';
 import logout from '../../../assets/logout.svg';
 import trasCan from '../../../assets/trash-can-white.svg';
 import chat from '../../../assets/chat-bubble.svg';
@@ -20,6 +21,7 @@ export default function ControlPanel(){
         setMessages([])
         setLoading(false)
         setUnReadNum([])
+        io.disconect(`ws://novateva-codetest.herokuapp.com/?roomId=604b1ea216944d278759854e80fd4775`);
         sessionStorage.setItem('user', ``);
         sessionStorage.setItem('token', ``);
         sessionStorage.setItem('email', ``);

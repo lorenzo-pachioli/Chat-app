@@ -4,18 +4,25 @@ import Message from '../Message/Message';
 import '../Chat.css';
 
 export default function UnRead(){
-    const {user,  messages} = useContext(AppContext);
+    const {user, chats,  messages} = useContext(AppContext);
+    const dateFrom =(date)=>new Date(date).getTime()
+    let unRead = [];
     
         if(messages.userMessages){
+            const chat = chats.find((chat)=> chat._id === messages.chatId);
 
-            const unRead = messages.userMessages.filter((msj)=>{
-                if(msj.readByRecipients.length <= 1){
-                    if(msj.readByRecipients.some((u)=> u.readByUserId === user._id)){
-                        return true;
+            if(chat._id){
+                chat.messages.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
+                unRead = chat.messages.filter((msj)=>{
+                    if(msj.readByRecipients.length <= 1){
+                        if(msj.readByRecipients.some((u)=> u.readByUserId === user._id)){
+                            return true;
+                        }else{return false}
                     }else{return false}
-                }else{return false}
-                }
-            )
+                    }
+                )
+
+            }
             return (
                 <div className='conversation' style={unRead.length > 0? ({display: 'flex'}):({display:'none'})}>
                     

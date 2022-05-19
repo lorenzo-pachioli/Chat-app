@@ -1,14 +1,16 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import axios from 'axios';
 import userPhoto from '../../../../../assets/user.png'
 import './UserCard.css';
 
-export default function UserCard( {id, status, img, userMessages, chatId, photo}){
+export default function UserCard( {id, status, img, chatId, photo}){
 
-    const {user, token,messages, setMessages, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
-
+    const {user, token, setMessages,chats, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
+    
     const dateFrom =(date)=>new Date(date).getTime()
+
+    const userMessages = chats.find((chat)=> chat._id === chatId);
     
 
     const background = 'linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%)';
@@ -39,11 +41,11 @@ export default function UserCard( {id, status, img, userMessages, chatId, photo}
             .then(response => setChats(response.data.conversation))
         }else{
             if(id !== user._id){
-                await userMessages.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
+                await userMessages.messages.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
                 
                 setMessages({
                     chatId: chatId, 
-                    userMessages: userMessages
+                    userMessages: userMessages.messages
                 })
                 await axios.put(`https://novateva-codetest.herokuapp.com/room/${chatId}/mark-read`,{},{
                     headers:{
@@ -52,9 +54,9 @@ export default function UserCard( {id, status, img, userMessages, chatId, photo}
                 })
                 .catch(error=> console.error(error))
 
-                await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
+                /* await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
                 .then(response => setChats(response.data.conversation))
-                .catch(error => console.error(error))
+                .catch(error => console.error(error)) */
                 
             }
         }
