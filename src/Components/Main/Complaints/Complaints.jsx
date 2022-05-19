@@ -47,9 +47,15 @@ export default function Complaints(){
                         onChange={(e)=> setComplaint(e.target.value)}
                         maxLength="200"
                         placeholder='Tell us about the problem' />
+
+                    {url ? (
+                        <button onClick={()=>setUrl('')} className='cancel'>Cancel</button>
+                    ):(<div className='noButton'></div>)}
+
                     {complaintError ? (<p className='complaintError'>Couldn't send report</p>):('')}
+
                     {url && complaint.length > 0 ? (
-                        <button onClick={handleComplaints}>Send</button>
+                        <button onClick={handleComplaints} className='send' >Send</button>
                     ):(<div className='noButton'></div>)}
                     
                 </div>

@@ -19,3 +19,7 @@
     color: white;
     font-weight: 700;
 }
+
+.link:hover{
+    width: 51%;
+}
