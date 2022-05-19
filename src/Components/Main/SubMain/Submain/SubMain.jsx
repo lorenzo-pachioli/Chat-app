@@ -41,9 +41,9 @@ export default function SubMain(){
                 }
             });
         
-            socket(messages.chatId).on("connect_error", (err) => {
+           /*  socket(messages.chatId).on("connect_error", (err) => {
                 console.log(`connect_error due to ${err}`);
-            });
+            }); */
         }    
         
 
