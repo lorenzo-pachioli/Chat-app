@@ -7,7 +7,7 @@ export default function AppProvider({ children }) {
     const[userList, setUserList] = useState({})
     const[token, setToken] = useState({})
     const[chats, setChats] = useState([])
-    const[messages, setMessages] = useState([])
+    const[messages, setMessages] = useState({})
     const[redirect, setRedirect] = useState(false);
     const[loading, setLoading] = useState(false);
     const[logOut, setLogOut] = useState(false);

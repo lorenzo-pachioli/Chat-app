@@ -6,7 +6,7 @@ import './Delete.css';
 import axios from 'axios';
 
 export default function Delete(){
-    const {user, token, chats, setChats, userList} = useContext(AppContext);
+    const {user, token, chats, setChats, userList, setMessages} = useContext(AppContext);
     const [deleteChat, setDelete] = useState('')
 
     const findUserName = (userIds)=>{
@@ -38,6 +38,7 @@ export default function Delete(){
             .catch(error => console.error(error))
 
             setChats(chats.filter((chat)=> chat._id !== deleteChat))
+            setMessages({})
             setDelete('')
         }
 
