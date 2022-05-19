@@ -9,7 +9,7 @@ import './ControlPanel.css';
 
 export default function ControlPanel(){
 
-    const {logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setMessages, setLoading, setUnReadNum} = useContext(AppContext);
+    const {logOut, messages, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setMessages, setLoading, setUnReadNum} = useContext(AppContext);
 
     const handleLogOut = ()=>{
         setLogOut(true)
@@ -21,7 +21,9 @@ export default function ControlPanel(){
         setMessages([])
         setLoading(false)
         setUnReadNum([])
-        io.disconect(`ws://novateva-codetest.herokuapp.com/?roomId=604b1ea216944d278759854e80fd4775`);
+        if(messages.chatId){
+            io.disconect(`ws://novateva-codetest.herokuapp.com/?roomId=${messages.chatId}`);
+        }
         sessionStorage.setItem('user', ``);
         sessionStorage.setItem('token', ``);
         sessionStorage.setItem('email', ``);

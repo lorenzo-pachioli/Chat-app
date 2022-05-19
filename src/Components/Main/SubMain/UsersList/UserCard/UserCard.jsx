@@ -4,7 +4,7 @@ import axios from 'axios';
 import userPhoto from '../../../../../assets/user.png'
 import './UserCard.css';
 
-export default function UserCard( {id, status, img, chatId, photo}){
+export default function UserCard( {id, img, chatId, photo}){
 
     const {user, token, setMessages,chats, setChats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
     
@@ -53,10 +53,6 @@ export default function UserCard( {id, status, img, chatId, photo}){
                     }
                 })
                 .catch(error=> console.error(error))
-
-                /* await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
-                .then(response => setChats(response.data.conversation))
-                .catch(error => console.error(error)) */
                 
             }
         }

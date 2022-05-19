@@ -8,14 +8,14 @@ import './Chat.css';
 import axios from 'axios';
 
 export default function Chat(){
-    const {token, messages, chats, setMessages, setUrl} = useContext(AppContext);
+    const {token, messages,  setMessages, setUrl} = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
     const [redirectComplaint, setRedirectCompl] = useState(false)
     
     
 
     const dateFrom =(date)=> new Date(date).getTime();
-    const url = 'https://novateva-codetest.herokuapp.com/?roomId=604b1ea216944d278759854e80fd4775'
+    
 
       
     
@@ -24,11 +24,7 @@ export default function Chat(){
     const handleSend = async ()=> {
         let temMessage =  messages.userMessages;
         
-        /* socket.emit("message", 'message'); */
-        
         if(messages.chatId){
-            
-            
             await axios.post(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/message`,{
                 "messageText": `${sendMsj}`
             },{
@@ -39,7 +35,6 @@ export default function Chat(){
             .then(response =>temMessage.push(response.data.post))
             .catch(error => console.log('error:', error))
 
-            
             
             await temMessage.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
             

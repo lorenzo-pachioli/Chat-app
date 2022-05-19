@@ -14,51 +14,36 @@ export default function SubMain(){
 
     useEffect(() => {
         
-        const socket = io(`ws://novateva-codetest.herokuapp.com/?roomId=604b1ea216944d278759854e80fd4775`)
-        socket.on("connect", () => {
-            console.log(socket.connected);
-        });
+        let socket = '';
+        if(messages.chatId){
+            socket = io(`ws://novateva-codetest.herokuapp.com/?roomId=${messages.chatId}`)
+        }
         
-            
-        
-
         const getConversations = async () =>{
-            
             
             await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
             .then(response => setChats(response.data.conversation))
             .catch(error => console.error(error))
-            
-            if(messages.chatId){
-                await axios.put(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/mark-read`,{},{
-                 headers:{
-                    'Authorization' : `Bearer ${token.auth}`
-                }
-                })
-                .then(response=> response.status === 200 ? (socket.emit('new message', 'new message')):(''))
-                .catch(error=> console.error(error))
-            }
-            
         }
 
 
         if(token.auth){
             getConversations()
         }
-        socket.once('new message', (data)=> {
-            if(token.auth){
-                getConversations();
-            }
-            
-            
-        });
 
-        socket.onAny(data => console.log(data))
+        if(socket.length > 0){
+            socket.once('new message', (data)=> {
+                if(token.auth){
+                    getConversations();
+                }
+            });
+    
+            socket.on("connect_error", (err) => {
+                console.log(`connect_error due to ${err}`);
+            });
+
+        }
         
-
-        socket.on("connect_error", (err) => {
-            console.log(`connect_error due to ${err}`);
-        });
         
     }, [token, setChats,messages]);
 
