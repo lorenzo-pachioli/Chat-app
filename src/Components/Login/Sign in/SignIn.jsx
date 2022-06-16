@@ -1,11 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { Navigate} from "react-router-dom";
-import axios from "axios";
-
 import '../Log in/LoginBtn.css';
 
-
-export default function SignIn() {
+export default function SignIn({socket}) {
 
   const [redirectLogIn, setRedirectLogIn] = useState(false);
   const [form, setForm] = useState({
@@ -16,22 +13,33 @@ export default function SignIn() {
   })
 
   const handleSignIn = async ()=>{
-    
+    try{
+      const newUser = {
+        email: `${form.email}`,
+        password: `${form.password}`,
+        firstName: `${form.name}`,
+        lastName: `${form.lastName}`
+      }
+      await socket.emit("sign_up", newUser)
+    }catch(err){
+      console.log(`Error signing up, error: ${err}`)
+    }
+  }
 
-    await axios.post('https://novateva-codetest.herokuapp.com/users', {
-      'email' : `${form.email}`,
-      'password' : `${form.password}`,
-      "firstName": `${form.name}`,
-      "lastName": `${form.lastName}`,
-      "type": "consumer" ,
-    })
-    .then(response => response.status === 200 ? (setRedirectLogIn(true)):(''))
-    .catch(error=> console.error(error))
-
+  useEffect(() => {
+    const redirect = async ()=>{
+      await socket.on("sign_up_res", data =>{
+        if(!data.status){
+          return console.log(`${data.msg}: ${data.error}`)
+        }
+        setRedirectLogIn(true)
+      })
+    }
+    redirect();
     setTimeout(() => {
       setRedirectLogIn(false)
     });
-  }
+  }, [socket]);
 
   return (
     <div className="LoginBtn" value={form} >

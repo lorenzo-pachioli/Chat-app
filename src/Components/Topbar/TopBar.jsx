@@ -13,16 +13,11 @@ export default function TopBar(){
         if(unReadNum.length > 0){
             const unread = unReadNum.map((chat)=> chat.unRead );
             const reducer = unread.reduce((a, b)=> a + b)
-            
             if(reducer > 0){
                 return<span className='dot'>{ reducer}</span>
             }
-            
         }
-        
     }
-
-    
 
     return(
         <div className='top-bar'>
@@ -31,13 +26,10 @@ export default function TopBar(){
                     <img src={searchIcon} alt=''  />
                     <input type='text' placeholder='User search' />
                 </div>
-                
             </div>
             <div className='user'>
-                
                 <div>
-                    {
-                        user ? (
+                    {user ? (
                             user.img ? (
                                 <img src={user.img} className='img' alt='' />
                             ):(
@@ -49,12 +41,10 @@ export default function TopBar(){
                     }
                     <p>{user ? (`${user.firstName + ' ' + user.lastName}`):('no user')}</p>
                 </div>
-                
                 <button>
                     <img src={bell} alt='' />
                     <UnRead />
                 </button>
-                
             </div>
         </div>
     )

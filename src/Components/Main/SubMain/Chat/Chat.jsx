@@ -1,53 +1,53 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
 import { AppContext } from '../../../../Context/AppContext';
 import Read from './Read/Read';
 import UnRead from './Read/UnRead';
 import html2canvas from "html2canvas";
 import './Chat.css';
-import axios from 'axios';
 
-export default function Chat(){
-    const {token, messages,  setMessages, setUrl} = useContext(AppContext);
+export default function Chat({socket}){
+    const {user, room,  setRoom, setUrl} = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
     const [loadingComplaint, setLoadingCompl] = useState(false)
     const [redirectComplaint, setRedirectCompl] = useState(false)
     
-    
 
     const dateFrom =(date)=> new Date(date).getTime();
     
-
-      
-    
-
-
     const handleSend = async ()=> {
-        let temMessage =  messages.userMessages;
-        
-        if(messages.chatId){
-            
-            await axios.post(`https://novateva-codetest.herokuapp.com/room/${messages.chatId}/message`,{
-                "messageText": `${sendMsj}`
-            },{
-                headers:{
-                    'Authorization' : `Bearer ${token.auth}`
-                }
-            })
-            .then(response =>temMessage.push(response.data.post))
-            .catch(error => console.log('error:', error))
-
-            
-            await temMessage.sort((a, b)=>{return dateFrom(a.createdAt) < dateFrom(b.createdAt) })
-            
-            setMessages({
-                ...messages, 
-                userMessages: temMessage
-            })
-            
+        if(room._id){
+            try{
+                await socket.to(room._id).emit("send_msg", {
+                    message: sendMsj,
+                    room: room._id,
+                    user: [user._id]
+                })
+            }catch(err){
+                console.log('error sending msg', err)
+            }
         }
         setSendMsj('')
     }
+
+    
+    socket.once("send_msg_res",async data=>{
+        if(!data.status){
+            return console.log(data.msg,':',data.error)
+        }
+        if(room.messages.some((msg)=>msg._id === data.newMessage._id)){
+            return '';
+        }
+
+        const msgOrdered = await data.room.messages.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
+            
+        setRoom({
+            ...room, 
+            messages: msgOrdered
+        })
+    })
+    
+    
 
     const handleComplaints = async ()=>{
         setLoadingCompl(true)
@@ -65,13 +65,9 @@ export default function Chat(){
         }
     }
 
-
-
-    
-    
     return(
         <div className='chat-container' >
-            {messages.chatId ? (
+            {room.chatId ? (
                 <div className='chat'>
                         <div className='conversationContainer' id='conversationContainer'>
                             <UnRead />

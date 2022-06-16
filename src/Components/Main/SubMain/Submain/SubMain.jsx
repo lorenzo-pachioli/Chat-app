@@ -1,62 +1,30 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { AppContext } from '../../../../Context/AppContext';
 import Chat from '../Chat/Chat';
 import UserList from '../UsersList/UserList';
-import axios from 'axios';
-import io from 'socket.io-client';
 import './Submain.css';
 
+export default function SubMain({socket}){
 
-export default function SubMain(){
-
-    const { token, setChats, messages } = useContext(AppContext);
+    const { chats, setChats } = useContext(AppContext);
     
-    
-    
-
-    useEffect(() => {
-        let socket = (chatRoomId)=>{
-            return io(`ws://novateva-codetest.herokuapp.com/?roomId=${chatRoomId}`)
+    socket.once("send_msg_res", data=>{
+        if(!data.status){
+            return console.log(data.msg,':', data.error)
         }
-        
-        const getConversations = async () =>{
-            
-            await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
-            .then(response => setChats(response.data.conversation))
-            .catch(error => console.error(error))
+        console.log(data.newMessage)
+        const checkMessage = chats.some((chat)=> chat._id===data.room._id ? (chat.some(msg=>msg._id === data.newMessage._id)):(false))
+        if(checkMessage){
+            return '';
         }
-
-
-        if(token.auth){
-           
-            setInterval(() => {
-                getConversations() 
-            }, 2000);
-        }
-
-        if(messages.chatId){
-            socket(messages.chatId).once('new message', ()=> {
-                if(token.auth){
-                    getConversations();
-                }
-            });
-        
-           /*  socket(messages.chatId).on("connect_error", (err) => {
-                console.log(`connect_error due to ${err}`);
-            }); */
-        }    
-        
-
-        
-        
-        
-    }, [token, setChats,messages]);
-
+        setChats(chats.map((chat)=> chat._id === data.room._id ? (data.room):(chat)))
+    })
+     
     return(
         <div className='sub-main'>
             <div className='sub-main-container'>
                 <UserList />
-                <Chat />
+                <Chat socket={socket}/>
             </div>
             
             

@@ -7,26 +7,22 @@ import trasCan from '../../../assets/trash-can-white.svg';
 import chat from '../../../assets/chat-bubble.svg';
 import './ControlPanel.css';
 
-export default function ControlPanel(){
+export default function ControlPanel({socket}){
 
-    const {logOut, messages, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setMessages, setLoading, setUnReadNum} = useContext(AppContext);
+    const {logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setRoom, setLoading, setUnReadNum} = useContext(AppContext);
 
     const handleLogOut = ()=>{
-        let socket = (chatRoomId)=>{
-            return io.disconnect(`ws://novateva-codetest.herokuapp.com/?roomId=${chatRoomId}`)
-        }
+        socket.emit("log_out")
         setLogOut(true)
         setUser({})
         setUserList({})
         setToken({})
         setRedirect(false)
         setChats([])
-        setMessages([])
+        setRoom({})
         setLoading(false)
         setUnReadNum([])
-        socket(messages.chatId);
-        sessionStorage.setItem('user', ``);
-        sessionStorage.setItem('token', ``);
+        sessionStorage.setItem('password', ``);
         sessionStorage.setItem('email', ``);
         setTimeout(() => {
             setLogOut(false)
@@ -42,9 +38,7 @@ export default function ControlPanel(){
                     </div>
                 )
             }
-            
         }
-        
     }
 
     return(

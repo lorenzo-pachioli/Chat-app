@@ -1,14 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Navigate } from "react-router-dom";
 import { AppContext } from '../../../Context/AppContext';
-import axios from "axios";
 
 import './LoginBtn.css';
 
 
-export default function LoginBtn() {
+export default function LoginBtn({socket}) {
 
-  const {token, setToken,redirect, setRedirect,  loading, setLoading,  setLogOut} = useContext(AppContext);
+  const {user, redirect, setRedirect,  loading, setLoading,  setLogOut} = useContext(AppContext);
   
 
   const [error, setError] = useState(false);
@@ -23,27 +22,34 @@ export default function LoginBtn() {
     setLogOut(false)
   }, [setRedirect, setLogOut]);
 
+  useEffect(() => {
+    const errorLogIn = ()=>{
+      socket.on("log_in_res", (data) => {
+        if(!data.status){
+          return setError(true);
+        }
+      })
+    }
+    errorLogIn();
+  }, [socket]);
+
 
   const handleLogIn = async ()=>{
     setLoading(true);
-    let tempToken = {};
-    await axios.post('https://novateva-codetest.herokuapp.com/login', {
-      'email' : `${form.email}`,
-      'password' : `${form.password}`
-    })
-    .then(response => response.status === 200 ? (tempToken = {...token,email:form.email, auth:response.data.authorization}):(setError(true)))
-    .catch(e => setError(true))
-    
-    if(tempToken.auth && tempToken.email){
-      setToken(tempToken)
-      sessionStorage.setItem('token', `${tempToken.auth}`);
-      sessionStorage.setItem('email', `${tempToken.email}`);
+    if(form.email){
+      socket.emit("log_in", form)
     }
-    if(token.auth){
-      setRedirect(true)
-    }
-    
   }
+
+  useEffect(() => {
+    const redirect = ()=>{
+      if(user._id){
+        setRedirect(true)
+      }
+    }
+    redirect();
+  }, [user, setRedirect]);
+  
 
   return (
       <div className="LoginBtn" value={form} >
@@ -60,10 +66,9 @@ export default function LoginBtn() {
             <input type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:`${e.target.value}`})} />
           </div>
         </div>
-        {/* <p style={{display:`${error ? ('block'):('none')}`}}>Email or password incorrect</p> */}
         {error ? (<p>Email or password incorrect</p>):('')}
          
-        <button type='submit' className='submit' onClick={handleLogIn}>
+        <button type='submit' className='submit' onClick={handleLogIn} disabled={loading}>
           {loading ? ('Loading...'):('Log in')}
           </button>
         {redirect ? (<Navigate to='/chatapp' replace={true} />):('')}
