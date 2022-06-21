@@ -18,7 +18,6 @@ export default function LoginBtn({socket}) {
 
 
   useEffect(() => {
-    setRedirect(false)
     setLogOut(false)
   }, [setRedirect, setLogOut]);
 

@@ -1,12 +1,11 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import userPhoto from '../../../assets/user.png';
 import '../SubMain/Submain/Submain.css'
 import './Delete.css';
-import axios from 'axios';
 
-export default function Delete(){
-    const {user, token, chats, setChats, userList, setMessages} = useContext(AppContext);
+export default function Delete({socket}){
+    const {user, chats, setChats, userList, setRoom} = useContext(AppContext);
     const [deleteChat, setDelete] = useState('')
 
     const findUserName = (userIds)=>{
@@ -30,19 +29,24 @@ export default function Delete(){
     }
 
     const handleDelete = ()=>{
-        if(deleteChat.length > 0 && token.auth){
-            
-           /*  axios.delete(`https://novateva-codetest.herokuapp.com/delete/room/${deleteChat}`,{
-                headers:{'Authorization' : `Bearer ${token.auth}`}
-            })
-            .catch(error => console.error(error))
-
-            setChats(chats.filter((chat)=> chat._id !== deleteChat))
-            setMessages({})
-            setDelete('') */
+        if(deleteChat.length > 0 && user._id){
+            socket.emit("delete_chat", {_id:user._id, room_id:deleteChat})
         }
-
     }
+
+    useEffect(() => {
+        const chatDelete = ()=>{
+            socket.on("delete_chat_res", data=>{
+                if(!data.status){
+                    return console.log(data.msg,':', data.error)
+                }
+                setChats(chat=> chat.filter((chat)=> chat._id !== deleteChat))
+                setRoom({})
+                setDelete('')
+            })
+        }
+        chatDelete();
+    }, [deleteChat, setChats, setRoom, socket]);
 
    
 
@@ -60,7 +64,7 @@ export default function Delete(){
                                 return(
                                     <div className='chat-card' key={chat._id} onClick={()=>setDelete(chat._id)} style={deleteChat ? (deleteChat === chat._id ? ({filter:'brightness(80%)'}):({filter:'brightness(100%)'})):({})}>
                                         <img src={userPhoto} alt='' />
-                                        <h3>{findUserName(chat.userIds)}</h3>
+                                        <h3>{findUserName(chat.users)}</h3>
                                     </div>
                                 )
                                     

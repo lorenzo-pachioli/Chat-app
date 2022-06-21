@@ -8,7 +8,7 @@ export default function AppProvider({ children }) {
     const[token, setToken] = useState({})
     const[chats, setChats] = useState([])
     const[room, setRoom] = useState({})
-    const[redirect, setRedirect] = useState(false);
+    const[redirect, setRedirect] = useState(sessionStorage.getItem('email') && sessionStorage.getItem('password') ? (true):(false));
     const[loading, setLoading] = useState(false);
     const[logOut, setLogOut] = useState(false);
     const [newChat, setNewChat] = useState(false)

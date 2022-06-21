@@ -15,18 +15,22 @@ export default function Read({socket}){
                     if(!msj._id){
                         return false;
                     }
-                    if(msj.readBy.length < 2){
-                        return false;
+                    if(msj.readBy.length >= 2){
+                        return true;
+                    }
+                    if(msj.readBy[0] !== user._id){
+                        socket.emit("read_msg", {_id:user._id, room_id:room._id})
+                        return true;
                     }
                     
-                    return true;
+                    return false;
                 })
                 readMsg.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
                 setRead(readMsg);
             }
        }
        read();
-    }, [room, user]);
+    }, [room, user, socket]);
 
     
         

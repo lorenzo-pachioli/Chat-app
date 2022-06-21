@@ -5,7 +5,7 @@ import './UserCard.css';
 
 export default function UserCard( {socket, id, img, chatId, photo}){
 
-    const {user, setRoom,chats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
+    const {user,room, setRoom,chats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
     
     const background = 'linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%)';
     const name =()=>{
@@ -23,24 +23,25 @@ export default function UserCard( {socket, id, img, chatId, photo}){
         if(id !== user._id){
             console.log('chat', chatId)
             setRoom(chats.find(chat=> chat._id === chatId))
-            socket.emit("read_msg", {_id:id, room_id:chatId})
+            socket.emit("read_msg", {_id:user._id, room_id:chatId})
         }
     }
     const UnRead = ()=>{
-        if(id !== user._id){
-            if(unReadNum.length > 0){
-                const unread = unReadNum.find((chat)=> chat.chatId === chatId );
-                if(unread){
-                    if(unread.unRead > 0){
-                        return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
-                    }
-                }
-            }
+        if(id === user._id){
+           return <p style={{background:'white'}}></p>;
         }
-    }
-
-    const handleDelete = ()=>{
-        socket.emit("delete_chat", {_id:user._id, room_id:chatId})
+        if(unReadNum.length === 0){
+            return <p style={{background:'white'}}></p>;
+        }
+        const unread = unReadNum.find((chat)=> chat.chatId === chatId );
+        if(unread){
+            if(unread.chatId === room._id){
+                return <p style={{background:'white'}}></p>;
+            }
+            if(unread.unRead > 0){
+                return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+            }
+        }    
     }
     
     return(
@@ -57,12 +58,6 @@ export default function UserCard( {socket, id, img, chatId, photo}){
                 <div className='name'>
                     {userList ? (userList.length > 0 ? (name()):('Loading...')):('Loading...')}
                 </div>
-                {user ? (
-                    id !== user._id ? (
-                        <button onClick={handleDelete}>X</button>
-                    ):('')
-                ):('')}
-                
             </div>
            
             <div className='msj-number'  >

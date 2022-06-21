@@ -7,7 +7,7 @@ import html2canvas from "html2canvas";
 import './Chat.css';
 
 export default function Chat({socket}){
-    const {user, room,  setRoom, setUrl} = useContext(AppContext);
+    const {user, room,  setRoom, setChats, setUrl} = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
     const [loadingComplaint, setLoadingCompl] = useState(false)
     const [redirectComplaint, setRedirectCompl] = useState(false)
@@ -30,14 +30,25 @@ export default function Chat({socket}){
     }
 
     useEffect(() => {
-        socket.once("send_msg_res",async data=>{
+        socket.on("send_msg_res",async data=>{
             if(!data.status){
                 return console.log(data.msg,':',data.error)
             }
             await data.room.messages.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
-            setRoom(data.room)
+            setRoom(r=> r._id === data.room._id ? (data.room):(r))
         })
-      },[ setRoom, socket])
+    },[ setRoom, socket])
+
+    useEffect(() => {
+        socket.on("read_msg_res",async data=>{
+            if(!data.status){
+                return console.log(data.msg,':',data.error)
+            }
+            await data.room.messages.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
+            setRoom(r=> r._id === data.room._id ? (data.room):(r))
+            setChats((chat)=>chat.map((c)=>c._id===data.room._id?(data.room):(c)))
+        })
+    },[setChats, setRoom, socket])
     
     const handleComplaints = async ()=>{
         setLoadingCompl(true)
@@ -66,12 +77,17 @@ export default function Chat({socket}){
                     <div className='input-message'>
                         <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
                         <div>
-                            <textarea  
+                            <input
+                            type='text'  
                             value={sendMsj}
                             onChange={(e)=>setSendMsj(e.target.value)}
                             maxLength="200"
-                            placeholder='Start typing here'/>
-                            <button onClick={handleSend}>SEND</button>
+                            placeholder='Start typing here'
+                            onKeyPress={(event) => {
+                                event.key === "Enter" && handleSend();
+                            }}
+                            />
+                            <button onClick={handleSend} >SEND</button>
 
                         </div>
                     </div>

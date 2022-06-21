@@ -1,4 +1,5 @@
 import React, {useEffect, useContext} from 'react';
+import { Navigate } from "react-router-dom";
 import { AppContext } from '../../Context/AppContext';
 import TopBar from '../../Components/Topbar/TopBar';
 import Main from '../../Components/Main/Main/Main';
@@ -27,10 +28,15 @@ export default function ChatApp({socket}) {
     setUnReadNum(unRead)
   },[chats, user, setUnReadNum ]);
   
-  return (
-    <div className="ChatApp">
-      <TopBar/>
-      <Main socket={socket}/>
-    </div>
+  return ( sessionStorage.getItem('email') && sessionStorage.getItem('password') ? (
+        <div className="ChatApp">
+          <TopBar/>
+          <Main socket={socket}/>
+        </div>
+      ):(
+        <Navigate to='/' replace={true} />
+      )
+      
+    
   );
 }

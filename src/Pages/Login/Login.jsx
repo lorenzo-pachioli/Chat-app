@@ -1,21 +1,8 @@
-import React, {useEffect, useContext} from 'react';
-import { AppContext } from '../../Context/AppContext';
+import React from 'react';
 import { Outlet  } from "react-router-dom";
-
 import './Login.css';
 
-
 export default function Login() {
-
-  const { setRedirect, setLoading} = useContext(AppContext);
-
-  useEffect(() => {
-    setLoading(false)
-    setRedirect(false);
-    
-  }, [setRedirect, setLoading]);
-
-  
 
   return (
     <div className="Login">

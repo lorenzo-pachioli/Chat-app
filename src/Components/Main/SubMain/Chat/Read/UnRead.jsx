@@ -15,6 +15,9 @@ export default function UnRead({socket}){
                     if(msj.readBy.length > 1){
                         return false;
                     }
+                    if(msj.readBy[0] !== user._id){
+                        return false
+                    }
                     return true;
                 })
                 unReadMsg.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time)})

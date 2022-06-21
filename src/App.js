@@ -13,6 +13,7 @@ import io from 'socket.io-client';
 
 import './App.css';
 const socket = io.connect("http://chat-app-pachioli.herokuapp.com")
+/* const socket = io.connect("http://localhost:3001") */
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
   //log in
   useEffect(() => {
     const logIn = async ()=>{
-          socket.once("log_in_res", (data) => {
+          socket.on("log_in_res", (data) => {
           if(!data.status){
             return console.log(data.msg)
           }

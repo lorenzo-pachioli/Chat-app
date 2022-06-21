@@ -71,7 +71,7 @@
     border:2px solid #F0F0F0;
 }
 
-.input-message textarea{
+.input-message input{
     width: 70%;
     height: 100%;
     padding-left: 12px;

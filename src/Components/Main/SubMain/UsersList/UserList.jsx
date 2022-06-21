@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { AppContext } from '../../../../Context/AppContext';
 import userPhoto from  '../../../../assets/user.png';
 import UserCard from './UserCard/UserCard';
@@ -17,17 +17,27 @@ export default function UserList({socket}){
         })
         return UId;
     }
-    socket.once("init_room_res", data=>{
+    useEffect(() => {
+        const newChat = ()=>{
+            socket.on("init_room_res", data=>{
         
-        if(!data.status){
-            return console.log(data.msg,':',data.error)
+                if(!data.status){
+                    return console.log(data.msg,':',data.error)
+                }
+                if(data.msg){
+                    return console.log(data.msg)
+                }
+                console.log('init room', data)
+                setChats(chat=>{
+                    if(chat.some(c=> c._id === data.room._id)){
+                        return chat;
+                    }
+                    return [...chat, data.room]
+                    })
+            })
         }
-        if(chats.some((chat)=>chat._id === data.room._id)){
-            return '';
-        } 
-        console.log('init room', data)
-        setChats([...chats, data.room])
-    })
+        newChat()
+    }, [setChats, socket]);
     
     return(
         <div className='user-list'>

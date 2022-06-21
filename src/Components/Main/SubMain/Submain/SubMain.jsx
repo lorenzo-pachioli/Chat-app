@@ -6,15 +6,14 @@ import './Submain.css';
 
 export default function SubMain({socket}){
 
-    const { chats, setRoom, setChats } = useContext(AppContext);
+    const { setRoom, setChats } = useContext(AppContext);
 
     useEffect(() => {
         const newMessage = ()=>{
-            socket.once("send_msg_res", data=>{
+            socket.on("send_msg_res", data=>{
                 if(!data.status){
                     return console.log(data.msg,':', data.error)
                 }
-                setRoom(data.room)
                 setChats((chat)=>chat.map((c)=>c._id===data.room._id?(data.room):(c)))
             })
         }
