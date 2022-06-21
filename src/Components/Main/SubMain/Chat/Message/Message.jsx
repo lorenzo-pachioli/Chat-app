@@ -1,13 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import trashCan from '../../../../../assets/trash-can.svg';
 import './Message.css';
 import  moment  from 'moment';
-import axios from 'axios';
 
-export default function Message( {user, id, date, content, postedBy}){
+export default function Message( {user, id, date, content, postedBy, socket}){
 
-    const {userList,token, messages, setMessages, setChats} = useContext(AppContext);
+    const {chats, userList, room, setRoom, setChats} = useContext(AppContext);
 
 
     const dateFrom = moment(date).fromNow();
@@ -18,28 +17,34 @@ export default function Message( {user, id, date, content, postedBy}){
             const regEx2 = regEx1.replace('}', '')
             const nam = userList.find((u)=> u._id === regEx2);
             return nam._id === user._id ? ('Me'):(`${nam.firstName + ' ' + nam.lastName}`);
-            
         }
-        
     } 
     const handleDelete = async ()=>{
-
-        await axios.delete(`https://novateva-codetest.herokuapp.com/delete/message/${id}`,{
-            headers:{'Authorization': `Bearer ${token.auth}`}
-        })
-        .catch(error=> console.error(error))
-
-        const delMsj = messages.userMessages.filter((msj)=> msj._id !== id)
-
-        setMessages({
-            ...messages, 
-            userMessages: delMsj
-        })
-
-        await axios.get('https://novateva-codetest.herokuapp.com/room', {headers:{'Authorization' : `Bearer ${token.auth}`}})
-        .then(response => setChats(response.data.conversation))
-        .catch(error => console.error(error))
+        console.log("delete_msg")
+        console.log(socket)
+        socket.emit("delete_msg", {_id:user._id, room_id:room._id, message_id:id})
     }
+    useEffect(() => {
+        const msgDelete = ()=>{
+            socket.on("delete_msg", data=>{
+                console.log("delete_msg",data)
+            })
+        }
+        msgDelete();
+    }, [socket]);
+    useEffect(() => {
+        const msgDelete = ()=>{
+            socket.on("delete_msg_res", data=>{
+                if(!data.status){
+                    return console.log(data.msg,':',data.error)
+                }
+                setRoom(data.room)
+                setChats((chat)=>chat.map((c)=>c._id===data.room._id?(data.room):(c)))
+                
+            })
+        }
+        msgDelete();
+    }, [setRoom, socket, setChats]);
 
     
     return(

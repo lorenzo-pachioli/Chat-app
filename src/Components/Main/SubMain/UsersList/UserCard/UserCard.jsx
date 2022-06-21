@@ -21,6 +21,7 @@ export default function UserCard( {socket, id, img, chatId, photo}){
             return setNewChat(false);
         }
         if(id !== user._id){
+            console.log('chat', chatId)
             setRoom(chats.find(chat=> chat._id === chatId))
             socket.emit("read_msg", {_id:id, room_id:chatId})
         }
@@ -37,6 +38,10 @@ export default function UserCard( {socket, id, img, chatId, photo}){
             }
         }
     }
+
+    const handleDelete = ()=>{
+        socket.emit("delete_chat", {_id:user._id, room_id:chatId})
+    }
     
     return(
         <div className='userCard' onClick={handleMessages}>
@@ -52,6 +57,12 @@ export default function UserCard( {socket, id, img, chatId, photo}){
                 <div className='name'>
                     {userList ? (userList.length > 0 ? (name()):('Loading...')):('Loading...')}
                 </div>
+                {user ? (
+                    id !== user._id ? (
+                        <button onClick={handleDelete}>X</button>
+                    ):('')
+                ):('')}
+                
             </div>
            
             <div className='msj-number'  >

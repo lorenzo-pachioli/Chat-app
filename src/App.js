@@ -12,7 +12,7 @@ import { AppContext } from './Context/AppContext';
 import io from 'socket.io-client';
 
 import './App.css';
-const socket = io.connect("http://localhost:3001")
+const socket = io.connect("http://chat-app-pachioli.herokuapp.com")
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
   //log in
   useEffect(() => {
     const logIn = async ()=>{
-          socket.on("log_in_res", (data) => {
+          socket.once("log_in_res", (data) => {
           if(!data.status){
             return console.log(data.msg)
           }
@@ -30,7 +30,7 @@ function App() {
           sessionStorage.setItem('password', `${data.user.password}`);
           sessionStorage.setItem('email', `${data.user.email}`);
           socket.emit("get_users", {_id:data.user._id})
-          console.log('Log in user:', data.user)
+          console.log('Log in user:', data)
         });
       }
     
@@ -76,6 +76,7 @@ function App() {
         if(!data.status){
           return console.log(data.msg, ':', data.error)
         }
+        console.log('get user:', data.users)
         setUserList(data.users);
       })
     }

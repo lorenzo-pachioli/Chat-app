@@ -14,14 +14,13 @@ export default function Chat({socket}){
     
 
     const dateFrom =(date)=> new Date(date).getTime();
-    
     const handleSend = async ()=> {
         if(room._id){
             try{
-                await socket.to(room._id).emit("send_msg", {
+                await socket.emit("send_msg", {
                     message: sendMsj,
                     room: room._id,
-                    user: [user._id]
+                    _id: user._id
                 })
             }catch(err){
                 console.log('error sending msg', err)
@@ -30,25 +29,16 @@ export default function Chat({socket}){
         setSendMsj('')
     }
 
-    
-    socket.once("send_msg_res",async data=>{
-        if(!data.status){
-            return console.log(data.msg,':',data.error)
-        }
-        if(room.messages.some((msg)=>msg._id === data.newMessage._id)){
-            return '';
-        }
-
-        const msgOrdered = await data.room.messages.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
-            
-        setRoom({
-            ...room, 
-            messages: msgOrdered
+    useEffect(() => {
+        socket.once("send_msg_res",async data=>{
+            if(!data.status){
+                return console.log(data.msg,':',data.error)
+            }
+            await data.room.messages.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
+            setRoom(data.room)
         })
-    })
+      },[ setRoom, socket])
     
-    
-
     const handleComplaints = async ()=>{
         setLoadingCompl(true)
         
@@ -67,11 +57,11 @@ export default function Chat({socket}){
 
     return(
         <div className='chat-container' >
-            {room.chatId ? (
+            {room._id ? (
                 <div className='chat'>
                         <div className='conversationContainer' id='conversationContainer'>
-                            <UnRead />
-                            <Read />
+                            <UnRead socket={socket} />
+                            <Read socket={socket} />
                         </div>
                     <div className='input-message'>
                         <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>

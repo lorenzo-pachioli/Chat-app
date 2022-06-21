@@ -26,6 +26,7 @@ export default function LoginBtn({socket}) {
     const errorLogIn = ()=>{
       socket.on("log_in_res", (data) => {
         if(!data.status){
+          console.log(data)
           return setError(true);
         }
       })

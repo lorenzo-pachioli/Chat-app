@@ -11,7 +11,7 @@ export default function Complaints(){
 
     const handleComplaints = ()=>{
        
-        if(token.auth && complaint.length > 0 && url){
+        /* if(token.auth && complaint.length > 0 && url){
             axios.post('https://novateva-codetest.herokuapp.com/complaints',{
             "description": `${complaint}`,
 	        "file_64": `${url}`
@@ -20,10 +20,7 @@ export default function Complaints(){
         })
         .then(response=> response.status === 200 ? (setComplaint(''), setUrl('')):(setComplaintError(true)))
         .catch(() => setComplaintError(true))
-
-        
-        
-        }
+        } */
         
     }
 

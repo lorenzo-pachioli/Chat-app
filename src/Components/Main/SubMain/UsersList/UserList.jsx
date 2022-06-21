@@ -18,12 +18,14 @@ export default function UserList({socket}){
         return UId;
     }
     socket.once("init_room_res", data=>{
+        
         if(!data.status){
             return console.log(data.msg,':',data.error)
         }
         if(chats.some((chat)=>chat._id === data.room._id)){
             return '';
         } 
+        console.log('init room', data)
         setChats([...chats, data.room])
     })
     

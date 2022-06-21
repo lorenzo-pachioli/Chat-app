@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import { AppContext } from './Context/AppContext';
+import { AppContext } from '../../Context/AppContext';
 import TopBar from '../../Components/Topbar/TopBar';
 import Main from '../../Components/Main/Main/Main';
 
@@ -16,7 +16,7 @@ export default function ChatApp({socket}) {
         if(msj.readBy.length > 1){
           return false
         }
-        if(msj.readBy.some((u)=> u.readBy === user._id)){
+        if(msj.readBy.some((u)=> u === user._id)){
             return false;
         }
         return true;
