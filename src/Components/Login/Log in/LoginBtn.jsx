@@ -24,8 +24,7 @@ export default function LoginBtn({socket}) {
   useEffect(() => {
     const errorLogIn = ()=>{
       socket.on("log_in_res", (data) => {
-        if(!data.status){
-          console.log(data)
+        if(!data.status ){
           return setError(true);
         }
       })
@@ -36,7 +35,8 @@ export default function LoginBtn({socket}) {
 
   const handleLogIn = async ()=>{
     setLoading(true);
-    if(form.email){
+    if(form.email && !sessionStorage.getItem('email') && !sessionStorage.getItem('password')){
+      console.log('log in')
       socket.emit("log_in", form)
     }
   }

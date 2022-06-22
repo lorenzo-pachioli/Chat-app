@@ -17,21 +17,30 @@ const socket = io.connect("http://chat-app-pachioli.herokuapp.com")
 
 function App() {
 
-  const {user, setChats, setUser, setUserList} = useContext(AppContext);
+  const {user, loading, setChats, setUser, setUserList} = useContext(AppContext);
 
   //log in
   useEffect(() => {
     const logIn = async ()=>{
           socket.on("log_in_res", (data) => {
           if(!data.status){
-            return console.log(data.msg)
+            return console.error(data.msg, ':', data.error)
           }
-          setUser(data.user)
-          setChats(data.rooms)
-          sessionStorage.setItem('password', `${data.user.password}`);
-          sessionStorage.setItem('email', `${data.user.email}`);
-          socket.emit("get_users", {_id:data.user._id})
-          console.log('Log in user:', data)
+          setUser(user =>{
+            if(user._id){
+              return user;
+            }
+            sessionStorage.setItem('password', `${data.user.password}`);
+            sessionStorage.setItem('email', `${data.user.email}`);
+            socket.emit("get_users", {_id:data.user._id})
+            return data.user;
+          })
+          setChats(chat=> {
+            if(chat.length > 0){
+              return chat;
+            }
+            return data.rooms;
+          })
         });
       }
     
@@ -43,10 +52,13 @@ function App() {
   useEffect(() => {
     const tempEmail = sessionStorage.getItem('email');
     const tempPass = sessionStorage.getItem('password');
-    async function onReload(){
+    const onReload= ()=>{
+      if(loading){
+        return '';
+      }
       if(tempEmail && tempPass){
         try{
-          await socket.emit("log_in", {
+          socket.emit("log_in", {
             email: tempEmail,
             password: tempPass
           })
@@ -58,7 +70,7 @@ function App() {
     if(tempEmail && tempPass && user._id === undefined ){
         onReload()
     }
-  }, [user]);
+  }, [user, loading]);
 
   //log out 
   useEffect(() => {
@@ -73,11 +85,10 @@ function App() {
   //get users list
   useEffect(() => {
     const getUser = async ()=>{
-      socket.once("get_users_res", data=>{
+      socket.on("get_users_res", data=>{
         if(!data.status){
-          return console.log(data.msg, ':', data.error)
+          return console.error(data.msg, ':', data.error)
         }
-        console.log('get user:', data.users)
         setUserList(data.users);
       })
     }
