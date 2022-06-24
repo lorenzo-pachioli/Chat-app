@@ -28,7 +28,7 @@ export default function ChatApp({socket}) {
     setUnReadNum(unRead)
   },[chats, user, setUnReadNum ]);
   
-  return ( sessionStorage.getItem('email') && sessionStorage.getItem('password') ? (
+  return ( sessionStorage.getItem('email') ? (
         <div className="ChatApp">
           <TopBar/>
           <Main socket={socket}/>

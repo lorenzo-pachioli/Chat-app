@@ -7,6 +7,7 @@ import './Options.css';
 export default function Options() {
   const {setUser, setRedirect, setLoading} = useContext(AppContext);
   useEffect(() => {
+    console.log('options')
     setLoading(false)
     setUser({})
     sessionStorage.setItem('password', '');

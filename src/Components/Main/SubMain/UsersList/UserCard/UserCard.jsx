@@ -3,7 +3,7 @@ import { AppContext } from '../../../../../Context/AppContext';
 import userPhoto from '../../../../../assets/user.png'
 import './UserCard.css';
 
-export default function UserCard( {socket, id, img, chatId, photo}){
+export default function UserCard( {socket, id, img, online, chatId, photo}){
 
     const {user,room, setRoom,chats, userList, newChat, setNewChat, unReadNum} = useContext(AppContext);
     
@@ -25,6 +25,7 @@ export default function UserCard( {socket, id, img, chatId, photo}){
             setRoom(chats.find(chat=> chat._id === chatId))
             socket.emit("read_msg", {_id:user._id, room_id:chatId})
         }
+        socket.emit('log_user')
     }
     const UnRead = ()=>{
         if(id === user._id){
@@ -43,17 +44,36 @@ export default function UserCard( {socket, id, img, chatId, photo}){
             }
         }    
     }
+
+    /* const handleDelete= ()=>{
+        console.log('1 delete user');
+        const tempPass = sessionStorage.getItem('password');
+        console.log(user._id, tempPass);
+        if( user._id && tempPass){
+            try{
+              console.log('2 delete user');
+              socket.emit("delete_user", {
+                _id: user._id,
+                password: tempPass
+              })
+            }catch(err){
+              console.log(`Something went wrong on reloading page, error: ${err}`)
+            }
+          }
+    } */
     
     return(
         <div className='userCard' onClick={handleMessages}>
             <div className='sub-userCard'>
-                <div className='profile-img' >
+                <div className='profile-img'>
                     { photo ? (
                             <img src={photo} className='img' alt='' />
+                            
                         ):(
                             <img src={userPhoto} className='img' alt='' />
                         )
                     }
+                    <span className='dot'  style={{'backgroundColor': `${online ? ('#2e7d32'):('darkGrey')}`}} />
                 </div>
                 <div className='name'>
                     {userList ? (userList.length > 0 ? (name()):('Loading...')):('Loading...')}

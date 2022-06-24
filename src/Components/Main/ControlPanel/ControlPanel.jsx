@@ -9,24 +9,28 @@ import './ControlPanel.css';
 
 export default function ControlPanel({socket}){
 
-    const {logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setRoom, setLoading, setUnReadNum} = useContext(AppContext);
+    const {user, logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats,setRoom, setLoading, setUnReadNum} = useContext(AppContext);
 
-    const handleLogOut = ()=>{
-        socket.emit("log_out")
-        setLogOut(true)
-        setUser({})
-        setUserList({})
-        setToken({})
-        setRedirect(false)
-        setChats([])
-        setRoom({})
-        setLoading(false)
-        setUnReadNum([])
-        sessionStorage.setItem('password', ``);
-        sessionStorage.setItem('email', ``);
-        setTimeout(() => {
-            setLogOut(false)
-        }, 1000);
+    const handleLogOut = async ()=>{
+        try{
+            await socket.emit("online", {email:user.email, password:sessionStorage.getItem('password'), online:false})
+            setLogOut(true)
+            setUser({})
+            setUserList({})
+            setToken({})
+            setRedirect(false)
+            setChats([])
+            setRoom({})
+            setLoading(false)
+            setUnReadNum([])
+            sessionStorage.setItem('password', ``);
+            sessionStorage.setItem('email', ``);
+            setTimeout(() => {
+                setLogOut(false)
+            }, 1000);
+        }catch(err){
+            console.error(`Error: ${err}`)
+        }
     }
     const UnRead = ()=>{
         if(unReadNum.length > 0){
@@ -65,6 +69,13 @@ export default function ControlPanel({socket}){
                     <div>
                         <img src={trasCan} fill='white' alt='' />
                         <p>Delete chat</p>
+                    </div>
+                    
+                </Link>
+                <Link to='/chatapp/deleteAcount' className='chat-message'>
+                    <div>
+                        <img src={trasCan} fill='white' alt='' />
+                        <p>Delete acount</p>
                     </div>
                     
                 </Link>

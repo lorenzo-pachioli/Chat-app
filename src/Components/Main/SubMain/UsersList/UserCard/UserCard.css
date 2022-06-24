@@ -22,21 +22,23 @@
 }
 
 .profile-img{
+    position: relative;
     height: 30px;
     width: 30px;
     border-radius: 50%;
     background-color: #858585;
+    padding: 1px;
 }
 .profile-img .img{
     height: 100%;
-    width: 100%;
     
 }
-.dot{
+.profile-img .dot{
+    position:absolute;
+    top:70%;
     height: 10px;
     width: 10px;
     border-radius: 50%;
-    
 }
  
 .name{

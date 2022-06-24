@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Navigate } from "react-router-dom";
 import { AppContext } from '../../../Context/AppContext';
-
 import './LoginBtn.css';
 
 
 export default function LoginBtn({socket}) {
 
-  const {user, redirect, setRedirect,  loading, setLoading,  setLogOut} = useContext(AppContext);
+  const {user, redirect, setRedirect,  loading, setLoading,  setLogOut, userList} = useContext(AppContext);
   
 
   const [error, setError] = useState(false);
@@ -25,30 +24,33 @@ export default function LoginBtn({socket}) {
     const errorLogIn = ()=>{
       socket.on("log_in_res", (data) => {
         if(!data.status ){
+          setLoading(false);
           return setError(true);
         }
+        sessionStorage.setItem('password', form.password.toString());
       })
     }
     errorLogIn();
-  }, [socket]);
+  }, [socket, form, setLoading]);
 
 
   const handleLogIn = async ()=>{
     setLoading(true);
     if(form.email && !sessionStorage.getItem('email') && !sessionStorage.getItem('password')){
-      console.log('log in')
       socket.emit("log_in", form)
+      socket.emit("get_users", {email:form.email, password:form.password})
+      socket.emit("online", {email:form.email, password:form.password, online:true})
     }
   }
 
   useEffect(() => {
     const redirect = ()=>{
-      if(user._id){
+      if(user._id && userList.length > 0){
         setRedirect(true)
       }
     }
     redirect();
-  }, [user, setRedirect]);
+  }, [user, setRedirect, userList]);
   
 
   return (
@@ -63,7 +65,8 @@ export default function LoginBtn({socket}) {
         <div className='form-item'>
           <label>Password</label>
           <div>
-            <input type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:`${e.target.value}`})} />
+            <input 
+            type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:e.target.value.toString()})} />
           </div>
         </div>
         {error ? (<p>Email or password incorrect</p>):('')}

@@ -6,21 +6,17 @@ export default function SignIn({socket}) {
 
   const [redirectLogIn, setRedirectLogIn] = useState(false);
   const [form, setForm] = useState({
-    name:'',
+    firstName:'',
     lastName:'',
     email:'',
     password: ''
   })
 
-  const handleSignIn = async ()=>{
+  const handleSignIn = ()=>{
     try{
-      const newUser = {
-        email: `${form.email}`,
-        password: `${form.password}`,
-        firstName: `${form.name}`,
-        lastName: `${form.lastName}`
+      if(form.email){
+        socket.emit("sign_up", form)
       }
-      await socket.emit("sign_up", newUser)
     }catch(err){
       console.log(`Error signing up, error: ${err}`)
     }
@@ -46,7 +42,7 @@ export default function SignIn({socket}) {
         <div className='form-item'>
           <label>Name</label>
           <div>
-            <input type='text' name="Name" value={form.name} onChange={(e)=>setForm({...form, name:`${e.target.value}`})} />
+            <input type='text' name="Name" value={form.name} onChange={(e)=>setForm({...form, firstName:`${e.target.value}`})} />
           </div>
         </div>
         <div className='form-item'>
@@ -64,7 +60,7 @@ export default function SignIn({socket}) {
         <div className='form-item'>
           <label>Password</label>
           <div>
-            <input type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:`${e.target.value}`})} />
+            <input type='password' name='password' value={form.password} onChange={(e)=>setForm({...form, password:e.target.value.toString()})} />
           </div>
         </div>
           <button type='submit' className='submit' onClick={handleSignIn}>Sign in</button>
