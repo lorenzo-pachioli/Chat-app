@@ -56,7 +56,12 @@ export default function Chat({socket}){
         const element = document.getElementById('conversationContainer')
         const canvas = await html2canvas(element);
         const image = canvas.toDataURL("image/png", 1.0);
-        setUrl(image)
+        const receiver=await room.users.find((id)=>id!==user._id);
+        setUrl({
+            url:image,
+            receiver: receiver,
+            roomId:room._id
+        })
         if(image){
             setRedirectCompl(true)
             setTimeout(() => {

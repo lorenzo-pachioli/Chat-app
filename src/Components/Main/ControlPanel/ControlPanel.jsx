@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import { Link, Navigate} from "react-router-dom";
-import io from 'socket.io-client';
 import logout from '../../../assets/logout.svg';
 import trasCan from '../../../assets/trash-can-white.svg';
 import chat from '../../../assets/chat-bubble.svg';

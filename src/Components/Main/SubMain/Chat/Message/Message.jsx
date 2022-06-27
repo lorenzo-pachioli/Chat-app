@@ -6,7 +6,7 @@ import  moment  from 'moment';
 
 export default function Message( {user, id, date, content, postedBy, socket}){
 
-    const {chats, userList, room, setRoom, setChats} = useContext(AppContext);
+    const { userList, room, setRoom, setChats} = useContext(AppContext);
 
 
     const dateFrom = moment(date).fromNow();

@@ -1,28 +1,42 @@
-import axios from 'axios';
-import React, { useContext, useState} from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import '../SubMain/Submain/Submain.css'
 import './Complaints.css';
 
-export default function Complaints(){
-    const { token,  url, setUrl} = useContext(AppContext);
-    const [complaint, setComplaint] = useState('')
+export default function Complaints({socket}){
+    const { user, url, setUrl} = useContext(AppContext);
+    const [complain, setComplain] = useState('')
     const [complaintError, setComplaintError] = useState(false)
+    const [complaintSent, setComplaintSent] = useState(false)
 
     const handleComplaints = ()=>{
-       
-        /* if(token.auth && complaint.length > 0 && url){
-            axios.post('https://novateva-codetest.herokuapp.com/complaints',{
-            "description": `${complaint}`,
-	        "file_64": `${url}`
-        },{
-            headers:{'Authorization' : `Bearer ${token.auth}`}
-        })
-        .then(response=> response.status === 200 ? (setComplaint(''), setUrl('')):(setComplaintError(true)))
-        .catch(() => setComplaintError(true))
-        } */
+       console.log(complain, url.receiver)
+       setComplaintError(false)
+        const newComplain = {
+            complain: complain.complain,
+            sender: user._id,
+            receiver: url.receiver,
+            roomId: url.roomId,
+            url: url.url
+        }
+        socket.emit("init_complain", newComplain)
         
     }
+
+    useEffect(() => {
+        socket.on("init_complain_res", data=>{
+            if(!data.status){
+                setComplaintError(true)
+                return console.log(data.msg,':',data.error)
+            }
+            setComplaintSent(true)
+            setUrl({})
+            setComplain('')
+            setTimeout(() => {
+                setComplaintSent(false)
+            }, 4000);
+        })
+    }, [socket, setUrl]);
 
     return(
         <div className='sub-main'>
@@ -34,14 +48,14 @@ export default function Complaints(){
                     <p className='sub-title'>Here's a screenshot of the chat you want to report</p>
                     <div className='altReport'>
                         {url ? (
-                            <img src={url} alt='' />
+                            <img src={url.url} alt='' />
                         ):(<h3 >No chat reported yet</h3>)}
 
                     </div>
                    
                     <textarea 
-                        value={complaint}
-                        onChange={(e)=> setComplaint(e.target.value)}
+                        value={complain}
+                        onChange={(e)=> setComplain(e.target.value)}
                         maxLength="200"
                         placeholder='Tell us about the problem' />
 
@@ -50,8 +64,9 @@ export default function Complaints(){
                     ):(<div className='noButton'></div>)}
 
                     {complaintError ? (<p className='complaintError'>Couldn't send report</p>):('')}
+                    {complaintSent ? (<p className='complaintError green'>Report sent successfully</p>):('')}
 
-                    {url && complaint.length > 0 ? (
+                    {url && complain.length > 0 ? (
                         <button onClick={handleComplaints} className='send' >Send</button>
                     ):(<div className='noButton'></div>)}
                     

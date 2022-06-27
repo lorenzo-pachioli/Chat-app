@@ -133,7 +133,7 @@ function App() {
       <Routes>
         <Route>
           <Route path="chatapp" element={<ChatApp socket={socket}/>} >
-            <Route path="complaints" element={<Complaints />} />
+            <Route path="complaints" element={<Complaints socket={socket} />} />
             <Route path="delete" element={<Delete socket={socket}/>} />
             <Route path="deleteAcount" element={<DeleteAcount socket={socket}/>} />
             <Route path="" element={<SubMain socket={socket}/>} />
