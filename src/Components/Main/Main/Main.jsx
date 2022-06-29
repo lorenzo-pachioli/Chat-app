@@ -14,9 +14,9 @@ export default function Main({socket}){
         setRedirect(false);
         
     }, [setRedirect, setLoading]);
-
+    
     return(
-        <div className='main'>
+        <div className='main' >
             <ControlPanel socket={socket}/>
             <Outlet />
             {user._id ? (''):(<Navigate to='/login' replace={true} />)}

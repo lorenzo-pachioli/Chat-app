@@ -78,7 +78,7 @@ export default function Chat({socket}){
             {room._id ? (
                 <div className='chat'>
                     <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
-                        <div className='conversationContainer' id='conversationContainer'>
+                        <div className='conversationContainer'>
                             <UnRead socket={socket} />
                             <Read socket={socket} />
                         </div>

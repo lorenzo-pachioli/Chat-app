@@ -97,6 +97,9 @@
 }
 
 @media screen and (max-width:1000px) {
+    .top-bar{
+        height: 10%;
+    }
     .user-search{
         width: 40px;
         height: 40px;

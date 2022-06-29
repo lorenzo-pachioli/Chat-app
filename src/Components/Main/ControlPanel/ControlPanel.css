@@ -122,8 +122,9 @@
         padding: 0;
     }
     .chat-message:hover{
-        width: 0;
+        width: 22.5%;
     }
+    
     .chat-message div:first-child{
         display: flex;
         flex-direction: column;

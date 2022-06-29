@@ -10,7 +10,7 @@
 @media screen and (max-width:1000px) {
     .main{
         width: 100vw;
-        height: 90vh;
+        height: 90%;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;

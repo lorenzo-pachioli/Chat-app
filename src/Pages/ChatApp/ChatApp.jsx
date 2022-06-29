@@ -27,9 +27,15 @@ export default function ChatApp({socket}) {
     })
     setUnReadNum(unRead)
   },[chats, user, setUnReadNum ]);
+
+
+  const inHeight ={
+    height:window.innerHeight
+  }
+  
   
   return ( sessionStorage.getItem('email') ? (
-        <div className="ChatApp">
+        <div className="ChatApp" style={inHeight} >
           <TopBar/>
           <Main socket={socket}/>
         </div>

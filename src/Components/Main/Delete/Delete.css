@@ -145,6 +145,9 @@
         width: 90%;
         border-radius: 10px;
     }
+    .delete-container button:hover{
+        width: 89%;
+    }
     .delete-container p{
         width:calc(90% - 5px);
         margin: 0;

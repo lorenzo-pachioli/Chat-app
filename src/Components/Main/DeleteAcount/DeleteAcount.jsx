@@ -51,7 +51,7 @@ export default function DeleteAcount({socket}){
             <div className='sub-main-container' style={{flexDirection: 'column'}} >
                 <div className='delete-container'>
                     <div className='delete-title'>
-                        <h1>Delete chat</h1>
+                        <h1>Delete acount</h1>
                     </div>
                     <p>Are you shoure yo want to delete your acount and the chats in it?</p>
                     <div className='delete-chats' style={{overflowX:'unset'}}>
