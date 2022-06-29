@@ -141,7 +141,7 @@
     filter:brightness(130%);
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
     .input-message div{
         width: 95%;
         justify-content: space-between;

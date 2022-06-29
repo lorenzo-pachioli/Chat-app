@@ -55,7 +55,7 @@
     text-align: center;
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
     .submit:hover{
         width:80%;
     }

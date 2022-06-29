@@ -89,7 +89,7 @@
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
     color: white;
 }
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
     .userCard{
         width: 100%;
         height: 80px;

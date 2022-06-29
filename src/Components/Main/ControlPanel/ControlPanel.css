@@ -94,7 +94,7 @@
     background-color: #F0F0F0;
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
     .control-panel{
         height: 7%;
         width: 100%;

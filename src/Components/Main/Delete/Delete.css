@@ -136,7 +136,7 @@
     font-weight: 700;
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:1000px) {
     .delete-chats{
         padding: 5px;
         gap: 10px;
