@@ -4,6 +4,7 @@ import { AppContext } from '../../../../Context/AppContext';
 import Read from './Read/Read';
 import UnRead from './Read/UnRead';
 import html2canvas from "html2canvas";
+import paperPlane from '../../../../assets/paper-plane.svg';
 import './Chat.css';
 
 export default function Chat({socket}){
@@ -11,7 +12,7 @@ export default function Chat({socket}){
     const [sendMsj, setSendMsj] = useState('')
     const [loadingComplaint, setLoadingCompl] = useState(false)
     const [redirectComplaint, setRedirectCompl] = useState(false)
-    
+    const [rows, setRows] = useState(25)
 
     const dateFrom =(date)=> new Date(date).getTime();
     const handleSend = async ()=> {
@@ -27,8 +28,8 @@ export default function Chat({socket}){
             }
         }
         setSendMsj('')
+        setRows(25);
     }
-
     useEffect(() => {
         socket.on("send_msg_res",async data=>{
             if(!data.status){
@@ -73,26 +74,31 @@ export default function Chat({socket}){
 
     return(
         <div className='chat-container' >
+            
             {room._id ? (
                 <div className='chat'>
+                    <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
                         <div className='conversationContainer' id='conversationContainer'>
                             <UnRead socket={socket} />
                             <Read socket={socket} />
                         </div>
-                    <div className='input-message'>
-                        <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
+                    <div className='input-message' >
+                        
                         <div>
-                            <input
+                            <textarea
                             type='text'  
                             value={sendMsj}
-                            onChange={(e)=>setSendMsj(e.target.value)}
-                            maxLength="200"
-                            placeholder='Start typing here'
-                            onKeyPress={(event) => {
-                                event.key === "Enter" && handleSend();
+                            style={{height: `${rows}px`}}
+                            onChange={(e)=>{
+                                setRows(row=> row !== e.target.scrollHeight && e.target.scrollHeight);
+                                return setSendMsj(e.target.value)
                             }}
+                            maxLength= {200}
+                            placeholder='Start typing here'
                             />
-                            <button onClick={handleSend} >SEND</button>
+                            <button onClick={handleSend} >
+                                <img src={paperPlane} alt='send' />
+                            </button>
 
                         </div>
                     </div>

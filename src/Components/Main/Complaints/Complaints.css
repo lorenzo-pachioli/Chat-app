@@ -15,16 +15,18 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent; 
+    text-align: center;
 }
 
 
 .sub-title{
     color: #858585;
     font-weight: 700;
+    text-align: center;
 }
 
 .altReport{
-    width: 60%;
+    width: 70%;
     height: 220px;
     display: flex;
     justify-content: center;
@@ -34,7 +36,7 @@
     background-color: #FFF9FE;
 }
 .altReport img{
-    height: 200px;
+    height: 90%;
 }
 .altReport h3{
     color: #858585;
@@ -131,4 +133,19 @@
 .noButton{
     width: 20%;
     height: 25px;
+}
+
+@media screen and (max-width:900px) {
+    .altReport{
+        width: 90%;
+    }
+    .comlpaints-container textarea{
+        width: 90%;
+        height: 70px;
+    }
+    .comlpaints-container button{
+        width: 90%;
+        height: 25px;
+        border-radius: 10px;
+    }
 }

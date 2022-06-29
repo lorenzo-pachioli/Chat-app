@@ -45,7 +45,7 @@ export default function Complaints({socket}){
                     <div className='complaints-title'>
                         <h1>Send Complaints</h1>
                     </div>
-                    <p className='sub-title'>Here's a screenshot of the chat you want to report</p>
+                    <p className='sub-title'>Here's a screenshot of the chat you want to report:</p>
                     <div className='altReport'>
                         {url ? (
                             <img src={url.url} alt='' />
@@ -60,7 +60,12 @@ export default function Complaints({socket}){
                         placeholder='Tell us about the problem' />
 
                     {url ? (
-                        <button onClick={()=>setUrl('')} className='cancel'>Cancel</button>
+                        <button 
+                        onClick={()=>{
+                            setUrl('')
+                            return setComplain('')
+                        }} 
+                        className='cancel'>Cancel</button>
                     ):(<div className='noButton'></div>)}
 
                     {complaintError ? (<p className='complaintError'>Couldn't send report</p>):('')}

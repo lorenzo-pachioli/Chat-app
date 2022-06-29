@@ -2,8 +2,10 @@ import React, {useContext} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import { Link, Navigate} from "react-router-dom";
 import logout from '../../../assets/logout.svg';
-import trasCan from '../../../assets/trash-can-white.svg';
 import chat from '../../../assets/chat-bubble.svg';
+import customerService from '../../../assets/customer-service.svg';
+import deleteMsg from '../../../assets/delete-message.svg';
+import deleteAcount from '../../../assets/delete-person.svg';
 import './ControlPanel.css';
 
 export default function ControlPanel({socket}){
@@ -59,21 +61,21 @@ export default function ControlPanel({socket}){
                 </Link>
                 <Link to='/chatapp/complaints' className='chat-message'>
                     <div>
-                        <img src={chat} alt='' />
+                        <img src={customerService} alt='' />
                         <p>Complaints</p>
                     </div>
                     
                 </Link>
                 <Link to='/chatapp/delete' className='chat-message'>
                     <div>
-                        <img src={trasCan} fill='white' alt='' />
+                        <img src={deleteMsg} fill='white' alt='' />
                         <p>Delete chat</p>
                     </div>
                     
                 </Link>
                 <Link to='/chatapp/deleteAcount' className='chat-message'>
                     <div>
-                        <img src={trasCan} fill='white' alt='' />
+                        <img src={deleteAcount} fill='white' alt='' />
                         <p>Delete acount</p>
                     </div>
                     

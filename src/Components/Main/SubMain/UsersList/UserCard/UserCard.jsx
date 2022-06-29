@@ -44,26 +44,12 @@ export default function UserCard( {socket, id, img, online, chatId, photo}){
             }
         }    
     }
-
-    /* const handleDelete= ()=>{
-        console.log('1 delete user');
-        const tempPass = sessionStorage.getItem('password');
-        console.log(user._id, tempPass);
-        if( user._id && tempPass){
-            try{
-              console.log('2 delete user');
-              socket.emit("delete_user", {
-                _id: user._id,
-                password: tempPass
-              })
-            }catch(err){
-              console.log(`Something went wrong on reloading page, error: ${err}`)
-            }
-          }
-    } */
+    const borderNewChat = {
+        border: '2px solid #858585'
+    }
     
     return(
-        <div className='userCard' onClick={handleMessages}>
+        <div className='userCard'id={id!==user._id ? ('otherUser'):('user')} onClick={handleMessages} style={newChat && id!==user._id ? (borderNewChat):({})} >
             <div className='sub-userCard'>
                 <div className='profile-img'>
                     { photo ? (

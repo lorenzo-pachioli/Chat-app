@@ -54,7 +54,7 @@ export default function Delete({socket}){
         <div className='sub-main'>
             <div className='sub-main-container' style={{flexDirection: 'column'}} >
                 <div className='delete-container'>
-                <div className='delete-title'>
+                    <div className='delete-title'>
                         <h1>Delete chat</h1>
                     </div>
                     <p>Wich chat would you like to delete:</p>
@@ -72,7 +72,7 @@ export default function Delete({socket}){
                         }
                     </div>
                     {deleteChat ? (
-                        <button onClick={()=> setDelete(false)} style={{backgroundColor: '#858585'}}>Cancel delete</button>
+                        <button onClick={()=> setDelete(false)} style={{backgroundColor: '#858585'}}>Cancel</button>
                     ):('')}
                     {deleteChat ? (
                         <button onClick={handleDelete}>Delete</button>

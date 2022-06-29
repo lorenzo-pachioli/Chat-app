@@ -45,9 +45,18 @@
     font-weight: 700;
     border-radius: 10px;
 }
+.submit:hover{
+    width:85%;
+}
 
 .LoginBtn p{
     color:rgba(255, 30, 0, 0.664);
     width: 100%;
     text-align: center;
+}
+
+@media screen and (max-width:900px) {
+    .submit:hover{
+        width:80%;
+    }
 }

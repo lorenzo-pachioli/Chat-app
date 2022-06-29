@@ -54,7 +54,7 @@ export default function DeleteAcount({socket}){
                         <h1>Delete chat</h1>
                     </div>
                     <p>Are you shoure yo want to delete your acount and the chats in it?</p>
-                    <div className='delete-chats'>
+                    <div className='delete-chats' style={{overflowX:'unset'}}>
                         <div className='acount-card'>
                             <img src={userPhoto} alt='' />
                             <div>
@@ -64,7 +64,7 @@ export default function DeleteAcount({socket}){
                             
                         </div>
                     </div>
-                    <input type='password' value={password} placeholder='Password' onChange={e=>setPassword(e.target.value)} />
+                    <input type='password' className='password' value={password} placeholder='Password' onChange={e=>setPassword(e.target.value)} />
                     
                     <button onClick={handleDelete}  style={{'backgroundColor':'#f50d5ac4'}}>Delete</button>
                     

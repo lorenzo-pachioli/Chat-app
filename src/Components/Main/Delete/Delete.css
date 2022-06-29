@@ -21,6 +21,8 @@
 .delete-container p{
     color: #858585;
     font-weight: 700;
+    text-align: center;
+    margin: 0 10px;
 }
 
 .delete-container textarea{
@@ -98,15 +100,26 @@
     text-align: left;
 }
 .acount-card h4{
+    width: 100%;
     font-size: 15px;
     color: #858585;
     font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.password{
+    width: calc(70% - 10px);;
+    height: 35px;
+    background-color: #FFF9FE;
+    border-radius: 10px;
+    border: 2px solid #F0F0F0;
 }
 
 .delete-container button{
     border-style: none;
     width: 50%;
-    height: 35px;
+    height: 25px;
     border-radius: 20px;
     background:  #f50d5ac4;
     color: white;
@@ -121,4 +134,37 @@
 .delete-container h3{
     color: #858585;
     font-weight: 700;
+}
+
+@media screen and (max-width:900px) {
+    .delete-chats{
+        padding: 5px;
+        gap: 10px;
+    }
+    .delete-container button{
+        width: 90%;
+        border-radius: 10px;
+    }
+    .delete-container p{
+        width:calc(90% - 5px);
+        margin: 0;
+    }
+    .acount-card{
+        height: 150px;
+        width: 90%;
+        display: flex;
+        flex-direction:row;
+        justify-content: space-evenly;
+        border-radius: 10px;
+    }
+    .acount-card img{
+        height: 70%;
+    }
+    .acount-card div{
+        height: 100%;
+        width: 60%;
+    }
+    .password{
+        width: calc(90% - 5px);
+    }
 }
