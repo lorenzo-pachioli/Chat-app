@@ -39,8 +39,8 @@ export default function UserCard( {socket, id, img, online, chatId, photo}){
             if(unread.chatId === room._id){
                 return <p style={{background:'white'}}></p>;
             }
-            if(unread.unRead > 0){
-                return <p style={{background:`${unread.unRead > 0?(background):('white')}`}} >{ unread.unRead}</p>
+            if(unread.unRead.length > 0){
+                return <p style={{background:`${background}`}}>{ unread.unRead.length}</p>
             }
         }    
     }

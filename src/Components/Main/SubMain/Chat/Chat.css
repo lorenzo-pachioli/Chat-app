@@ -22,6 +22,7 @@
     border-radius: 10px;
     position: absolute;
     z-index: 100;
+    cursor: pointer;
 }
 
 .conversationContainer{
@@ -87,7 +88,7 @@
 
 .input-message textarea{
     width: calc(100% - 35px);
-    height: 25px;
+    max-height: 150px;
     flex-wrap: wrap;
     padding-left: 12px;
     border-style: none;
@@ -116,9 +117,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
-.input-message .report:hover{
+.report:hover{
     width: 75px;
 }
 .input-message button:hover{

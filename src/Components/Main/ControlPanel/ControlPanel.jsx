@@ -35,7 +35,7 @@ export default function ControlPanel({socket}){
     }
     const UnRead = ()=>{
         if(unReadNum.length > 0){
-            const unread = unReadNum.filter((chat)=> chat.unRead > 0 );
+            const unread = unReadNum.filter((chat)=> chat.unRead.length > 0 );
             if(unread.length > 0){
                 return (
                     <div>

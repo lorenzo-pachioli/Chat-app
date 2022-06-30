@@ -14,17 +14,21 @@ export default function ChatApp({socket}) {
   useEffect(() => {
     const unRead = chats.map((chat)=>{
       const unreadMsj = chat.messages.filter((msj)=>{
+        
         if(msj.readBy.length > 1){
           return false
         }
+        console.log(msj)
         if(msj.readBy.some((u)=> u === user._id)){
             return false;
         }
         return true;
         }
       )
-      return {chatId:chat._id, unRead: unreadMsj.length}
+      
+      return {chatId:chat._id, unRead: unreadMsj}
     })
+    console.log(unRead)
     setUnReadNum(unRead)
   },[chats, user, setUnReadNum ]);
 
@@ -36,7 +40,7 @@ export default function ChatApp({socket}) {
   
   return ( sessionStorage.getItem('email') ? (
         <div className="ChatApp" style={inHeight} >
-          <TopBar/>
+          <TopBar socket={socket}/>
           <Main socket={socket}/>
         </div>
       ):(

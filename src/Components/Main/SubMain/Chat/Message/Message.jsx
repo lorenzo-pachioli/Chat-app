@@ -20,8 +20,6 @@ export default function Message( {user, id, date, content, postedBy, socket}){
         }
     } 
     const handleDelete = async ()=>{
-        console.log("delete_msg")
-        console.log(socket)
         socket.emit("delete_msg", {_id:user._id, room_id:room._id, message_id:id})
     }
     useEffect(() => {
@@ -54,7 +52,7 @@ export default function Message( {user, id, date, content, postedBy, socket}){
                 {postedBy === user._id ? (<img src={trashCan} alt='' onClick={handleDelete} />):('')}
                 
                 {name()}, {dateFrom}
-                </p>
+            </p>
             <p className='content'>{content}</p>
         </div>
     )

@@ -65,6 +65,7 @@
     background-color: #FFF9FE;
     border-radius: 20px;
     border: 2px solid #F0F0F0;
+    cursor: pointer;
 }
 .chat-card:hover{
     filter:brightness(80%);
@@ -126,6 +127,7 @@
     font-weight: 600;
     font-size: 15px;
     letter-spacing: 0.1rem;
+    cursor: pointer;
 }
 .delete-container button:hover{
     width: 51%;
