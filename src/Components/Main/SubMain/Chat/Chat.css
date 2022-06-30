@@ -125,13 +125,6 @@
         width: 25px;
         height: 25px;
     }
-    .conversation{
-        width: 100%;
-        height: fit-content;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
     
     .report{
         top:10px;

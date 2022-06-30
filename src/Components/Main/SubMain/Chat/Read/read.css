@@ -2,8 +2,8 @@
     width: 100%;
     height: fit-content;
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .unread{
