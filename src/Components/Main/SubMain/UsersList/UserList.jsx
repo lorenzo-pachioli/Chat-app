@@ -16,7 +16,6 @@ export default function UserList({socket}){
     const findUserOnline = (id)=>{
         if(userList.length > 0){
             const UID = userList.find(u=>u._id===id)
-            console.log(UID.online)
             return UID.online;
         }
     }

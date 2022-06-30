@@ -1,12 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import Message from '../Message/Message';
-import './read.css';
+import moment from 'moment';
+import '../Chat.css';
 
 export default function Read({socket}){
     const {user, room} = useContext(AppContext);
     const [read, setRead]= useState([]);
-    const dateFrom =(date)=>new Date(date).getTime();
 
     useEffect(() => {
        const read = ()=>{
@@ -25,15 +25,15 @@ export default function Read({socket}){
                     
                     return false;
                 })
-                readMsg.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time) })
-                setRead(readMsg);
+                const newRead = readMsg.sort((a, b)=>{return moment(a.time) > moment(b.time) })
+                setRead(newRead);
             }
        }
        read();
     }, [room, user, socket]);
 
     
-        
+    
     return (
         <div className='conversation'>
             {read.length > 0? (

@@ -1,12 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import Message from '../Message/Message';
-import './read.css';
+import moment from 'moment';
+import '../Chat.css';
 
 export default function UnRead({socket}){
     const {user, room} = useContext(AppContext);
     const [unRead, setUnRead]= useState([]);
-    const dateFrom =(date)=>new Date(date).getTime()
     
     useEffect(() => {
         const unRead = ()=>{
@@ -20,14 +20,18 @@ export default function UnRead({socket}){
                     }
                     return true;
                 })
-                unReadMsg.sort((a, b)=>{return dateFrom(a.time) < dateFrom(b.time)})
-                setUnRead(unReadMsg);
+                const newRead = unReadMsg.sort((a, b)=>{return moment(a.time) > moment(b.time) })
+                setUnRead(newRead);
             }
         }
         unRead();
     }, [room, user]);
     return (
         <div className='conversation' style={unRead.length > 0? ({display: 'flex'}):({display:'none'})}>
+            <div className='unread'>
+                <p>UNREAD</p>
+                <hr />
+            </div>
             {
             unRead.length > 0 ? (
                 unRead.map((msj)=>{

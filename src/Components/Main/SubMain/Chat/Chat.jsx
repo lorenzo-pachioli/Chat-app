@@ -71,6 +71,12 @@ export default function Chat({socket}){
             }, 500);
         }
     }
+    const row = (scroll)=>{
+            if(rows === scroll){
+                return '';
+            }
+            return rows > scroll ? (setRows(rows-25)):(setRows(rows+25))
+    }
 
     return(
         <div className='chat-container' >
@@ -80,10 +86,6 @@ export default function Chat({socket}){
                     <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
                     <div className='conversationContainer'>
                         <UnRead socket={socket} />
-                        <div className='unread'>
-                            <p>UNREAD</p>
-                            <hr />
-                        </div>
                         <Read socket={socket} />
                     </div>
                     <div className='input-message' >
@@ -94,8 +96,7 @@ export default function Chat({socket}){
                             value={sendMsj}
                             style={{height: `${rows}px`}}
                             onChange={(e)=>{
-                                console.log(e.target.scrollHeight, rows)
-                                setRows(e.target.scrollHeight);
+                                row(e.target.scrollHeight)
                                 return setSendMsj(e.target.value)
                             }}
                             maxLength= {200}
