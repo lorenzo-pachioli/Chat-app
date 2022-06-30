@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../../../Context/AppContext';
 import Message from '../Message/Message';
-import '../Chat.css';
+import './read.css';
 
 export default function Read({socket}){
     const {user, room} = useContext(AppContext);
