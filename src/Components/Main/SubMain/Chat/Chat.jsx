@@ -79,8 +79,8 @@ export default function Chat({socket}){
                 <div className='chat'>
                     <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...'):('Report chat')}</button>
                     <div className='conversationContainer'>
-                        <Read socket={socket} />
                         <UnRead socket={socket} />
+                        <Read socket={socket} />
                     </div>
                     <div className='input-message' >
                         
