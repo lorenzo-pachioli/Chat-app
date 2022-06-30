@@ -28,10 +28,6 @@ export default function UnRead({socket}){
     }, [room, user]);
     return (
         <div className='conversation' style={unRead.length > 0? ({display: 'flex'}):({display:'none'})}>
-            <div className='unread'>
-                <p>UNREAD</p>
-                <hr />
-            </div>
             {
             unRead.length > 0 ? (
                 unRead.map((msj)=>{

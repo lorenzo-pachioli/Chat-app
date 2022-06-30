@@ -2,31 +2,15 @@
     width: 100%;
     height: fit-content;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: flex-end;
 }
-
-.unread{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 10px;
-}
-.unread p{
-    width: fit-content ;
-    padding: 0 5px;
-    background: linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    font-family: 'Nunito', sans-serif;
-    font-size: 12px;
-}
-.unread hr{
-    width: 90%;
-    border-style: none;
-    background-image: linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
-    height: 2px;
+@media screen and (max-width:1000px) {
+    .conversation{
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
 }
