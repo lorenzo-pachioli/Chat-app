@@ -7,12 +7,12 @@ import AppProvider from './Context/AppContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <AppProvider >
-        <App />
-      </AppProvider>
-    </Router>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Router>
+			<AppProvider >
+				<App />
+			</AppProvider>
+		</Router>
+	</React.StrictMode>
 );
 

@@ -11,34 +11,32 @@ export default function UserList({socket}){
     const findiD = (users)=>{
         const id = users.find(id=> id !== user._id.toString())
         return id;
-    }
+    };
 
     const findUserOnline = (id)=>{
         if(userList.length > 0){
-            const UID = userList.find(u=>u._id===id)
+            const UID = userList.find(u => u._id.toString() === id)
             return UID.online;
         }
-    }
+    };
 
     useEffect(() => {
         const newChat = ()=>{
             socket.on("init_room_res", data=>{
-        
                 if(!data.status){
-                    return console.log(data.msg,':',data.error)
-                }
+                    return console.log(data.msg,':',data.error);
+                };
                 if(data.msg){
-                    return console.log(data.msg)
-                }
-                console.log('init room', data)
+                    return console.log(data.msg);
+                };
                 setChats(chat=>{
                     if(chat.some(c=> c._id === data.room._id)){
                         return chat;
                     }
                     return [...chat, data.room]
-                    })
-            })
-        }
+                });
+            });
+        };
         newChat()
     }, [setChats, socket]);
     
@@ -67,8 +65,7 @@ export default function UserList({socket}){
                             )
                         })
                     ):('')
-                )
-                }
+                )}
             </div>
             <div className='new-chat' >
                 <button onClick={()=> setNewChat(!newChat)}>{newChat ? ('Back'):('New chat')}</button>

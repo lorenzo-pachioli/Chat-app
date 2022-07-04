@@ -1,20 +1,17 @@
 import React, { useContext, useState, useEffect} from 'react';
 import { AppContext } from '../../../Context/AppContext';
 import userPhoto from '../../../assets/user.png';
-import '../SubMain/Submain/Submain.css'
+import '../../../Pages/SubMain/SubMain.css';
 import '../Delete/Delete.css';
 
 export default function DeleteAcount({socket}){
     const {user,setLogOut, setUser, setUserList, setToken, setRedirect, setChats,setRoom, setLoading, setUnReadNum} = useContext(AppContext);
-    const [password, setPassword] = useState('')
-    const tempPass = sessionStorage.getItem('password');
+    const [password, setPassword] = useState('');
 
     const handleDelete = ()=>{
         if(password.length > 0 && user._id){
-            if(password.toString() === tempPass){
-                console.log(user._id, password)
-                /* socket.emit("delete_chat", {_id:user._id, password:password}) */
-            }
+            console.log(user.email, password)
+            socket.emit("delete_user", {email:user.email, password:password});
         }
     }
 
@@ -24,7 +21,7 @@ export default function DeleteAcount({socket}){
                 if(!data.status){
                     return console.log(data.msg,':', data.error)
                 }
-                
+                console.log(data)
                 setLogOut(true)
                 setUser({})
                 setUserList({})
@@ -44,8 +41,6 @@ export default function DeleteAcount({socket}){
         acountDelete();
     }, [setLogOut, setUser, setUserList, setToken, setRedirect, setChats,setRoom, setLoading, setUnReadNum, socket]);
 
-   
-
     return(
         <div className='sub-main'>
             <div className='sub-main-container' style={{flexDirection: 'column'}} >
@@ -61,17 +56,12 @@ export default function DeleteAcount({socket}){
                                 <h3>{user.firstName} {user.lastName}</h3>
                                 <h4>{user.email}</h4>
                             </div>
-                            
                         </div>
                     </div>
-                    <input type='password' className='password' value={password} placeholder='Password' onChange={e=>setPassword(e.target.value)} />
-                    
+                    <input type='password' className='password' value={password} placeholder='Password' onChange={e=>setPassword(e.target.value)} />                   
                     <button onClick={handleDelete}  style={{'backgroundColor':'#f50d5ac4'}}>Delete</button>
-                    
                 </div>    
             </div>
-            
-            
         </div>
     )
 }

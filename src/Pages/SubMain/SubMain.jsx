@@ -1,7 +1,7 @@
 import React, { useContext, useEffect} from 'react';
 import { AppContext } from '../../../../Context/AppContext';
-import Chat from '../Chat/Chat';
-import UserList from '../UsersList/UserList';
+import Chat from '../../Components/SubMain/Chat/Chat';
+import UserList from '../../Components/SubMain/UsersList/UserList';
 import './Submain.css';
 
 export default function SubMain({socket}){
@@ -26,8 +26,6 @@ export default function SubMain({socket}){
                 <UserList socket={socket} />
                 <Chat socket={socket}/>
             </div>
-            
-            
         </div>
     )
 }
