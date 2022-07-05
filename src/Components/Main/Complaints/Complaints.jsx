@@ -12,17 +12,17 @@ export default function Complaints({ socket }) {
     const handleComplaints = () => {
         setComplaintError(false);
         const newComplain = {
-            complain: complain.complain,
+            complain: complain,
             sender: user._id,
             receiver: url.receiver,
-            roomId: url.roomId,
+            room_id: url.room_id,
             url: url.url
         };
-        socket.emit("init_complain", newComplain);
+        socket.emit("init_report", newComplain);
     }
 
     useEffect(() => {
-        socket.on("init_complain_res", data => {
+        socket.on("init_report_res", data => {
             if (!data.status) {
                 setComplaintError(true)
                 return console.log(data.msg, ':', data.error)

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
-import { AppContext } from '../../../../Context/AppContext';
-import userPhoto from  '../../../../assets/user.png';
+import { AppContext } from '../../../Context/AppContext';
+import userPhoto from  '../../../assets/user.png';
 import UserCard from './UserCard/UserCard';
 import './UserList.css';
 

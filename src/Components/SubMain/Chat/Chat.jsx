@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AppContext } from '../../../../Context/AppContext';
+import { AppContext } from '../../../Context/AppContext';
 import Read from './Read/Read';
 import UnRead from './Read/UnRead';
 import html2canvas from 'html2canvas';
-import paperPlane from '../../../../assets/paper-plane.svg';
+import paperPlane from '../../../assets/paper-plane.svg';
 import './Chat.css';
 
 export default function Chat({ socket }) {
@@ -53,22 +53,26 @@ export default function Chat({ socket }) {
     }, [setChats, setRoom, socket]);
 
     const handleComplaints = async () => {
-        setLoadingCompl(true)
-        const element = document.getElementById('conversationContainer')
-        const canvas = await html2canvas(element);
-        const image = canvas.toDataURL("image/png", 1.0);
-        const receiver = await room.users.find((id) => id !== user._id);
-        setUrl({
-            url: image,
-            receiver: receiver,
-            roomId: room._id
-        })
-        if (image) {
-            setRedirectCompl(true)
-            setTimeout(() => {
-                setLoadingCompl(false)
-                setRedirectCompl(false)
-            }, 500);
+        try {
+            setLoadingCompl(true)
+            const element = document.getElementById('conversationContainer')
+            const canvas = await html2canvas(element);
+            const image = canvas.toDataURL("image/png", 1.0);
+            const receiver = await room.users.find((id) => id !== user._id);
+            setUrl({
+                url: image,
+                receiver: receiver,
+                room_id: room._id
+            })
+            if (image) {
+                setRedirectCompl(true)
+                setTimeout(() => {
+                    setLoadingCompl(false)
+                    setRedirectCompl(false)
+                }, 500);
+            }
+        } catch(err) {
+            console.log('error', err)
         }
     }
 
@@ -84,7 +88,7 @@ export default function Chat({ socket }) {
             {room._id ? (
                 <div className='chat'>
                     <button onClick={handleComplaints} className='report'>{loadingComplaint ? ('Loading...') : ('Report chat')}</button>
-                    <div className='conversationContainer'>
+                    <div className='conversationContainer' id='conversationContainer'>
                         <UnRead socket={socket} />
                         <Read socket={socket} />
                     </div>

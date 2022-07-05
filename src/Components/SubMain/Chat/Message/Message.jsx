@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../../../../Context/AppContext';
-import trashCan from '../../../../../assets/trash-can.svg';
+import { AppContext } from '../../../../Context/AppContext';
+import trashCan from '../../../../assets/trash-can.svg';
 import './Message.css';
 import moment from 'moment';
 

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { AppContext } from '../../../../../Context/AppContext';
+import { AppContext } from '../../../../Context/AppContext';
 import Message from '../Message/Message';
 import moment from 'moment';
 import '../Chat.css';

@@ -36,7 +36,8 @@
     background-color: #FFF9FE;
 }
 .altReport img{
-    height: 90%;
+    max-height: 90%;
+    max-width: 90%;
 }
 .altReport h3{
     color: #858585;

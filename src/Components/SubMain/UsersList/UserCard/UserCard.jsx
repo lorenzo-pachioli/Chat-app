@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../../../../Context/AppContext';
-import userPhoto from '../../../../../assets/user.png'
+import { AppContext } from '../../../../Context/AppContext';
+import userPhoto from '../../../../assets/user.png'
 import './UserCard.css';
 
 export default function UserCard({ socket, id, img, online, chatId, photo }) {

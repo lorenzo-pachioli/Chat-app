@@ -1,8 +1,8 @@
 import React, { useContext, useEffect} from 'react';
-import { AppContext } from '../../../../Context/AppContext';
+import { AppContext } from '../../Context/AppContext';
 import Chat from '../../Components/SubMain/Chat/Chat';
 import UserList from '../../Components/SubMain/UsersList/UserList';
-import './Submain.css';
+import './SubMain.css';
 
 export default function SubMain({socket}){
 

@@ -3,7 +3,7 @@ import { AppContext } from '../../Context/AppContext';
 import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import searchIcon from '../../assets/search-icon.svg';
-import Message from '../Main/SubMain/Chat/Message/Message';
+import Message from '../SubMain/Chat/Message/Message';
 import { Link } from 'react-router-dom';
 import './TopBar.css';
 
