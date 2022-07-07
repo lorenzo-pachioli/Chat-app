@@ -37,9 +37,7 @@ export default function LoginBtn({socket}) {
   const handleLogIn = async ()=>{
     setLoading(true);
     if(form.email && !sessionStorage.getItem('email') && !sessionStorage.getItem('password')){
-      socket.emit("log_in", form)
-      socket.emit("get_users", {email:form.email, password:form.password})
-      socket.emit("online", {email:form.email, password:form.password, online:true})
+      socket.emit("log_in", {...form, online:true});
     }
   }
 

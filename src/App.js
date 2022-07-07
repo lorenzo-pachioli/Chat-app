@@ -64,9 +64,7 @@ function App() {
 					socket.emit("log_in", {
 						email: tempEmail,
 						password: tempPass
-					})
-					socket.emit("get_users", { email: tempEmail, password: tempPass })
-					socket.emit("online", { email: tempEmail, password: tempPass, online: true })
+					});
 				} catch (err) {
 					console.log(`Something went wrong on reloading page, error: ${err}`)
 				}
