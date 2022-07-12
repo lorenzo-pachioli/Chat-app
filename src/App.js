@@ -14,12 +14,13 @@ import io from 'socket.io-client';
 import env from 'react-dotenv';
 import './App.css';
 
-const socket = io.connect(env.SOCKET_URL)
-/* const socket = io.connect("http://localhost:3001") */
+/* const socket = io.connect(env.SOCKET_URL) */
+const socket = io.connect("http://localhost:3001")
 
 function App() {
 
-	const { user, loading, setLoading, setChats, setUser, setUserList } = useContext(AppContext);
+	const { user, loading, setLoading, setChats, setUser, setUserList, setRoom } = useContext(AppContext);
+	const userId = user._id;
 
 	//log in
 	useEffect(() => {
@@ -63,7 +64,8 @@ function App() {
 					console.log('re load app');
 					socket.emit("log_in", {
 						email: tempEmail,
-						password: tempPass
+						password: tempPass,
+						online: true
 					});
 				} catch (err) {
 					console.log(`Something went wrong on reloading page, error: ${err}`)
@@ -78,10 +80,15 @@ function App() {
 	useEffect(() => {
 		const logOut = () => {
 			socket.on('disconnect', data => {
-
 				return console.log('disconnect', data)
 			});
 		}
+		const connect = () => {
+			socket.on('connect', data => {
+				return console.log('connect', data)
+			});
+		}
+		connect();
 		logOut();
 	}, [user]);
 
@@ -118,15 +125,40 @@ function App() {
 
 	useEffect(() => {
 		const userDeleted = () => {
-			socket.on("delete_user_res", () => {
-				setLoading(false)
-				setUser({})
-				sessionStorage.setItem('password', '');
-				sessionStorage.setItem('email', '');
+			socket.on("delete_user_res", (data) => {
+				if (!data.status) {
+					return console.log(data.msg, ':', data.error)
+				}
+
+				if (data.userDeleted._id === userId) {
+					setLoading(false)
+					setUser({})
+					sessionStorage.setItem('password', '');
+					sessionStorage.setItem('email', '');
+					return true;
+				}
+				setUserList(data.users);
+				setChats(chats => {
+					if (chats.length === 0) {
+						return [];
+					}
+					return chats.filter(chat => !chat.users.some(u=> u === data.userDeleted._id));
+					
+				})
+				setRoom((r) => {
+					if (!r._id) {
+						return {};
+					}
+					if (r.users.some(uid => uid === data.userDeleted._id)) {
+						return {};
+					}
+					return r;
+				})
+
 			})
 		}
 		userDeleted();
-	}, [setLoading, setUser]);
+	}, [setLoading, setUser, setChats, userId, setUserList, setRoom]);
 
 	return (
 		<div className="App">

@@ -25,7 +25,6 @@ export default function UserCard({ socket, id, img, online, chatId, photo }) {
             return setNewChat(false);
         }
         if (id !== user._id) {
-            console.log('chat', chatId)
             setRoom(chats.find(chat => chat._id === chatId))
             socket.emit("read_msg", { _id: user._id, room_id: chatId })
         }

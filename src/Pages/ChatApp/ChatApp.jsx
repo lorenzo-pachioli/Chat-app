@@ -16,7 +16,7 @@ export default function ChatApp({ socket }) {
 				if (msj.readBy.length > 1) {
 					return false
 				}
-				console.log(msj)
+				
 				if (msj.readBy.some((u) => u === user._id)) {
 					return false;
 				}
@@ -24,7 +24,6 @@ export default function ChatApp({ socket }) {
 			})
 			return { chatId: chat._id, unRead: unreadMsj }
 		})
-		console.log(unRead)
 		setUnReadNum(unRead)
 	}, [chats, user, setUnReadNum]);
 
