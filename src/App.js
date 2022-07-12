@@ -14,8 +14,8 @@ import io from 'socket.io-client';
 import env from 'react-dotenv';
 import './App.css';
 
-/* const socket = io.connect(env.SOCKET_URL) */
-const socket = io.connect("http://localhost:3001")
+const socket = io.connect(env.SOCKET_URL)
+/* const socket = io.connect("http://localhost:3001") */
 
 function App() {
 
