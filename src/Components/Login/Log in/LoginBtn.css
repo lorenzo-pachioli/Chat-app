@@ -34,6 +34,7 @@
     border-style: none;
     border-radius: 10px;
     padding: 2px;
+    outline: none;
 }
 
 .submit{
@@ -54,6 +55,24 @@
     color:rgba(255, 30, 0, 0.664);
     width: 100%;
     text-align: center;
+}
+
+.form-item .input-syntax{
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    right: 50px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-radius: 20px;
+    background-color: #858585;
+    padding: 10px 20px;
+}
+
+.input-syntax p{
+    color:white;
+    text-align: left;
 }
 
 @media screen and (max-width:1000px) {
