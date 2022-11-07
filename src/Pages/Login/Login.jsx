@@ -9,7 +9,7 @@ export default function Login() {
       <div className='subLogin'>
         <div className='title'>
             <h1>Welcome to </h1>
-            <h1>Novateva chat</h1>
+            <h1>Pachioli Chat</h1>
         </div>
         <div className='logOptions'>
           <Outlet />

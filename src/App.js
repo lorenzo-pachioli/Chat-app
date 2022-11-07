@@ -11,11 +11,10 @@ import DeleteAcount from './Components/Main/DeleteAcount/DeleteAcount';
 import SubMain from './Pages/SubMain/SubMain';
 import { AppContext } from './Context/AppContext';
 import io from 'socket.io-client';
-import env from 'react-dotenv';
 import './App.css';
 
-const socket = io.connect(env.SOCKET_URL)
-/* const socket = io.connect("http://localhost:3001") */
+/* const socket = io.connect(env.SOCKET_URL) */
+const socket = io.connect("https://api-chat.up.railway.app/")
 
 function App() {
 
@@ -29,7 +28,6 @@ function App() {
 				if (!data.status) {
 					return console.error(data.msg, ':', data.error)
 				}
-				console.log(data.user)
 				setUser(user => {
 					if (user._id) {
 						return user;
@@ -61,7 +59,6 @@ function App() {
 
 			if (user._id === undefined && tempEmail && tempPass) {
 				try {
-					console.log('re load app');
 					socket.emit("log_in", {
 						email: tempEmail,
 						password: tempPass,
@@ -114,7 +111,6 @@ function App() {
 				if (!data.status) {
 					return console.log(data.msg, ':', data.error)
 				}
-				console.log("online_res", data)
 				setUserList(user => user.length > 0 ? (user.map(u => u._id === data.user._id ? (data.user) : (u))) : (user));
 			})
 		}
@@ -142,8 +138,8 @@ function App() {
 					if (chats.length === 0) {
 						return [];
 					}
-					return chats.filter(chat => !chat.users.some(u=> u === data.userDeleted._id));
-					
+					return chats.filter(chat => !chat.users.some(u => u === data.userDeleted._id));
+
 				})
 				setRoom((r) => {
 					if (!r._id) {

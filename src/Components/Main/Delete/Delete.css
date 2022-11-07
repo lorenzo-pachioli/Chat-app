@@ -42,7 +42,6 @@
 
 .delete-chats{
     width: 100%;
-    height: 190px;
     display: flex;
     flex-direction:row;
     justify-content: center;
@@ -53,6 +52,10 @@
     overflow-x: scroll;
     border-top: 2px solid #F0F0F0;
     border-bottom: 2px solid #F0F0F0;
+}
+
+.delete-chats::-webkit-scrollbar {
+    display: none;
 }
 
 .chat-card{

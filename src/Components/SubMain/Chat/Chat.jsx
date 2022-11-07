@@ -111,7 +111,7 @@ export default function Chat({ socket }) {
                         </div>
                     </div>
                 </div>
-            ) : (<h1 className='no-chat'>Novateva chat app</h1>)}
+            ) : (<h1 className='no-chat'>Pachioli chat app</h1>)}
             {redirectComplaint ? (<Navigate to='/chatapp/complaints' replace={true} />) : ('')}
         </div>
     )

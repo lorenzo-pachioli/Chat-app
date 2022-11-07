@@ -27,10 +27,6 @@ export default function ChatApp({ socket }) {
 		setUnReadNum(unRead)
 	}, [chats, user, setUnReadNum]);
 
-	const inHeight = {
-		height: window.innerHeight
-	};
-
 	useEffect(() => {
 		const msgDelete = () => {
 			socket.on("delete_msg_res", data => {
@@ -45,7 +41,7 @@ export default function ChatApp({ socket }) {
 	}, [setRoom, socket, setChats]);
 
 	return (sessionStorage.getItem('email') ? (
-				<div className="ChatApp" style={inHeight} >
+				<div className="ChatApp">
 					<TopBar socket={socket} />
 					<Main socket={socket} />
 				</div>

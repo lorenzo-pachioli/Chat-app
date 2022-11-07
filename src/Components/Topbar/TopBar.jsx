@@ -46,18 +46,19 @@ export default function TopBar({ socket }) {
                 <div>
                     {user ? (
                         user.img ? (
-                            <img src={user.img} className='img' alt='' />
+                            <img src={user.img} className='profile-pic' alt='' />
                         ) : (
-                            <img src={userPhoto} className='img' alt='' />
+                            <img src={userPhoto} className='profile-pic' alt='' />
                         )
                     ) : (
-                        <img src={userPhoto} className='img' alt='' />
+                        <img src={userPhoto} className='profile-pic' alt='' />
                     )
                     }
                     <p>{user ? (`${user.firstName + ' ' + user.lastName}`) : ('no user')}</p>
                 </div>
                 <button onClick={() => setShowList(unReadNum.length > 0 ? !showList : showList)}>
                     <img src={bell} alt='' />
+                    <span style={{display: unreadList.length === 0 ? 'none':'flex'}}>{unreadList.length}</span>
                     <UnRead />
                     {showList && unreadList.length > 0 ? (
                         <div className='unRead-msg'>

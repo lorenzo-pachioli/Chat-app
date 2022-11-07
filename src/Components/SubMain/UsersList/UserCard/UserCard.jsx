@@ -54,10 +54,10 @@ export default function UserCard({ socket, id, img, online, chatId, photo }) {
             <div className='sub-userCard'>
                 <div className='profile-img'>
                     {photo ? (
-                        <img src={photo} className='img' alt='' />
+                        <img src={photo} className='profile-pic' alt='' />
 
                     ) : (
-                        <img src={userPhoto} className='img' alt='' />
+                        <img src={userPhoto} className='profile-pic' alt='' />
                     )
                     }
                     <span className='dot' style={{ 'backgroundColor': `${online ? ('#2e7d32') : ('darkGrey')}` }} />

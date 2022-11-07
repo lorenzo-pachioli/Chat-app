@@ -81,10 +81,13 @@ export default function ControlPanel({socket}){
                     
                 </Link>
             </div>
-            <button className='logout' onClick={handleLogOut}>
-                <img src={logout} alt='' />
-                <p>Loggout</p>
-            </button>
+            <div className='logout-container'>
+                <button className='logout' onClick={handleLogOut}>
+                    <img src={logout} alt='' />
+                    <p>Loggout</p>
+                </button>
+                <hr />
+            </div>
             {logOut ? (<Navigate to='/' replace={true} />):('')}
         </div>
     )
