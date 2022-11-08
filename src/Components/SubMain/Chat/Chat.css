@@ -75,7 +75,7 @@
 .input-message{
     width: 100%;
     height: fit-content;
-    margin: 5% 0 5% 0;
+    margin: 25px 0 20px 0;
     display: flex;
     justify-content: center;
     align-items: flex-end;

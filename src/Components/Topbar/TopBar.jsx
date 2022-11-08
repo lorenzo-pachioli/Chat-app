@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../Context/AppContext';
 import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
-import searchIcon from '../../assets/search-icon.svg';
 import Message from '../SubMain/Chat/Message/Message';
 import { Link } from 'react-router-dom';
 import './TopBar.css';
@@ -36,11 +35,8 @@ export default function TopBar({ socket }) {
 
     return (
         <div className='top-bar'>
-            <div className='user-search'>
-                <div className='sub-user-search'>
-                    <img src={searchIcon} alt='' />
-                    <input type='text' placeholder='User search' />
-                </div>
+            <div className='top-bar-title'>
+                <h2>Pachioli Chat</h2>
             </div>
             <div className='user'>
                 <div>
@@ -58,7 +54,7 @@ export default function TopBar({ socket }) {
                 </div>
                 <button onClick={() => setShowList(unReadNum.length > 0 ? !showList : showList)}>
                     <img src={bell} alt='' />
-                    <span style={{display: unreadList.length === 0 ? 'none':'flex'}}>{unreadList.length}</span>
+                    <span style={{ display: unreadList.length === 0 ? 'none' : 'flex' }}>{unreadList.length}</span>
                     <UnRead />
                     {showList && unreadList.length > 0 ? (
                         <div className='unRead-msg'>

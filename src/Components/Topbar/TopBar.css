@@ -19,6 +19,13 @@
     padding: 1px;
     border-radius: 20px;
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    background-clip: text;
+    color: transparent;
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
 }
 
 .sub-user-search{
@@ -34,14 +41,19 @@
     background-color: white;
 }
 
-.user-search img{
-    height: 50%;
+.top-bar-title{
+    background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    text-align: center;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    color: transparent; 
 }
 
-.user-search input{
-    width: 80%;
-    border-style: none;
-    outline: none;
+.top-bar-title h2 {
+    font-size: 25px;
 }
 
 .user{
@@ -205,36 +217,25 @@
         height: 10%;
     }
 
-    .user-search{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+    .top-bar-title h2 {
+        font-size: 20px;
     }
-
-    .user-search input{
-        display: none;
-        border: 1px solid black;
-    }
-
-    .user-search img{
-        height: 50%;
-    }
-
-    .sub-user-search{
-        justify-content: center;
-        padding: 0;
-        border-radius: 50%;
-    }
+    
 
     .user{
-        width: 55%;
-        justify-content: space-between;
+        width: fit-content;
+        justify-content: flex-end;
         padding: 0 ;
+        gap: 10px;
+    }
+
+    .user div{
+        width: fit-content;
     }
 
     .user button{
         height: 35px;
-        width: 40px;
+        width: fit-content;
     }
 
     .user .img{
