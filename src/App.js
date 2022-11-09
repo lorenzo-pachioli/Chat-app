@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef, useMemo } from 'react';
 import { Route, Routes } from "react-router-dom";
 import ChatApp from './Pages/ChatApp/ChatApp';
 import Login from './Pages/Login/Login';
@@ -11,6 +11,7 @@ import DeleteAcount from './Components/Main/DeleteAcount/DeleteAcount';
 import SubMain from './Pages/SubMain/SubMain';
 import { AppContext } from './Context/AppContext';
 import io from 'socket.io-client';
+import sessionStoragedCredentials from './utils/sessionStoragedCredentials';
 import './App.css';
 
 /* const socket = io.connect(env.SOCKET_URL) */
@@ -18,43 +19,52 @@ const socket = io.connect("https://api-chat.up.railway.app/")
 
 function App() {
 
-	const { user, loading, setLoading, setChats, setUser, setUserList, setRoom } = useContext(AppContext);
+	const { user, loading, setLoading, chats, setChats, setUser, userList, setUserList, room, setRoom } = useContext(AppContext);
 	const userId = user._id;
+	const credentials = useMemo(() => new sessionStoragedCredentials(), []);
+	const refChats = useRef(chats);
+	const refUser = useRef(user);
+	const refUsersList = useRef([]);
+	const refRoom = useRef(room);
+
+	useEffect(() => {
+		refUsersList.current = userList;
+	}, [userList]);
 
 	//log in
 	useEffect(() => {
+
 		const logIn = async () => {
-			socket.on("log_in_res", (data) => {
-				if (!data.status) {
-					return console.error(data.msg, ':', data.error)
+
+			socket.on("log_in_res", (socketResponce) => {
+				if (!socketResponce.status) {
+					return console.error(socketResponce.msg, ':', socketResponce.error)
 				}
-				setUser(user => {
-					if (user._id) {
-						return user;
-					}
-					sessionStorage.setItem('email', `${data.user.email}`);
-					return data.user;
-				})
-				setChats(chat => {
-					if (chat.length > 0) {
-						return chat;
-					}
-					return data.rooms;
-				})
+				if (!refUser.current._id) {
+					credentials.setCredentialsEmail(socketResponce.user.email);
+					refUser.current = socketResponce.user;
+					setUser(socketResponce.user);
+				}
+				if (refChats.current.length === 0) {
+					refChats.current = socketResponce.rooms
+					setChats(socketResponce.rooms);
+				}
 			});
 		}
 
 		logIn();
-	}, [setUser, setChats]);
+	}, [setUser, setChats, credentials]);
 
 	//On page re load set user
 
 	useEffect(() => {
-		const tempEmail = sessionStorage.getItem('email');
-		const tempPass = sessionStorage.getItem('password');
+
+		const tempEmail = credentials.Credentials.email;
+		const tempPass = credentials.Credentials.password;
+
 		const onReload = () => {
 			if (loading) {
-				return '';
+				return;
 			}
 
 			if (user._id === undefined && tempEmail && tempPass) {
@@ -69,22 +79,27 @@ function App() {
 				}
 			}
 		}
+
 		onReload()
-	}, [user, loading]);
+	}, [user, loading, credentials]);
 
 	//log out 
 
 	useEffect(() => {
+
 		const logOut = () => {
-			socket.on('disconnect', data => {
-				return console.log('disconnect', data)
+
+			socket.on('disconnect', socketResponce => {
+				return console.log('disconnect', socketResponce)
 			});
 		}
+
 		const connect = () => {
-			socket.on('connect', data => {
-				return console.log('connect', data)
+			socket.on('connect', socketResponce => {
+				return console.log('connect', socketResponce)
 			});
 		}
+
 		connect();
 		logOut();
 	}, [user]);
@@ -92,12 +107,14 @@ function App() {
 	//get users list
 
 	useEffect(() => {
-		const getUser = async () => {
-			socket.on("get_users_res", data => {
-				if (!data.status) {
-					return console.log(data.msg, ':', data.error)
+
+		const getUser = () => {
+
+			socket.on("get_users_res", socketResponce => {
+				if (!socketResponce.status) {
+					return console.log(socketResponce.msg, ':', socketResponce.error)
 				}
-				setUserList(data.users);
+				setUserList(socketResponce.users);
 			})
 		}
 		getUser();
@@ -106,55 +123,53 @@ function App() {
 	//users online
 
 	useEffect(() => {
-		const onlineUser = async () => {
-			socket.on("online_res", data => {
-				if (!data.status) {
-					return console.log(data.msg, ':', data.error)
+
+		const onlineUser = () => {
+
+			socket.on("online_res", socketResponce => {
+				if (!socketResponce.status) {
+					return console.log(socketResponce.msg, ':', socketResponce.error)
 				}
-				setUserList(user => user.length > 0 ? (user.map(u => u._id === data.user._id ? (data.user) : (u))) : (user));
-			})
+				if (refUsersList.current.length > 0) {
+					const newUserList = refUsersList.current.map(user => user._id === socketResponce.user._id ? (socketResponce.user) : (user));
+					setUserList(newUserList);
+				}
+			});
 		}
+
 		onlineUser();
 	}, [setUserList]);
 
 	//delete user response
 
 	useEffect(() => {
-		const userDeleted = () => {
-			socket.on("delete_user_res", (data) => {
-				if (!data.status) {
-					return console.log(data.msg, ':', data.error)
-				}
 
-				if (data.userDeleted._id === userId) {
-					setLoading(false)
-					setUser({})
-					sessionStorage.setItem('password', '');
-					sessionStorage.setItem('email', '');
+		const userDeleted = () => {
+
+			socket.on("delete_user_res", (socketResponce) => {
+				if (!socketResponce.status) {
+					return console.log(socketResponce.msg, ':', socketResponce.error)
+				}
+				if (socketResponce.userDeleted._id === userId) {
+					setLoading(false);
+					setUser({});
+					credentials.deleteCredentials();
 					return true;
 				}
-				setUserList(data.users);
-				setChats(chats => {
-					if (chats.length === 0) {
-						return [];
-					}
-					return chats.filter(chat => !chat.users.some(u => u === data.userDeleted._id));
-
-				})
-				setRoom((r) => {
-					if (!r._id) {
-						return {};
-					}
-					if (r.users.some(uid => uid === data.userDeleted._id)) {
-						return {};
-					}
-					return r;
-				})
-
-			})
+				setUserList(socketResponce.users);
+				if (refChats.current.length > 0) {
+					const newChats = refChats.current.filter(chat => !chat.users.some(u => u === socketResponce.userDeleted._id));
+					setChats(newChats);
+				}
+				if (refRoom.current.users.some(uid => uid === socketResponce.userDeleted._id)) {
+					refRoom.current = {};
+					setRoom({});
+				}
+			});
 		}
+
 		userDeleted();
-	}, [setLoading, setUser, setChats, userId, setUserList, setRoom]);
+	}, [setLoading, setUser, setChats, userId, setUserList, setRoom, credentials]);
 
 	return (
 		<div className="App">
@@ -168,14 +183,13 @@ function App() {
 					</Route>
 				</Route>
 				<Route>
-					<Route exact path="/" element={<Login />}>
+					<Route exact path="/" element={<Login />} >
 						<Route path="signin" element={<SignIn socket={socket} />} />
 						<Route path="login" element={<LoginBtn socket={socket} />} />
 						<Route path="" element={<Options />} />
 					</Route>
 				</Route>
 			</Routes>
-
 		</div>
 	);
 }

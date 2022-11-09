@@ -16,7 +16,7 @@ export default function ChatApp({ socket }) {
 				if (msj.readBy.length > 1) {
 					return false
 				}
-				
+
 				if (msj.readBy.some((u) => u === user._id)) {
 					return false;
 				}
@@ -41,12 +41,12 @@ export default function ChatApp({ socket }) {
 	}, [setRoom, socket, setChats]);
 
 	return (sessionStorage.getItem('email') ? (
-				<div className="ChatApp">
-					<TopBar socket={socket} />
-					<Main socket={socket} />
-				</div>
-			) : (
-				<Navigate to='/' replace={true} />
-			)
+		<div className="ChatApp">
+			<TopBar socket={socket} />
+			<Main socket={socket} />
+		</div>
+	) : (
+		<Navigate to='/' replace={true} />
+	)
 	);
 }
