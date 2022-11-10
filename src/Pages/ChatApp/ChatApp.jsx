@@ -9,7 +9,7 @@ import './ChatApp.css';
 export default function ChatApp({ socket }) {
 	const { user, chats, setUnReadNum, setRoom, setChats } = useContext(AppContext);
 	const credentials = new sessionStoragedCredentials();
-	const emailInSessionStorage = credentials.Credentials.email;
+	const emailInSessionStorage = credentials.email;
 
 	//All un read messages amount
 	useEffect(() => {

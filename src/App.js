@@ -42,7 +42,7 @@ function App() {
 				}
 
 				if (!refUser.current._id && refChats.current.length === 0) {
-					credentials.setCredentialsEmail(socketResponce.user.email);
+					credentials.setEmail(socketResponce.user.email);
 					setUser(socketResponce.user);
 					setChats(socketResponce.rooms);
 					refUser.current = socketResponce.user;
@@ -57,8 +57,8 @@ function App() {
 	//On page re load set user
 	useEffect(() => {
 
-		const tempEmail = credentials.Credentials.email;
-		const tempPass = credentials.Credentials.password;
+		const tempEmail = credentials.email;
+		const tempPass = credentials.password;
 
 		const onReload = () => {
 			if (loading) {
