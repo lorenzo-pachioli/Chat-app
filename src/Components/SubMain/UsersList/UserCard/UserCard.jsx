@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../../../Context/AppContext';
 import userPhoto from '../../../../assets/user.png'
+import UnReadDot from '../../../../utils/UnReadDot/UnReadDot';
 import './UserCard.css';
 
 export default function UserCard({ socket, id, img, online, chatId, photo }) {
 
     const { user, room, setRoom, chats, userList, newChat, setNewChat, unReadNum } = useContext(AppContext);
-
-    const background = 'linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%)';
     const borderNewChat = {
         border: '2px solid #858585'
     };
@@ -32,19 +31,16 @@ export default function UserCard({ socket, id, img, online, chatId, photo }) {
     };
 
     const UnRead = () => {
-        if (id === user._id) {
-            return <p style={{ background: 'white' }}></p>;
-        }
-        if (unReadNum.length === 0) {
-            return <p style={{ background: 'white' }}></p>;
+        if (id === user._id || unReadNum.length === 0) {
+            return <UnReadDot unReadNumber={0} />
         }
         const unread = unReadNum.find((chat) => chat.chatId === chatId);
         if (unread) {
             if (unread.chatId === room._id) {
-                return <p style={{ background: 'white' }}></p>;
+                return <UnReadDot unReadNumber={0} />
             }
             if (unread.unRead.length > 0) {
-                return <p style={{ background: background }}>{unread.unRead.length}</p>
+                return <UnReadDot unReadNumber={unread.unRead.length} />
             }
         }
     };
@@ -66,7 +62,7 @@ export default function UserCard({ socket, id, img, online, chatId, photo }) {
                     {userList ? (userList.length > 0 ? (name()) : ('Loading...')) : ('Loading...')}
                 </div>
             </div>
-            <div className='msj-number'  >
+            <div className='msj-number'>
                 <UnRead />
             </div>
         </div>

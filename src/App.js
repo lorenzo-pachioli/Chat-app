@@ -12,10 +12,10 @@ import SubMain from './Pages/SubMain/SubMain';
 import { AppContext } from './Context/AppContext';
 import io from 'socket.io-client';
 import sessionStoragedCredentials from './utils/sessionStoragedCredentials';
+import env from 'react-dotenv';
 import './App.css';
 
-/* const socket = io.connect(env.SOCKET_URL) */
-const socket = io.connect("https://api-chat.up.railway.app/")
+const socket = io.connect(env.SOCKET_URL);
 
 function App() {
 
@@ -40,14 +40,13 @@ function App() {
 				if (!socketResponce.status) {
 					return console.error(socketResponce.msg, ':', socketResponce.error)
 				}
-				if (!refUser.current._id) {
+
+				if (!refUser.current._id && refChats.current.length === 0) {
 					credentials.setCredentialsEmail(socketResponce.user.email);
-					refUser.current = socketResponce.user;
 					setUser(socketResponce.user);
-				}
-				if (refChats.current.length === 0) {
-					refChats.current = socketResponce.rooms
 					setChats(socketResponce.rooms);
+					refUser.current = socketResponce.user;
+					refChats.current = socketResponce.rooms
 				}
 			});
 		}
@@ -56,7 +55,6 @@ function App() {
 	}, [setUser, setChats, credentials]);
 
 	//On page re load set user
-
 	useEffect(() => {
 
 		const tempEmail = credentials.Credentials.email;
@@ -84,11 +82,9 @@ function App() {
 	}, [user, loading, credentials]);
 
 	//log out 
-
 	useEffect(() => {
 
 		const logOut = () => {
-
 			socket.on('disconnect', socketResponce => {
 				return console.log('disconnect', socketResponce)
 			});
@@ -115,8 +111,9 @@ function App() {
 					return console.log(socketResponce.msg, ':', socketResponce.error)
 				}
 				setUserList(socketResponce.users);
-			})
+			});
 		}
+
 		getUser();
 	}, [setUserList]);
 
@@ -144,6 +141,10 @@ function App() {
 
 	useEffect(() => {
 
+		const userDeletedHasRoom = (userDeletedId) => {
+			return refRoom.current.users.some(uid => uid === userDeletedId)
+		}
+
 		const userDeleted = () => {
 
 			socket.on("delete_user_res", (socketResponce) => {
@@ -154,14 +155,14 @@ function App() {
 					setLoading(false);
 					setUser({});
 					credentials.deleteCredentials();
-					return true;
+					return;
 				}
 				setUserList(socketResponce.users);
 				if (refChats.current.length > 0) {
 					const newChats = refChats.current.filter(chat => !chat.users.some(u => u === socketResponce.userDeleted._id));
 					setChats(newChats);
 				}
-				if (refRoom.current.users.some(uid => uid === socketResponce.userDeleted._id)) {
+				if (userDeletedHasRoom(socketResponce.userDeleted._id)) {
 					refRoom.current = {};
 					setRoom({});
 				}

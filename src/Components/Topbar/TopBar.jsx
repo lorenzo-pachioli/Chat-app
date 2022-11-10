@@ -4,6 +4,7 @@ import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import Message from '../SubMain/Chat/Message/Message';
 import { Link } from 'react-router-dom';
+import UnReadDot from '../../utils/UnReadDot/UnReadDot';
 import './TopBar.css';
 
 export default function TopBar({ socket }) {
@@ -11,14 +12,6 @@ export default function TopBar({ socket }) {
     const { user, chats, unReadNum, setRoom } = useContext(AppContext);
     const [unreadList, setUnreadList] = useState([]);
     const [showList, setShowList] = useState(false);
-
-    const UnRead = () => {
-        const num = unReadNum.map(chat => chat.unRead.length);
-        if (num > 0) {
-            const total = num.reduce((a, b) => a + b)
-            return <span className='dot'>{total}</span>
-        };
-    }
 
     const handleSetRoom = (id, chatId) => {
         if (id !== user._id) {
@@ -54,8 +47,7 @@ export default function TopBar({ socket }) {
                 </div>
                 <button onClick={() => setShowList(unReadNum.length > 0 ? !showList : showList)}>
                     <img src={bell} alt='' />
-                    <span style={{ display: unreadList.length === 0 ? 'none' : 'flex' }}>{unreadList.length}</span>
-                    <UnRead />
+                    <UnReadDot unReadNumber={unreadList.length} />
                     {showList && unreadList.length > 0 ? (
                         <div className='unRead-msg'>
                             <div className='sub-unRead-msg'>

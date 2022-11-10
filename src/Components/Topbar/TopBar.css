@@ -98,21 +98,6 @@
     height: 80%;
 }
 
-.user .dot{
-    height:15px;
-    width: 15px;
-    position: absolute;
-    top:0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 8px;
-    color: white;
-    background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
-    border-radius: 50%;
-}
-
 .user .unRead-msg{
     position: absolute;
     width: fit-content;
@@ -195,21 +180,6 @@
     text-overflow: ellipsis;
 }
 
-.user span{
-    position: absolute;
-    top: 0px;
-    left: 70%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 10px;
-    font-weight: 700;
-    border-radius: 50%;
-    background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
-    color: white;
-}
 
 @media screen and (max-width:1000px) {
 

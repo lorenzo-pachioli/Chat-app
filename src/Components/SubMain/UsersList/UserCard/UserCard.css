@@ -73,6 +73,7 @@
 }
 
 .msj-number{
+    position: relative;
     width: 20px;
     height: 20px;
     display: flex;
