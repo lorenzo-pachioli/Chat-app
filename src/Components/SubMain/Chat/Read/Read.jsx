@@ -5,6 +5,7 @@ import moment from 'moment';
 import '../Chat.css';
 
 export default function Read({ socket }) {
+
     const { user, room } = useContext(AppContext);
     const [read, setRead] = useState([]);
 
@@ -32,14 +33,12 @@ export default function Read({ socket }) {
         read();
     }, [room, user, socket]);
 
-
-
     return (
         <div className='conversation'>
             {read.length > 0 ? (
                 read.map((msj) => {
                     return msj._id ? (
-                        <Message key={msj._id} user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} socket={socket} />
+                        <Message key={msj._id} user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} />
                     ) : ('')
                 })
             ) : ('')}

@@ -1,60 +1,19 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppContext } from '../../../Service/AppContext';
 import userPhoto from '../../../assets/user.png';
 import '../../../Pages/SubMain/SubMain.css';
 import '../Delete/Delete.css';
 
 export default function DeleteAcount() {
-    const {
-        user,
-        setLogOut,
-        setUser,
-        setUserList,
-        setToken,
-        setRedirect,
-        setChats,
-        setRoom,
-        setLoading,
-        setUnReadNum,
-        socket
-    } = useContext(AppContext);
+
+    const { user, socket } = useContext(AppContext);
     const [password, setPassword] = useState('');
-    const userId = user._id;
 
     const handleDelete = () => {
         if (password.length > 0 && user._id) {
-            console.log(user.email, password)
             socket.emit("delete_user", { email: user.email, password: password });
         }
     }
-
-    useEffect(() => {
-        const acountDelete = () => {
-            socket.on("delete_user_res", data => {
-                if (!data.status) {
-                    return console.log(data.msg, ':', data.error)
-                }
-                if (data.userDeleted._id === userId) {
-                    setLogOut(true)
-                    setUser({})
-                    setUserList({})
-                    setToken({})
-                    setRedirect(false)
-                    setChats([])
-                    setRoom({})
-                    setLoading(false)
-                    setUnReadNum([])
-                    sessionStorage.setItem('password', ``);
-                    sessionStorage.setItem('email', ``);
-                    setTimeout(() => {
-                        setLogOut(false)
-                    }, 1000);
-                }
-
-            })
-        }
-        acountDelete();
-    }, [userId, setLogOut, setUser, setUserList, setToken, setRedirect, setChats, setRoom, setLoading, setUnReadNum, socket]);
 
     return (
         <div className='sub-main'>

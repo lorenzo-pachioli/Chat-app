@@ -1,10 +1,7 @@
 import { useContext, useEffect, useMemo, useRef } from "react";
 import sessionStoragedCredentials from "../utils/sessionStoragedCredentials";
 import { AppContext } from "./AppContext";
-import env from 'react-dotenv';
-import io from 'socket.io-client';
-
-const socket = io.connect(env.SOCKET_URL);
+import { socket } from "..";
 
 export default function SocketConfig() {
 
@@ -18,7 +15,13 @@ export default function SocketConfig() {
     setUserList,
     loading,
     setLoading,
-    setSocket
+    setSocket,
+    setLogOut,
+    setToken,
+    setRedirect,
+    setUnReadNum,
+    deleteChat,
+    setDelete
   } = useContext(AppContext);
 
   const credentials = useMemo(() => new sessionStoragedCredentials(), []);
@@ -27,8 +30,9 @@ export default function SocketConfig() {
   const userId = user._id;
   const refUsersList = useRef([]);
   const refRoom = useRef(room);
+  const dateFrom = (date) => new Date(date).getTime();
 
-  //connection status
+  // connection status ---------------------------------------------------------------------------------------
   useEffect(() => {
 
     socket.on('connect', () => {
@@ -38,7 +42,7 @@ export default function SocketConfig() {
     socket.on('disconnect', () => console.log('disconnect'));
   }, [setSocket]);
 
-  //log in
+  // log in response -----------------------------------------------------------------------------------------
   useEffect(() => {
 
     socket.on("log_in_res", (socketResponce) => {
@@ -49,12 +53,12 @@ export default function SocketConfig() {
         setUser(socketResponce.user);
         setChats(socketResponce.rooms);
         refUser.current = socketResponce.user;
-        refChats.current = socketResponce.rooms
+        refChats.current = socketResponce.rooms;
       }
     });
   }, [setUser, setChats, credentials]);
 
-  //On page re load set user
+  // On page re load set user  --------------------------------------------------------------------------------
   useEffect(() => {
 
     const tempEmail = credentials.email;
@@ -63,17 +67,21 @@ export default function SocketConfig() {
 
       if (loading) return;
       if (user._id === undefined && tempEmail && tempPass) {
-        socket.emit("log_in", {
-          email: tempEmail,
-          password: tempPass,
-          online: true
-        }).catch(err => console.log(`Something went wrong on reloading page, error: ${err}`));
+        try {
+          socket.emit("log_in", {
+            email: tempEmail,
+            password: tempPass,
+            online: true
+          })
+        } catch (err) {
+          console.log(`Something went wrong on reloading page, error: ${err}`)
+        }
       }
     }
     onReload();
   }, [user, loading, credentials]);
 
-  //get users list
+  // get users list response ------------------------------------------------------------------------------------------
   useEffect(() => {
 
     socket.on("get_users_res", socketResponce => {
@@ -82,7 +90,7 @@ export default function SocketConfig() {
     });
   }, [setUserList]);
 
-  //users online
+  // users online response --------------------------------------------------------------------------------------------
   useEffect(() => {
 
     socket.on("online_res", socketResponce => {
@@ -94,19 +102,102 @@ export default function SocketConfig() {
     });
   }, [setUserList]);
 
-  //delete user response
+  // Message sent response ----------------------------------------------------------------------------------
   useEffect(() => {
 
-    const userDeletedHasRoom = (userDeletedId) => refRoom.current.users.some(uid => uid === userDeletedId);
+    socket.on("send_msg_res", async data => {
+      if (!data.status) {
+        return console.log(data.msg, ':', data.error);
+      }
+      setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)))
+      await data.room.messages.sort((a, b) => { return dateFrom(a.time) < dateFrom(b.time) });
+      setRoom(r => r._id === data.room._id ? (data.room) : (r));
+    });
+  }, [setRoom, setChats]);
+
+  // messages set read response -------------------------------------------------------------------------------------
+  useEffect(() => {
+    socket.on("read_msg_res", async data => {
+      if (!data.status) {
+        return console.log(data.msg, ':', data.error);
+      }
+      await data.room.messages.sort((a, b) => { return dateFrom(a.time) < dateFrom(b.time) });
+      setRoom(r => r._id === data.room._id ? (data.room) : (r));
+      setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)));
+    })
+  }, [setChats, setRoom]);
+
+  //chat initiated response -----------------------------------------------------------------------------------
+  useEffect(() => {
+
+    socket.on("init_room_res", data => {
+      if (!data.status) {
+        return console.log(data.msg, ':', data.error);
+      };
+      if (data.otherUser === userId) {
+        socket.emit("join_room", { _id: userId, room_id: data.room._id });
+      }
+      if (data.room.users.find(id => id === userId)) {
+        setChats(chat => {
+          if (chat.some(c => c._id === data.room._id)) {
+            return chat;
+          }
+          return [...chat, data.room]
+        });
+      }
+    });
+  }, [setChats, userId]);
+
+  // delete message response ---------------------------------------------------------------------------------
+  useEffect(() => {
+
+    socket.on("delete_msg_res", data => {
+      if (!data.status) {
+        return console.log(data.msg, ':', data.error);
+      }
+      setRoom(data.room);
+      setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)));
+    });
+  }, [setRoom, setChats]);
+
+  // delete chat response -----------------------------------------------------------------------------------
+  useEffect(() => {
+
+    socket.on("delete_chat_res", data => {
+      if (!data.status) {
+        return console.log(data.msg, ':', data.error);
+      }
+      setChats(chat => chat.filter((chat) => chat._id !== deleteChat));
+      setRoom({});
+      setDelete('');
+    });
+  }, [deleteChat, setDelete, setChats, setRoom]);
+
+  //delete user response -------------------------------------------------------------------------------------
+  useEffect(() => {
+
+    const userDeletedHasRoom = (userDeletedId) => refRoom.current.users && refRoom.current.users.some(uid => uid === userDeletedId);
 
     socket.on("delete_user_res", (socketResponce) => {
+
       if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
       if (socketResponce.userDeleted._id === userId) {
         setLoading(false);
         setUser({});
+        setLogOut(true);
+        setUserList({});
+        setToken({});
+        setRedirect(false);
+        setChats([]);
+        setRoom({});
+        setUnReadNum([]);
         credentials.deleteCredentials();
+        setTimeout(() => {
+          setLogOut(false);
+        }, 1000);
         return;
       }
+
       setUserList(socketResponce.users);
       if (refChats.current.length > 0) {
         const newChats = refChats.current.filter(chat => !chat.users.some(u => u === socketResponce.userDeleted._id));
@@ -117,5 +208,17 @@ export default function SocketConfig() {
         setRoom({});
       }
     });
-  }, [setLoading, setUser, setChats, userId, setUserList, setRoom, credentials]);
+  }, [
+    setLoading,
+    setUser,
+    setChats,
+    userId,
+    setUserList,
+    setRoom,
+    credentials,
+    setLogOut,
+    setRedirect,
+    setToken,
+    setUnReadNum
+  ]);
 }

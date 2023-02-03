@@ -9,9 +9,23 @@ import deleteAcount from '../../../assets/delete-person.svg';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './ControlPanel.css';
 
-export default function ControlPanel({ socket }) {
+export default function ControlPanel() {
 
-    const { user, logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats, setRoom, setLoading, setUnReadNum } = useContext(AppContext);
+    const {
+        user,
+        logOut,
+        setLogOut,
+        unReadNum,
+        setUser,
+        setUserList,
+        setToken,
+        setRedirect,
+        setChats,
+        setRoom,
+        setLoading,
+        setUnReadNum,
+        socket
+    } = useContext(AppContext);
     const credentials = new sessionStoragedCredentials();
     const menu = [
         {

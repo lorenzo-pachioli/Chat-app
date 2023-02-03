@@ -4,9 +4,9 @@ import trashCan from '../../../../assets/trash-can.svg';
 import './Message.css';
 import moment from 'moment';
 
-export default function Message({ user, id, date, content, postedBy, socket }) {
+export default function Message({ user, id, date, content, postedBy }) {
 
-    const { userList, room } = useContext(AppContext);
+    const { userList, room, socket } = useContext(AppContext);
     const dateFrom = moment(date).fromNow();
 
     const name = () => {

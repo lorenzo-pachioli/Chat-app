@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-
+import { socket as initSocket } from "..";
 export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
@@ -16,7 +15,9 @@ export default function AppProvider({ children }) {
   const [newChat, setNewChat] = useState(false);
   const [unReadNum, setUnReadNum] = useState([]);
   const [url, setUrl] = useState('');
-  const [socket, setSocket] = useState({});
+  const [socket, setSocket] = useState(initSocket);
+  const [deleteChat, setDelete] = useState('');
+
 
   return (
     <AppContext.Provider
@@ -44,7 +45,9 @@ export default function AppProvider({ children }) {
         url,
         setUrl,
         socket,
-        setSocket
+        setSocket,
+        deleteChat,
+        setDelete
       }}
     >
       {children}

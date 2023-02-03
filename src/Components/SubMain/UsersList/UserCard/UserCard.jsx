@@ -4,9 +4,9 @@ import userPhoto from '../../../../assets/user.png'
 import UnReadDot from '../../../../utils/UnReadDot/UnReadDot';
 import './UserCard.css';
 
-export default function UserCard({ socket, id, img, online, chatId, photo }) {
+export default function UserCard({ id, img, online, chatId, photo }) {
 
-    const { user, room, setRoom, chats, userList, newChat, setNewChat, unReadNum } = useContext(AppContext);
+    const { user, room, setRoom, chats, userList, newChat, setNewChat, unReadNum, socket } = useContext(AppContext);
     const borderNewChat = {
         border: '2px solid #858585'
     };
@@ -19,6 +19,7 @@ export default function UserCard({ socket, id, img, online, chatId, photo }) {
     };
 
     const handleMessages = async () => {
+
         if (newChat) {
             socket.emit("init_room", { otherUser: id, _id: user._id })
             return setNewChat(false);

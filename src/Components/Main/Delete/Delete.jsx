@@ -1,12 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../../../Service/AppContext';
 import userPhoto from '../../../assets/user.png';
 import '../../../Pages/SubMain/SubMain.css';
 import './Delete.css';
 
 export default function Delete() {
-    const { user, chats, setChats, userList, setRoom, socket } = useContext(AppContext);
-    const [deleteChat, setDelete] = useState('')
+    const { user, chats, userList, socket, deleteChat, setDelete } = useContext(AppContext);
 
     const findUserName = (userIds) => {
         if (userIds.length > 0 && userList.length > 0) {
@@ -29,20 +28,6 @@ export default function Delete() {
             socket.emit("delete_chat", { _id: user._id, room_id: deleteChat });
         }
     }
-
-    useEffect(() => {
-        const chatDelete = () => {
-            socket.on("delete_chat_res", data => {
-                if (!data.status) {
-                    return console.log(data.msg, ':', data.error)
-                }
-                setChats(chat => chat.filter((chat) => chat._id !== deleteChat))
-                setRoom({})
-                setDelete('')
-            })
-        }
-        chatDelete();
-    }, [deleteChat, setChats, setRoom, socket]);
 
     return (
         <div className='sub-main'>

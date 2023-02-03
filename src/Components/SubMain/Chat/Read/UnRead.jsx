@@ -5,6 +5,7 @@ import moment from 'moment';
 import '../Chat.css';
 
 export default function UnRead({ socket }) {
+
     const { user, room } = useContext(AppContext);
     const [unRead, setUnRead] = useState([]);
 
@@ -26,6 +27,7 @@ export default function UnRead({ socket }) {
         }
         unRead();
     }, [room, user]);
+
     return (
         <div className='conversation' style={unRead.length > 0 ? ({ display: 'flex' }) : ({ display: 'none' })}>
             <div className='unread'>
@@ -36,13 +38,11 @@ export default function UnRead({ socket }) {
                 unRead.length > 0 ? (
                     unRead.map((msj) => {
                         return msj._id ? (
-                            <Message key={msj._id} user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} socket={socket} />
+                            <Message key={msj._id} user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} />
                         ) : ('')
                     })
                 ) : ('')
             }
-
         </div>
-
     )
 }
