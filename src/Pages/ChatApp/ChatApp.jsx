@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { Navigate } from "react-router-dom";
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import TopBar from '../../Components/Topbar/TopBar';
 import Main from '../Main/Main';
 import sessionStoragedCredentials from '../../utils/sessionStoragedCredentials';
 import './ChatApp.css';
 
-export default function ChatApp({ socket }) {
-	const { user, chats, setUnReadNum, setRoom, setChats } = useContext(AppContext);
+export default function ChatApp() {
+	const { user, chats, setUnReadNum, setRoom, setChats, socket } = useContext(AppContext);
 	const credentials = new sessionStoragedCredentials();
 	const emailInSessionStorage = credentials.email;
 

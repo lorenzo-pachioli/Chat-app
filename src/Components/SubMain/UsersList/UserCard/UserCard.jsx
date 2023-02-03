@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../../../Context/AppContext';
+import { AppContext } from '../../../../Service/AppContext';
 import userPhoto from '../../../../assets/user.png'
 import UnReadDot from '../../../../utils/UnReadDot/UnReadDot';
 import './UserCard.css';

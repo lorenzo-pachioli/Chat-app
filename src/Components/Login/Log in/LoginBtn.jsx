@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { Navigate } from "react-router-dom";
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './LoginBtn.css';
 
-export default function LoginBtn({ socket }) {
+export default function LoginBtn() {
 
-  const { user, redirect, setRedirect, loading, setLoading, setLogOut, userList } = useContext(AppContext);
+  const {
+    user,
+    redirect,
+    setRedirect,
+    loading,
+    setLoading,
+    setLogOut,
+    userList,
+    socket
+  } = useContext(AppContext);
   const [error, setError] = useState(false);
   const [form, setForm] = useState({
     email: '',

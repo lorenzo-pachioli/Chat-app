@@ -1,11 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import userPhoto from '../../../assets/user.png';
 import '../../../Pages/SubMain/SubMain.css';
 import '../Delete/Delete.css';
 
-export default function DeleteAcount({ socket }) {
-    const { user, setLogOut, setUser, setUserList, setToken, setRedirect, setChats, setRoom, setLoading, setUnReadNum } = useContext(AppContext);
+export default function DeleteAcount() {
+    const {
+        user,
+        setLogOut,
+        setUser,
+        setUserList,
+        setToken,
+        setRedirect,
+        setChats,
+        setRoom,
+        setLoading,
+        setUnReadNum,
+        socket
+    } = useContext(AppContext);
     const [password, setPassword] = useState('');
     const userId = user._id;
 

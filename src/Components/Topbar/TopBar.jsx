@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import Message from '../SubMain/Chat/Message/Message';

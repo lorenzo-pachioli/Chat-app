@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import Read from './Read/Read';
 import UnRead from './Read/UnRead';
 import html2canvas from 'html2canvas';
@@ -71,7 +71,7 @@ export default function Chat({ socket }) {
                     setRedirectCompl(false)
                 }, 500);
             }
-        } catch(err) {
+        } catch (err) {
             console.log('error', err)
         }
     }

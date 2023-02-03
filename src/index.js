@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppProvider from './Context/AppContext';
+import AppProvider from './Service/AppContext';
+import SocketConfig from './Service/SocketConfig';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,8 +12,8 @@ root.render(
 		<Router>
 			<AppProvider >
 				<App />
+				<SocketConfig />
 			</AppProvider>
 		</Router>
 	</React.StrictMode>
 );
-

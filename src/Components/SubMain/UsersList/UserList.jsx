@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import userPhoto from '../../../assets/user.png';
 import UserCard from './UserCard/UserCard';
 import './UserList.css';
@@ -16,7 +16,7 @@ export default function UserList({ socket }) {
     const findUserOnline = (id) => {
         if (userList.length > 0) {
             const UID = userList.find(u => u._id.toString() === id)
-            return UID ? UID.online:id;
+            return UID ? UID.online : id;
         }
     };
 

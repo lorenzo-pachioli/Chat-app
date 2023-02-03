@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import ControlPanel from '../../Components/Main/ControlPanel/ControlPanel';
 import { Navigate } from "react-router-dom";
 import './Main.css';

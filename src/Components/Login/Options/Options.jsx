@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import './Options.css';
 
 export default function Options() {

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import { Link, Navigate } from "react-router-dom";
 import logout from '../../../assets/logout.svg';
 import chat from '../../../assets/chat-bubble.svg';

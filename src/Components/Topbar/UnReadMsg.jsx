@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import Message from '../SubMain/Chat/Message/Message';
 import { Link } from 'react-router-dom';
 

@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import userPhoto from '../../../assets/user.png';
 import '../../../Pages/SubMain/SubMain.css';
 import './Delete.css';
 
-export default function Delete({ socket }) {
-    const { user, chats, setChats, userList, setRoom } = useContext(AppContext);
+export default function Delete() {
+    const { user, chats, setChats, userList, setRoom, socket } = useContext(AppContext);
     const [deleteChat, setDelete] = useState('')
 
     const findUserName = (userIds) => {

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import Chat from '../../Components/SubMain/Chat/Chat';
 import UserList from '../../Components/SubMain/UsersList/UserList';
 import './SubMain.css';
 
-export default function SubMain({ socket }) {
+export default function SubMain() {
 
-    const { setRoom, setChats } = useContext(AppContext);
+    const { setRoom, setChats, socket } = useContext(AppContext);
 
     useEffect(() => {
         const newMessage = () => {
