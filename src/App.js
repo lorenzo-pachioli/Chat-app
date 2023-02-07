@@ -11,11 +11,11 @@ import DeleteAcount from './Components/Main/DeleteAcount/DeleteAcount';
 import SubMain from './Pages/SubMain/SubMain';
 import { AppContext } from './Service/AppContext';
 import './App.css';
-import GuardedRoute from './Service/GuardRoute';
+import { ConnectionGuard, AuthGuard } from './Service/GuardRoute';
 
 function App() {
 
-	const { userList } = useContext(AppContext);
+	const { user, userList } = useContext(AppContext);
 	const refUsersList = useRef([]);
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ function App() {
 		<div className="App">
 			<Routes>
 				<Route>
-					<Route path="chatapp" element={<GuardedRoute element={ChatApp} />} >
+					<Route path="chatapp" element={<AuthGuard element={<ConnectionGuard element={<ChatApp />} />} auth={user._id && true} />} >
 						<Route path="complaints" element={<Complaints />} />
 						<Route path="delete" element={<Delete />} />
 						<Route path="deleteAcount" element={<DeleteAcount />} />
@@ -34,7 +34,7 @@ function App() {
 					</Route>
 				</Route>
 				<Route>
-					<Route exact path="/" element={<GuardedRoute element={Login} />} >
+					<Route exact path="/" element={<ConnectionGuard element={<Login />} />} >
 						<Route path="signin" element={<SignIn />} />
 						<Route path="login" element={<LoginBtn />} />
 						<Route path="" element={<Options />} />

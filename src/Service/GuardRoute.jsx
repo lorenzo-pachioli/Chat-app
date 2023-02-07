@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
-import { socket } from '..';
+import React, { useContext } from 'react';
 import Loading from '../Pages/Loading/Loading';
+import { AppContext } from './AppContext';
 
-function GuardedRoute({ element: Component, auth = false }) {
+export function ConnectionGuard({ element }) {
 
-  const [socketConnected, setSocketConnected] = useState(false);
-
-  socket.on('connect', () => {
-    setSocketConnected(socket.connected);
-  });
+  const { socket } = useContext(AppContext);
 
   return (
-    socketConnected || auth
-      ? <Component />
+    socket
+      ? element
       : <Loading />)
-}
+};
 
-export default GuardedRoute;
+
+export function AuthGuard({ element }) {
+
+  const { user, logOut } = useContext(AppContext);
+
+  return (
+    user._id || logOut
+      ? element
+      : <Loading />)
+};

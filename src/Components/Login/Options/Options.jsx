@@ -1,17 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
-import { AppContext } from '../../../Service/AppContext';
 import './Options.css';
 
 export default function Options() {
-	const { setUser, setRedirect, setLoading } = useContext(AppContext);
-
-	useEffect(() => {
-		setLoading(false)
-		setUser({})
-		sessionStorage.setItem('password', '');
-		sessionStorage.setItem('email', '');
-	}, [setUser, setRedirect, setLoading]);
 
 	return (
 		<div className="Options">

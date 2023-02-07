@@ -10,8 +10,6 @@ import io from 'socket.io-client';
 
 export const socket = io.connect(env.SOCKET_URL);
 
-console.log(socket.connected);
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>

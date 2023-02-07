@@ -1,15 +1,11 @@
 import React, { useEffect, useContext } from 'react';
-import { Navigate } from "react-router-dom";
 import { AppContext } from '../../Service/AppContext';
 import TopBar from '../../Components/Topbar/TopBar';
 import Main from '../Main/Main';
-import sessionStoragedCredentials from '../../utils/sessionStoragedCredentials';
 import './ChatApp.css';
 
 export default function ChatApp() {
 	const { user, chats, setUnReadNum } = useContext(AppContext);
-	const credentials = new sessionStoragedCredentials();
-	const emailInSessionStorage = credentials.email;
 
 	//All un read messages amount
 	useEffect(() => {
@@ -28,13 +24,9 @@ export default function ChatApp() {
 	}, [chats, user, setUnReadNum]);
 
 	return (
-		emailInSessionStorage ? (
-			<div className="ChatApp">
-				<TopBar />
-				<Main />
-			</div>
-		) : (
-			<Navigate to='/' replace={true} />
-		)
+		<div className="ChatApp">
+			<TopBar />
+			<Main />
+		</div>
 	);
 }
