@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { socket as initSocket } from "..";
+import sessionStoragedCredentials from "../utils/sessionStoragedCredentials";
 export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
+
+  const credentials = useMemo(() => new sessionStoragedCredentials(), []);
 
   const [user, setUser] = useState({});
   const [userList, setUserList] = useState({});
   const [token, setToken] = useState({});
   const [chats, setChats] = useState([]);
   const [room, setRoom] = useState({});
-  const [redirect, setRedirect] = useState(sessionStorage.getItem('email') && sessionStorage.getItem('password') ? (true) : (false));
+  const [redirect, setRedirect] = useState(credentials.email && credentials.password ? (true) : (false));
   const [loading, setLoading] = useState(false);
   const [logOut, setLogOut] = useState(false);
   const [newChat, setNewChat] = useState(false);

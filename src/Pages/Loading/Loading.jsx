@@ -11,7 +11,7 @@ export default function Loading() {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			setToLogin(true);
-		}, 4000);
+		}, 6000);
 		if (user._id) return clearTimeout(timeout);
 	}, [user]);
 

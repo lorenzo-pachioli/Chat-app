@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
+import { Navigate } from 'react-router-dom';
 import Loading from '../Pages/Loading/Loading';
+import sessionStoragedCredentials from '../utils/sessionStoragedCredentials';
 import { AppContext } from './AppContext';
 
 export function ConnectionGuard({ element }) {
@@ -16,9 +18,14 @@ export function ConnectionGuard({ element }) {
 export function AuthGuard({ element }) {
 
   const { user, logOut } = useContext(AppContext);
+  const credentials = useMemo(() => new sessionStoragedCredentials(), []);
 
-  return (
-    user._id || logOut
-      ? element
-      : <Loading />)
+  if (credentials.email && credentials.password) {
+    return (
+      user._id || logOut
+        ? element
+        : <Loading />)
+  } else {
+    return <Navigate to='/' replace={true} />
+  }
 };
