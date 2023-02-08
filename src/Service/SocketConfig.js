@@ -48,14 +48,15 @@ export default function SocketConfig() {
 
       if (!socketResponce.status) return console.error(socketResponce.msg, ':', socketResponce.error);
 
-      console.log('log in', socketResponce);
-      credentials.setEmail(socketResponce.user.email);
-      setUser(socketResponce.user);
-      setChats(socketResponce.rooms);
-      setRedirect(false);
-      refUser.current = socketResponce.user;
-      refChats.current = socketResponce.rooms;
-
+      if (socketResponce.user) {
+        console.log('log in');
+        credentials.setEmail(socketResponce.user.email);
+        setUser(socketResponce.user);
+        setChats(socketResponce.rooms);
+        setRedirect(false);
+        refUser.current = socketResponce.user;
+        refChats.current = socketResponce.rooms;
+      }
     });
   }, [credentials, setChats, setUser, setRedirect]);
 
@@ -87,6 +88,7 @@ export default function SocketConfig() {
   // get users list response ------------------------------------------------------------------------------------------
   useEffect(() => {
     socket.on("get_users_res", socketResponce => {
+      console.log('get_users_res', refUsersList.current);
       if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
       setUserList(socketResponce.users);
     });
