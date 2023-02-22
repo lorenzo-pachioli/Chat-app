@@ -49,7 +49,6 @@ export default function SocketConfig() {
       if (!socketResponce.status) return console.error(socketResponce.msg, ':', socketResponce.error);
 
       if (socketResponce.user) {
-        console.log('log in');
         credentials.setEmail(socketResponce.user.email);
         setUser(socketResponce.user);
         setChats(socketResponce.rooms);
@@ -88,7 +87,6 @@ export default function SocketConfig() {
   // get users list response ------------------------------------------------------------------------------------------
   useEffect(() => {
     socket.on("get_users_res", socketResponce => {
-      console.log('get_users_res', refUsersList.current);
       if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
       setUserList(socketResponce.users);
     });
@@ -98,6 +96,7 @@ export default function SocketConfig() {
   // users online response --------------------------------------------------------------------------------------------
   useEffect(() => {
     socket.on("online_res", socketResponce => {
+
       if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
       if (refUsersList.current.length > 0) {
         const newUserList = refUsersList.current.map(user => user._id === socketResponce.user._id ? (socketResponce.user) : (user));
@@ -109,7 +108,7 @@ export default function SocketConfig() {
   // Message sent response ----------------------------------------------------------------------------------
   useEffect(() => {
     socket.on("send_msg_res", async data => {
-      console.log(data);
+
       if (!data.status) {
         return console.log(data.msg, ':', data.error);
       }
@@ -122,6 +121,7 @@ export default function SocketConfig() {
   // messages set read response -------------------------------------------------------------------------------------
   useEffect(() => {
     socket.on("read_msg_res", async data => {
+
       if (!data.status) {
         return console.log(data.msg, ':', data.error);
       }
