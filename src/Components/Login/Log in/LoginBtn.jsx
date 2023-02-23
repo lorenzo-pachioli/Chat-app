@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { Navigate } from "react-router-dom";
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './LoginBtn.css';
 
-export default function LoginBtn({ socket }) {
+export default function LoginBtn() {
 
-  const { user, redirect, setRedirect, loading, setLoading, setLogOut, userList } = useContext(AppContext);
+  const {
+    user,
+    redirect,
+    setRedirect,
+    loading,
+    setLoading,
+    setLogOut,
+    userList,
+    socket
+  } = useContext(AppContext);
   const [error, setError] = useState(false);
   const [form, setForm] = useState({
     email: '',
@@ -35,7 +44,7 @@ export default function LoginBtn({ socket }) {
 
   const handleLogIn = async () => {
     setLoading(true);
-    if (form.email && !sessionStorage.getItem('email') && !sessionStorage.getItem('password')) {
+    if (form.email && !credentials.email && !credentials.password) {
       socket.emit("log_in", { ...form, online: true });
     }
   }

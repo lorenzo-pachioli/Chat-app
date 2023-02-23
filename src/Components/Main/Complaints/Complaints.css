@@ -123,6 +123,7 @@
 }
 .send{
     background:  linear-gradient(178.18deg, #FD749B -13.56%, #281AC8 158.3%);
+    cursor: pointer;
 }
 .cancel{
     background-color: #858585;

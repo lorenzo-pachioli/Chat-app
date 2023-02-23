@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import { Link, Navigate } from "react-router-dom";
 import logout from '../../../assets/logout.svg';
 import chat from '../../../assets/chat-bubble.svg';
@@ -9,9 +9,23 @@ import deleteAcount from '../../../assets/delete-person.svg';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './ControlPanel.css';
 
-export default function ControlPanel({ socket }) {
+export default function ControlPanel() {
 
-    const { user, logOut, setLogOut, unReadNum, setUser, setUserList, setToken, setRedirect, setChats, setRoom, setLoading, setUnReadNum } = useContext(AppContext);
+    const {
+        user,
+        logOut,
+        setLogOut,
+        unReadNum,
+        setUser,
+        setUserList,
+        setToken,
+        setRedirect,
+        setChats,
+        setRoom,
+        setLoading,
+        setUnReadNum,
+        socket
+    } = useContext(AppContext);
     const credentials = new sessionStoragedCredentials();
     const menu = [
         {

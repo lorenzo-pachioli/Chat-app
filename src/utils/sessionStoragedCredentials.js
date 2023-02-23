@@ -9,8 +9,8 @@ export default class sessionStoragedCredentials {
   }
 
   deleteCredentials() {
-    sessionStorage.setItem('email', '');
-    sessionStorage.setItem('password', '');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('password');
   }
 
   get email() {

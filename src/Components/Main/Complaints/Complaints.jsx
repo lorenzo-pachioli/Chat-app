@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import '../../../Pages/SubMain/SubMain.css';
 import './Complaints.css';
 
-export default function Complaints({ socket }) {
-    const { user, url, setUrl } = useContext(AppContext);
+export default function Complaints() {
+    const { user, url, setUrl, socket } = useContext(AppContext);
     const [complain, setComplain] = useState('');
     const [complaintError, setComplaintError] = useState(false);
     const [complaintSent, setComplaintSent] = useState(false);

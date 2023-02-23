@@ -1,20 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AppContext } from '../../../Context/AppContext';
+import { AppContext } from '../../../Service/AppContext';
 import Read from './Read/Read';
 import UnRead from './Read/UnRead';
 import html2canvas from 'html2canvas';
 import paperPlane from '../../../assets/paper-plane.svg';
 import './Chat.css';
 
-export default function Chat({ socket }) {
-    const { user, room, setRoom, setChats, setUrl } = useContext(AppContext);
+export default function Chat() {
+
+    const { user, room, setUrl, socket } = useContext(AppContext);
     const [sendMsj, setSendMsj] = useState('')
     const [loadingComplaint, setLoadingCompl] = useState(false)
     const [redirectComplaint, setRedirectCompl] = useState(false)
     const [rows, setRows] = useState(25)
 
-    const dateFrom = (date) => new Date(date).getTime();
     const handleSend = async () => {
         if (room._id) {
             try {
@@ -27,30 +27,9 @@ export default function Chat({ socket }) {
                 console.log('error sending msg', err)
             }
         }
-        setSendMsj('')
+        setSendMsj('');
         setRows(25);
     };
-
-    useEffect(() => {
-        socket.on("send_msg_res", async data => {
-            if (!data.status) {
-                return console.log(data.msg, ':', data.error)
-            }
-            await data.room.messages.sort((a, b) => { return dateFrom(a.time) < dateFrom(b.time) })
-            setRoom(r => r._id === data.room._id ? (data.room) : (r))
-        })
-    }, [setRoom, socket]);
-
-    useEffect(() => {
-        socket.on("read_msg_res", async data => {
-            if (!data.status) {
-                return console.log(data.msg, ':', data.error)
-            }
-            await data.room.messages.sort((a, b) => { return dateFrom(a.time) < dateFrom(b.time) })
-            setRoom(r => r._id === data.room._id ? (data.room) : (r))
-            setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)))
-        })
-    }, [setChats, setRoom, socket]);
 
     const handleComplaints = async () => {
         try {
@@ -71,7 +50,7 @@ export default function Chat({ socket }) {
                     setRedirectCompl(false)
                 }, 500);
             }
-        } catch(err) {
+        } catch (err) {
             console.log('error', err)
         }
     }

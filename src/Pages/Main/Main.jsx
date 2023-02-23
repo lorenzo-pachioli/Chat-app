@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import ControlPanel from '../../Components/Main/ControlPanel/ControlPanel';
-import { Navigate } from "react-router-dom";
 import './Main.css';
 import { Outlet } from 'react-router-dom';
 
-export default function Main({ socket }) {
-    const { user, setRedirect, setLoading } = useContext(AppContext);
+export default function Main() {
+
+    const { setRedirect, setLoading } = useContext(AppContext);
 
     useEffect(() => {
         setLoading(false)
@@ -15,9 +15,8 @@ export default function Main({ socket }) {
 
     return (
         <div className='main' >
-            <ControlPanel socket={socket} />
+            <ControlPanel />
             <Outlet />
-            {user._id ? ('') : (<Navigate to='/login' replace={true} />)}
         </div>
     )
 }

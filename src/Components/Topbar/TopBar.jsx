@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../Context/AppContext';
+import { AppContext } from '../../Service/AppContext';
 import userPhoto from '../../assets/user.png';
 import bell from '../../assets/bell.svg';
 import Message from '../SubMain/Chat/Message/Message';
@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 import UnReadDot from '../../utils/UnReadDot/UnReadDot';
 import './TopBar.css';
 
-export default function TopBar({ socket }) {
+export default function TopBar() {
 
-    const { user, chats, unReadNum, setRoom } = useContext(AppContext);
+    const { user, chats, unReadNum, setRoom, socket } = useContext(AppContext);
     const [unreadList, setUnreadList] = useState([]);
     const [showList, setShowList] = useState(false);
 
@@ -54,7 +54,7 @@ export default function TopBar({ socket }) {
                                 {unreadList.map(msj => {
                                     return msj._id ? (
                                         <Link to='/chatapp' className='link' key={msj._id} onClick={() => handleSetRoom(msj.user, msj.room)}>
-                                            <Message user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} socket={socket} />
+                                            <Message user={user} id={msj._id} date={msj.time} content={msj.message} postedBy={msj.user} />
                                         </Link>
                                     ) : ('')
                                 })}
