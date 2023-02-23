@@ -223,4 +223,13 @@ export default function SocketConfig() {
     setUserList,
     userId
   ]);
+
+  // user update response ------------------------------------------------------------------------------------------
+  useEffect(() => {
+    socket.on("upadate_user_res", socketResponce => {
+      if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
+      setUser(socketResponce.userUpdated);
+      console.log('response', socketResponce.userUpdated);
+    });
+  }, [setUser]);
 }

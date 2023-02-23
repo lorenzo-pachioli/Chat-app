@@ -18,11 +18,11 @@ export default function Settings() {
 
     const handleUpdate = () => {
         if (!user._id) return;
-        /* socket.emit("delete_user", { email: userToUpdate.email, password: userToUpdate.password }); */
         if (userToUpdate.password.length > 0) {
-            userToUpdate.password === confirmPassword ? console.log(userToUpdate) : setError(true);
+            if (userToUpdate.password !== confirmPassword) return setError(true);
+            socket.emit("upadate_user", userToUpdate);
         } else {
-            console.log(userToUpdate);
+            socket.emit("upadate_user", userToUpdate);
         }
     }
 
