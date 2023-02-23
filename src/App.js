@@ -12,6 +12,7 @@ import SubMain from './Pages/SubMain/SubMain';
 import { AppContext } from './Service/AppContext';
 import './App.css';
 import { ConnectionGuard, AuthGuard } from './Service/GuardRoute';
+import Settings from './Components/Main/Settings/Settings';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
 				<Route>
 					<Route path="chatapp" element={<AuthGuard element={<ConnectionGuard element={<ChatApp />} />} auth={user._id && true} />} >
 						<Route path="complaints" element={<Complaints />} />
+						<Route path="settings" element={<Settings />} />
 						<Route path="delete" element={<Delete />} />
 						<Route path="deleteAcount" element={<DeleteAcount />} />
 						<Route path="" element={<SubMain />} />

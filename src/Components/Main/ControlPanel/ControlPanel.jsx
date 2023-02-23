@@ -6,6 +6,7 @@ import chat from '../../../assets/chat-bubble.svg';
 import customerService from '../../../assets/customer-service.svg';
 import deleteMsg from '../../../assets/delete-message.svg';
 import deleteAcount from '../../../assets/delete-person.svg';
+import settings from '../../../assets/settings.svg';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './ControlPanel.css';
 
@@ -37,6 +38,11 @@ export default function ControlPanel() {
             label: 'Complaints',
             route: '/complaints',
             img: customerService,
+            unRead: false
+        }, {
+            label: 'Settings',
+            route: '/settings',
+            img: settings,
             unRead: false
         }, {
             label: 'Delete chat',
