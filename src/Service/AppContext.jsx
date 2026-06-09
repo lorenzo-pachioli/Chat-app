@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { socket as initSocket } from "..";
+
 import sessionStoragedCredentials from "../utils/sessionStoragedCredentials";
 export const AppContext = React.createContext();
 
-export default function AppProvider({ children }) {
+export default function AppProvider({ children, initialSocket, initialUser }) {
 
   const credentials = useMemo(() => new sessionStoragedCredentials(), []);
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(initialUser || {});
   const [userList, setUserList] = useState({});
   const [token, setToken] = useState({});
   const [chats, setChats] = useState([]);
@@ -18,7 +18,7 @@ export default function AppProvider({ children }) {
   const [newChat, setNewChat] = useState(false);
   const [unReadNum, setUnReadNum] = useState([]);
   const [url, setUrl] = useState('');
-  const [socket, setSocket] = useState(initSocket);
+  const [socket, setSocket] = useState(initialSocket);
   const [deleteChat, setDelete] = useState('');
 
 

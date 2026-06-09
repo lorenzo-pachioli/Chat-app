@@ -1,0 +1,6 @@
+allowBuilds:
+  '@netlify/esbuild': true
+  core-js: true
+  core-js-pure: true
+  netlify-cli: true
+  react-dotenv: true

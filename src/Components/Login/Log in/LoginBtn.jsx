@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navigate } from "react-router-dom";
 import { AppContext } from '../../../Service/AppContext';
 import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
+import { useOutletContext } from 'react-router-dom';
 import './LoginBtn.css';
 
 export default function LoginBtn() {
@@ -12,7 +14,6 @@ export default function LoginBtn() {
     setRedirect,
     loading,
     setLoading,
-    setLogOut,
     userList,
     socket
   } = useContext(AppContext);
@@ -21,33 +22,37 @@ export default function LoginBtn() {
     email: '',
     password: ''
   });
+  const { onAuthSuccess } = useOutletContext();
+  const navigate = useNavigate();
+
   const credentials = useMemo(() => new sessionStoragedCredentials(), []);
-
-
-  useEffect(() => {
-    setLogOut(false)
-  }, [setRedirect, setLogOut]);
-
-  useEffect(() => {
-    const errorLogIn = () => {
-      socket.on("log_in_res", (data) => {
-        if (!data.status) {
-          setLoading(false);
-          return setError(true);
-        }
-        credentials.setPassword(form.password.toString());
-      });
-    }
-    errorLogIn();
-  }, [socket, form, setLoading, credentials]);
-
 
   const handleLogIn = async () => {
     setLoading(true);
-    if (form.email && !credentials.email && !credentials.password) {
-      socket.emit("log_in", { ...form, online: true });
+    setError(false);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_SOCKET_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (data.success) onAuthSuccess(data.user);
+
+      if (!res.ok || !data.success) {
+        setError(true);
+        setLoading(false);
+        return;
+      }
+      credentials.setEmail(form.email);
+      credentials.setPassword(form.password.toString());
+      socket.emit("log_in", { ...form, online: true }); // conectar socket post-auth
+    } catch {
+      setError(true);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     const redirect = () => {
@@ -79,6 +84,10 @@ export default function LoginBtn() {
 
       <button type='submit' className='submit' onClick={handleLogIn} disabled={loading}>
         {loading ? ('Loading...') : ('Log in')}
+      </button>
+
+      <button type='button' className='submit' onClick={() => navigate('/')}>
+        Back
       </button>
       {redirect ? (<Navigate to='/chatapp' replace={true} />) : ('')}
     </div>
