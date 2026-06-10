@@ -1,18 +1,18 @@
 import React from 'react';
-import { Outlet  } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import './Login.css';
 
-export default function Login() {
+export default function Login({ onAuthSuccess }) {
 
   return (
     <div className="Login">
       <div className='subLogin'>
         <div className='title'>
-            <h1>Welcome to </h1>
-            <h1>Pachioli Chat</h1>
+          <h1>Welcome to </h1>
+          <h1>Pachioli Chat</h1>
         </div>
         <div className='logOptions'>
-          <Outlet />
+          <Outlet context={{ onAuthSuccess }} />
         </div>
       </div>
     </div>

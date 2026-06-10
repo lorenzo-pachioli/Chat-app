@@ -1,86 +1,62 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { Navigate } from "react-router-dom";
-import { AppContext } from '../../../Service/AppContext';
-import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
+import { useState } from 'react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import './LoginBtn.css';
 
+
 export default function LoginBtn() {
-
-  const {
-    user,
-    redirect,
-    setRedirect,
-    loading,
-    setLoading,
-    setLogOut,
-    userList,
-    socket
-  } = useContext(AppContext);
+  const { onAuthSuccess } = useOutletContext();
   const [error, setError] = useState(false);
-  const [form, setForm] = useState({
-    email: '',
-    password: ''
-  });
-  const credentials = useMemo(() => new sessionStoragedCredentials(), []);
-
-
-  useEffect(() => {
-    setLogOut(false)
-  }, [setRedirect, setLogOut]);
-
-  useEffect(() => {
-    const errorLogIn = () => {
-      socket.on("log_in_res", (data) => {
-        if (!data.status) {
-          setLoading(false);
-          return setError(true);
-        }
-        credentials.setPassword(form.password.toString());
-      });
-    }
-    errorLogIn();
-  }, [socket, form, setLoading, credentials]);
-
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleLogIn = async () => {
     setLoading(true);
-    if (form.email && !credentials.email && !credentials.password) {
-      socket.emit("log_in", { ...form, online: true });
-    }
-  }
+    setError(false);
 
-  useEffect(() => {
-    const redirect = () => {
-      if (user._id && userList.length > 0) {
-        setRedirect(true)
+    try {
+      const res = await fetch(`${process.env.REACT_APP_SOCKET_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setError(true);
+        setLoading(false);
+        return;
       }
+      onAuthSuccess(data.user);
+    } catch {
+      setError(true);
+      setLoading(false);
     }
-    redirect();
-  }, [user, setRedirect, userList]);
-
+  };
 
   return (
-    <div className="LoginBtn" value={form} >
+    <div className="LoginBtn">
       <div className='form-item'>
         <label>Email</label>
         <div>
-          <input type='email' name="email" value={form.email} onChange={(e) => setForm({ ...form, email: `${e.target.value}` })} />
+          <input type='email' value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })} />
         </div>
-
       </div>
       <div className='form-item'>
         <label>Password</label>
         <div>
-          <input
-            type='password' name='password' value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value.toString() })} />
+          <input type='password' value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })} />
         </div>
       </div>
-      {error ? (<p>Email or password incorrect</p>) : ('')}
-
-      <button type='submit' className='submit' onClick={handleLogIn} disabled={loading}>
-        {loading ? ('Loading...') : ('Log in')}
+      {error && <p>Email or password incorrect</p>}
+      <button className='submit' onClick={handleLogIn} disabled={loading}>
+        {loading ? 'Loading...' : 'Log in'}
       </button>
-      {redirect ? (<Navigate to='/chatapp' replace={true} />) : ('')}
+      <button type='button' className='submit' onClick={() => navigate('/')}>
+        Back
+      </button>
     </div>
   );
 }

@@ -11,6 +11,10 @@ export default function DeleteAcount() {
 
     const handleDelete = () => {
         if (password.length > 0 && user._id) {
+            fetch(`${process.env.REACT_APP_SOCKET_URL}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
             socket.emit("delete_user", { email: user.email, password: password });
         }
     }

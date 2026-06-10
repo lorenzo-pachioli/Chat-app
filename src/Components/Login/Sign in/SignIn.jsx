@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navigate } from "react-router-dom";
 import InputSyntax from './InputSyntax/InputSyntax';
 import { nameValidate, passwordValidate } from './InputSyntax/regExFunctions';
 import '../Log in/LoginBtn.css';
-import { AppContext } from '../../../Service/AppContext';
 
 export default function SignIn() {
-
-  const { socket } = useContext(AppContext);
   const [redirectLogIn, setRedirectLogIn] = useState(false);
   const [nameDisplay, setNameDisplay] = useState('none');
   const [lastNameDisplay, setlastNameDisplay] = useState('none');
@@ -21,31 +19,24 @@ export default function SignIn() {
     email: '',
     password: ''
   })
+  const navigate = useNavigate();
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     try {
-      if (form.email) {
-        socket.emit("sign_up", form)
+      const res = await fetch(`${process.env.REACT_APP_SOCKET_URL}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return console.log('Error en signup:', data);
       }
+      setRedirectLogIn(true);
     } catch (err) {
-      console.log(`Error signing up, error: ${err}`)
+      console.log(`Error signing up: ${err}`);
     }
-  }
-
-  useEffect(() => {
-    const redirect = async () => {
-      await socket.on("sign_up_res", data => {
-        if (!data.status) {
-          return console.log(`${data.msg}: ${data.error}`)
-        }
-        setRedirectLogIn(true)
-      })
-    }
-    redirect();
-    setTimeout(() => {
-      setRedirectLogIn(false)
-    });
-  }, [socket]);
+  };
 
   const handleName = (e) => {
     setForm({ ...form, firstName: `${e.target.value}` });
@@ -116,8 +107,11 @@ export default function SignIn() {
       </div>
       <button type='submit' className='submit' onClick={handleSignIn}>Sign in</button>
       {redirectLogIn ? (<Navigate to='/login' replace={true} />) : ('')}
-      <div>
-      </div>
+
+      <button type='button' className='submit' onClick={() => navigate('/')}>
+        Back
+      </button>
+
     </div>
   );
 }

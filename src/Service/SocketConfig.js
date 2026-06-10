@@ -1,11 +1,14 @@
 import { useContext, useEffect, useMemo, useRef } from "react";
 import sessionStoragedCredentials from "../utils/sessionStoragedCredentials";
 import { AppContext } from "./AppContext";
-import { socket } from "..";
+
+
 
 export default function SocketConfig() {
 
   const {
+    socket,
+    setSocket,
     user,
     setUser,
     chats,
@@ -15,7 +18,6 @@ export default function SocketConfig() {
     setUserList,
     loading,
     setLoading,
-    setSocket,
     setLogOut,
     setToken,
     setRedirect,
@@ -32,6 +34,27 @@ export default function SocketConfig() {
   const refUsersList = useRef([]);
   const refRoom = useRef(room);
   const dateFrom = (date) => new Date(date).getTime();
+
+  // Eliminar el useEffect de reload con credentials
+  // En su lugar, conectar el socket si ya hay user restaurado:
+  useEffect(() => {
+    if (user._id && socket) {
+      const handleConnect = () => {
+        socket.emit("log_in", { _id: user._id, online: true });
+      };
+
+      if (socket.connected) {
+        handleConnect();
+      } else {
+        socket.connect();
+      }
+
+      socket.on('connect', handleConnect);
+      return () => {
+        socket.off('connect', handleConnect);
+      };
+    }
+  }, [user._id, socket]);
 
   // connection status ---------------------------------------------------------------------------------------
   socket.on('connect', () => {
@@ -57,31 +80,7 @@ export default function SocketConfig() {
         refChats.current = socketResponce.rooms;
       }
     });
-  }, [credentials, setChats, setUser, setRedirect]);
-
-
-  // On page re load set user  --------------------------------------------------------------------------------
-  useEffect(() => {
-    const tempEmail = credentials.email;
-    const tempPass = credentials.password;
-    const onReload = () => {
-
-      if (loading) return;
-      if (!redirect) return;
-      if (user._id === undefined && tempEmail && tempPass) {
-        try {
-          socket.emit("log_in", {
-            email: tempEmail,
-            password: tempPass,
-            online: true
-          })
-        } catch (err) {
-          console.log(`Something went wrong on reloading page, error: ${err}`)
-        }
-      }
-    }
-    onReload();
-  }, [credentials, user, loading, redirect]);
+  }, [credentials, setChats, setUser, setRedirect, socket]);
 
 
   // get users list response ------------------------------------------------------------------------------------------
@@ -90,7 +89,7 @@ export default function SocketConfig() {
       if (!socketResponce.status) return console.log(socketResponce.msg, ':', socketResponce.error);
       setUserList(socketResponce.users);
     });
-  }, [setUserList]);
+  }, [setUserList, socket]);
 
 
   // users online response --------------------------------------------------------------------------------------------
@@ -103,7 +102,7 @@ export default function SocketConfig() {
         setUserList(newUserList);
       }
     });
-  }, [setUserList]);
+  }, [setUserList, socket]);
 
   // Message sent response ----------------------------------------------------------------------------------
   useEffect(() => {
@@ -116,7 +115,7 @@ export default function SocketConfig() {
       await data.room.messages.sort((a, b) => { return dateFrom(a.time) < dateFrom(b.time) });
       setRoom(r => r._id === data.room._id ? (data.room) : (r));
     });
-  }, [setChats, setRoom]);
+  }, [setChats, setRoom, socket]);
 
   // messages set read response -------------------------------------------------------------------------------------
   useEffect(() => {
@@ -129,7 +128,7 @@ export default function SocketConfig() {
       setRoom(r => r._id === data.room._id ? (data.room) : (r));
       setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)));
     })
-  }, [setChats, setRoom]);
+  }, [setChats, setRoom, socket]);
 
   //chat initiated response -----------------------------------------------------------------------------------
   useEffect(() => {
@@ -149,7 +148,7 @@ export default function SocketConfig() {
         });
       }
     });
-  }, [setChats, userId]);
+  }, [setChats, userId, socket]);
 
 
   // delete message response ---------------------------------------------------------------------------------
@@ -161,7 +160,7 @@ export default function SocketConfig() {
       setRoom(data.room);
       setChats((chat) => chat.map((c) => c._id === data.room._id ? (data.room) : (c)));
     });
-  }, [setChats, setRoom]);
+  }, [setChats, setRoom, socket]);
 
   // delete chat response -----------------------------------------------------------------------------------
   useEffect(() => {
@@ -173,7 +172,7 @@ export default function SocketConfig() {
       setRoom({});
       setDelete('');
     });
-  }, [deleteChat, setChats, setRoom, setDelete]);
+  }, [deleteChat, setChats, setRoom, setDelete, socket]);
 
 
   //delete user response -------------------------------------------------------------------------------------
@@ -221,6 +220,7 @@ export default function SocketConfig() {
     setUnReadNum,
     setUser,
     setUserList,
-    userId
+    userId,
+    socket
   ]);
 }
