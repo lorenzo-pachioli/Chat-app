@@ -13,7 +13,6 @@ export default function ControlPanel() {
     const {
         user,
         logOut,
-        setLogOut,
         unReadNum,
         setUser,
         setUserList,

@@ -16,15 +16,13 @@ export default function SocketConfig() {
     room,
     setRoom,
     setUserList,
-    loading,
     setLoading,
     setLogOut,
     setToken,
     setRedirect,
     setUnReadNum,
     deleteChat,
-    setDelete,
-    redirect
+    setDelete
   } = useContext(AppContext);
 
   const credentials = useMemo(() => new sessionStoragedCredentials(), []);

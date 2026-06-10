@@ -39,7 +39,6 @@ export default function AppReBoots() {
 
         };
 
-        console.log("status", status);
         boot();
     }, []);
 

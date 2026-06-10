@@ -1,21 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AppContext } from '../../Service/AppContext';
 import './Loading.css';
 
 export default function Loading() {
 
-	const [toLogin, setToLogin] = useState(false);
-	/* 	const { user } = useContext(AppContext);
-	
-		useEffect(() => {
-			if (user) {
-				const timeout = setTimeout(() => {
-					setToLogin(true);
-				}, 6000);
-				if (user._id) return clearTimeout(timeout);
-			}
-		}, [user]); */
+	const [toLogin] = useState(false);
 
 	return (
 		<div className="Login">
