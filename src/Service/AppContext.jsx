@@ -1,18 +1,15 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
-import sessionStoragedCredentials from "../utils/sessionStoragedCredentials";
 export const AppContext = React.createContext();
 
-export default function AppProvider({ children, initialSocket, initialUser }) {
-
-  const credentials = useMemo(() => new sessionStoragedCredentials(), []);
+export default function AppProvider({ children, initialSocket, initialUser, onLogOut }) {
 
   const [user, setUser] = useState(initialUser || {});
   const [userList, setUserList] = useState({});
   const [token, setToken] = useState({});
   const [chats, setChats] = useState([]);
   const [room, setRoom] = useState({});
-  const [redirect, setRedirect] = useState(credentials.email && credentials.password ? (true) : (false));
+  const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logOut, setLogOut] = useState(false);
   const [newChat, setNewChat] = useState(false);
@@ -50,7 +47,8 @@ export default function AppProvider({ children, initialSocket, initialUser }) {
         socket,
         setSocket,
         deleteChat,
-        setDelete
+        setDelete,
+        onLogOut
       }}
     >
       {children}

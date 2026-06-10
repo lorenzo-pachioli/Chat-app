@@ -6,7 +6,6 @@ import chat from '../../../assets/chat-bubble.svg';
 import customerService from '../../../assets/customer-service.svg';
 import deleteMsg from '../../../assets/delete-message.svg';
 import deleteAcount from '../../../assets/delete-person.svg';
-import sessionStoragedCredentials from '../../../utils/sessionStoragedCredentials';
 import './ControlPanel.css';
 
 export default function ControlPanel() {
@@ -24,9 +23,10 @@ export default function ControlPanel() {
         setRoom,
         setLoading,
         setUnReadNum,
-        socket
+        socket,
+        onLogOut
     } = useContext(AppContext);
-    const credentials = new sessionStoragedCredentials();
+
     const menu = [
         {
             label: 'Chat',
@@ -52,10 +52,14 @@ export default function ControlPanel() {
     ];
 
     const handleLogOut = async () => {
-        const password = credentials.password;
         try {
-            await socket.emit("online", { email: user.email, password: password, online: false });
-            setLogOut(true);
+            await fetch(`${process.env.REACT_APP_SOCKET_URL}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            socket.emit("online", { _id: user._id, online: false });
+            socket.disconnect();
+            // limpiar estado...
             setUser({});
             setUserList({});
             setToken({});
@@ -64,12 +68,9 @@ export default function ControlPanel() {
             setRoom({});
             setLoading(false);
             setUnReadNum([]);
-            credentials.deleteCredentials();
-            setTimeout(() => {
-                setLogOut(false)
-            }, 1000);
+            onLogOut();
         } catch (err) {
-            console.error(`Error: ${err}`)
+            console.error(`Error: ${err}`);
         }
     }
 

@@ -38,11 +38,23 @@ export default function SocketConfig() {
   // Eliminar el useEffect de reload con credentials
   // En su lugar, conectar el socket si ya hay user restaurado:
   useEffect(() => {
-    if (user._id && !socket.connected) {
-      socket.connect();
-      socket.emit("log_in", { _id: user._id, online: true });
+    if (user._id && socket) {
+      const handleConnect = () => {
+        socket.emit("log_in", { _id: user._id, online: true });
+      };
+
+      if (socket.connected) {
+        handleConnect();
+      } else {
+        socket.connect();
+      }
+
+      socket.on('connect', handleConnect);
+      return () => {
+        socket.off('connect', handleConnect);
+      };
     }
-  }, [user._id]);
+  }, [user._id, socket]);
 
   // connection status ---------------------------------------------------------------------------------------
   socket.on('connect', () => {
@@ -69,30 +81,6 @@ export default function SocketConfig() {
       }
     });
   }, [credentials, setChats, setUser, setRedirect, socket]);
-
-
-  // On page re load set user  --------------------------------------------------------------------------------
-  useEffect(() => {
-    const tempEmail = credentials.email;
-    const tempPass = credentials.password;
-    const onReload = () => {
-
-      if (loading) return;
-      if (!redirect) return;
-      if (user._id === undefined && tempEmail && tempPass) {
-        try {
-          socket.emit("log_in", {
-            email: tempEmail,
-            password: tempPass,
-            online: true
-          })
-        } catch (err) {
-          console.log(`Something went wrong on reloading page, error: ${err}`)
-        }
-      }
-    }
-    onReload();
-  }, [credentials, user, loading, redirect, socket]);
 
 
   // get users list response ------------------------------------------------------------------------------------------
